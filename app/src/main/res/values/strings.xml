@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">dacs3-shoesshop-android</string>
+    <string name="hello">Hey There,</string>
+    <string name="login_account">Login to Your Account</string>
+    <string name="create_account">Create Your Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
 </resources>
