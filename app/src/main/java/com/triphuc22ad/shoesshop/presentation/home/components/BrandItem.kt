@@ -45,7 +45,7 @@ fun BrandItem(
             painter = painterResource(id = logo),
             contentDescription = "",
             modifier = Modifier
-                .size(80.dp)
+                .size(40.dp)
                 .clip(CircleShape) // Clip to a circle shape
                 .background(MaterialTheme.colorScheme.primary)
                 .padding(8.dp)
