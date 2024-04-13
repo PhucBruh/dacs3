@@ -9,8 +9,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 @Composable
@@ -24,8 +26,17 @@ fun SectionHeader(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Text(text = name)
-        Text(text = "See All", Modifier.clickable { onSeeAllClick() })
+        Text(
+            text = name,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = "See All",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.clickable { onSeeAllClick() }
+        )
     }
 }
 
