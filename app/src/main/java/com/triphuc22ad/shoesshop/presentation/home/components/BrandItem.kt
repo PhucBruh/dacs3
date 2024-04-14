@@ -3,14 +3,14 @@ package com.triphuc22ad.shoesshop.presentation.home.components
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 
@@ -39,17 +40,25 @@ fun BrandItem(
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp),
+        modifier = Modifier
+            .padding(horizontal = 4.dp, vertical = 4.dp)
     ) {
-        Image(
-            painter = painterResource(id = logo),
-            contentDescription = "",
+        Box(
+            contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(40.dp)
-                .clip(CircleShape) // Clip to a circle shape
-                .background(MaterialTheme.colorScheme.primary)
-                .padding(8.dp)
-        )
+                .size(60.dp)
+                .background(BgColor, CircleShape)
+                .clip(CircleShape)
+                .clickable { onClick() }
+        ) {
+            Image(
+                painter = painterResource(id = logo),
+                contentDescription = "",
+                modifier = Modifier
+                    .size(50.dp)
+                    .padding(8.dp)
+            )
+        }
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = name,
@@ -95,13 +104,7 @@ fun BrandItem(
 fun BrandItemPreview() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            Row {
-                BrandItem(
-                    name = "Nike",
-                    logo = R.drawable.nike_logo,
-                    onClick = {}
-                )
-            }
+            BrandItem(name = "nike", logo = R.drawable.nike_logo, onClick = {})
         }
     }
 }

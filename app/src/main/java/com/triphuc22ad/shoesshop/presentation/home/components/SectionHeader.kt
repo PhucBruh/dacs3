@@ -46,8 +46,8 @@ fun SectionHeaderPreview() {
     Dacs3shoesshopandroidTheme {
         Surface {
             SectionHeader(
-                "Special Offer",
-                {},
+                name = "Special Offer",
+                onSeeAllClick = {},
                 modifier = Modifier.padding(horizontal = 12.dp)
             )
         }

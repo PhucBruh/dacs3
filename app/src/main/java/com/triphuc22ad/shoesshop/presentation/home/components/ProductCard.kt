@@ -45,9 +45,10 @@ import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 @Composable
 fun ProductCard(
     @DrawableRes image: Int,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier.clickable { }
+        modifier = modifier
     ) {
         Box(
             contentAlignment = Alignment.Center,
@@ -55,6 +56,7 @@ fun ProductCard(
                 .size(170.dp)
                 .clip(RoundedCornerShape(32.dp))
                 .background(BgColor)
+                .clickable {  }
         ) {
             Image(
                 painter = painterResource(id = image),
@@ -117,30 +119,12 @@ fun ProductCard(
     }
 }
 
-@Composable
-fun ProductCardList(
-    modifier: Modifier = Modifier
-) {
-    val imgList = List(30) { R.drawable.curry_6 }
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(14.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
-        items(imgList) { img ->
-            ProductCard(image = img)
-        }
-    }
-}
-
-@Preview(showSystemUi = true)
+@Preview
 @Composable
 fun ProductCardPreview() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            ProductCardList()
+            ProductCard(image = R.drawable.curry_6)
         }
     }
 }

@@ -20,21 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
-
-@Composable
-fun OptionFilterList(
-    modifier: Modifier = Modifier
-) {
-    val listFilter = List(10) { "Filter $it" }
-    LazyRow(
-        modifier = modifier.fillMaxWidth()
-    ) {
-        items(listFilter) {
-            OptionFilter(text = it, onClick = {}, modifier = Modifier.padding(end = 8.dp))
-        }
-    }
-}
-
 @Composable
 fun OptionFilter(
     text: String,
@@ -64,10 +49,10 @@ fun OptionFilter(
 
 @Preview
 @Composable
-fun OptionFilterListPreview() {
+fun OptionFilterList() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            OptionFilterList()
+            OptionFilter(text = "filter 1", onClick = {})
         }
     }
 }
