@@ -18,7 +18,8 @@ import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 @Composable
 fun SectionHeader(
     name: String,
-    onSeeAllClick: () -> Unit,
+    actionName: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -32,10 +33,10 @@ fun SectionHeader(
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "See All",
+            text = actionName,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.clickable { onSeeAllClick() }
+            modifier = Modifier.clickable { onClick() }
         )
     }
 }
@@ -47,7 +48,8 @@ fun SectionHeaderPreview() {
         Surface {
             SectionHeader(
                 name = "Special Offer",
-                onSeeAllClick = {},
+                actionName = "See All",
+                onClick = {},
                 modifier = Modifier.padding(horizontal = 12.dp)
             )
         }
