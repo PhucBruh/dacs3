@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductSearchBar(

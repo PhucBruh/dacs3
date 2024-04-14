@@ -1,6 +1,7 @@
 package com.triphuc22ad.shoesshop.presentation.home
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.triphuc22ad.shoesshop.R
@@ -39,6 +41,7 @@ fun HomeScreen() {
         topBar = {
             var isActivated by remember { mutableStateOf(false) }
             var query by remember { mutableStateOf("") }
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier
@@ -56,12 +59,13 @@ fun HomeScreen() {
                     active = isActivated,
                     query = query,
                     onActiveChange = { isActivated = !isActivated },
-                    onClear = { isActivated = false }
+                    onClear = { isActivated = false },
+                    modifier = Modifier
+                        .padding(horizontal = if (!isActivated) 16.dp else 0.dp)
                 )
             }
         },
     ) { scaffoldPadding ->
-
         LazyVerticalGrid(
             columns = GridCells.Fixed(12),
             verticalArrangement = Arrangement.spacedBy(16.dp),
