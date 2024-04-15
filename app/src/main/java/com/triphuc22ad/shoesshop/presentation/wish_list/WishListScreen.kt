@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -35,10 +36,12 @@ fun WishListScreen() {
             .padding(top = 12.dp)
     ) {
         BackBar(name = "My Wishlist", onBack = { /*TODO*/ }) {
-            IconButton(onClick = { /*TODO*/ }) {
-                Box(contentAlignment = Alignment.CenterEnd, modifier = Modifier.fillMaxSize()) {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
-                }
+            IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(28.dp)) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "",
+                    modifier = Modifier.fillMaxSize()
+                )
             }
         }
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -48,6 +51,7 @@ fun WishListScreen() {
         }
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             columns = GridCells.Fixed(2)
         ) {
             items(14) {
