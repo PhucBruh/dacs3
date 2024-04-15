@@ -5,4 +5,9 @@
     <string name="create_account">Create Your Account</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="nofull">Lorem Ipsum is simply dummy text of the printingially unchanged</string>
+    <string name="full">Lorem Ipsum is simply dummy text of the printingially unchanged
+                        Lorem Ipsum is simply dummy text of the printingially unchanged
+                        Lorem Ipsum is simply dummy text of the printingially unchanged
+    </string>
 </resources>
