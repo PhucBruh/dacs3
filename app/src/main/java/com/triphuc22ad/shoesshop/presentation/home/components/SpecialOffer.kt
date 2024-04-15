@@ -21,9 +21,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
@@ -32,11 +37,13 @@ import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 @Composable
 fun SpecialOffer(
+    shadow: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
+            .shadow(shape = RoundedCornerShape(if (shadow) 32.dp else 36.dp), elevation = 4.dp)
             .background(BgColor, RoundedCornerShape(36.dp))
             .clip(RoundedCornerShape(36.dp))
             .clickable { }
@@ -78,7 +85,7 @@ fun SpecialOffer(
 fun SpecialOfferPreview() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            SpecialOffer(Modifier.padding(vertical = 10.dp, horizontal = 16.dp))
+            SpecialOffer(modifier = Modifier.padding(vertical = 10.dp, horizontal = 16.dp))
         }
     }
 }

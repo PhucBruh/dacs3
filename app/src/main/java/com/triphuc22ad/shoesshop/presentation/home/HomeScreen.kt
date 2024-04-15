@@ -1,10 +1,8 @@
 package com.triphuc22ad.shoesshop.presentation.home
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -21,13 +19,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.home.components.BrandItem
-import com.triphuc22ad.shoesshop.presentation.home.components.OptionFilter
-import com.triphuc22ad.shoesshop.presentation.home.components.ProductCard
+import com.triphuc22ad.shoesshop.util.component.FilterOption
+import com.triphuc22ad.shoesshop.util.component.ProductCard
 import com.triphuc22ad.shoesshop.presentation.home.components.ProductSearchBar
 import com.triphuc22ad.shoesshop.presentation.home.components.SectionHeader
 import com.triphuc22ad.shoesshop.presentation.home.components.SpecialOffer
@@ -85,7 +82,7 @@ fun HomeScreen() {
             }
 
             item(span = { GridItemSpan(12) }) {
-                SpecialOffer()
+                SpecialOffer(shadow = true)
             }
 
             val listBrand = List(8) { "Brand$it" }
@@ -106,7 +103,7 @@ fun HomeScreen() {
             item(span = { GridItemSpan(12) }) {
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     items(10) {
-                        OptionFilter(text = "Filter$it", onClick = {})
+                        FilterOption(text = "Filter$it", onClick = {})
                     }
                 }
             }
