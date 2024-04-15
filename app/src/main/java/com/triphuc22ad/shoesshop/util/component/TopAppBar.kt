@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.util.components
+package com.triphuc22ad.shoesshop.util.component
 
 import androidx.compose.runtime.Composable
 
