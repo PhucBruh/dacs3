@@ -12,12 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.triphuc22ad.shoesshop.presentation.home.components.SpecialOffer
-import com.triphuc22ad.shoesshop.util.component.BackBar
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 
 @Composable
 fun SpecialOffersScreen() {
-
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -26,8 +25,7 @@ fun SpecialOffersScreen() {
             .padding(horizontal = 16.dp)
             .padding(top = 12.dp)
     ) {
-        BackBar(name = "Special Offers", onBack = { /*TODO*/ }) { }
-
+        TopTitleBar(name = "Special Offers")
         LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             items(10) {
                 SpecialOffer()
