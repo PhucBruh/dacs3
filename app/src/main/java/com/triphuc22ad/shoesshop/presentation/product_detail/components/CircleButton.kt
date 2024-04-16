@@ -47,7 +47,7 @@ fun TextCircleButton(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .border(2.dp, Color.Black, CircleShape)
-            .size(60.dp)
+            .size(30.dp)
             .background(backgroundColor, CircleShape)
             .clip(CircleShape)
             .clickable {
@@ -73,7 +73,7 @@ fun ColorCircleButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(60.dp)
+            .size(30.dp)
             .background(color, CircleShape)
             .clip(CircleShape)
             .clickable {
