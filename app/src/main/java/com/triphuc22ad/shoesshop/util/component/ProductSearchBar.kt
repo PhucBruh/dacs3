@@ -1,9 +1,9 @@
-package com.triphuc22ad.shoesshop.presentation.home.components
+package com.triphuc22ad.shoesshop.util.component
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,14 +12,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.List
 import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -31,10 +29,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,8 +44,9 @@ import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 fun ProductSearchBar(
     query: String,
     active: Boolean,
-    onActiveChange: () -> Unit,
+    onActiveChange: (Boolean) -> Unit,
     onClear: () -> Unit,
+    onFilterList: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     SearchBar(
@@ -57,37 +54,39 @@ fun ProductSearchBar(
         onQueryChange = {},
         onSearch = {},
         active = active,
-        onActiveChange = { onActiveChange() },
+        onActiveChange = { it -> onActiveChange(it) },
         placeholder = { Text(text = "Search") },
         leadingIcon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = null,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        },
+        trailingIcon = {
             if (active) {
                 IconButton(onClick = { onClear() }) {
                     Icon(
                         imageVector = Icons.Outlined.Close,
                         contentDescription = null,
-                        modifier = Modifier.padding(start = 8.dp)
+                        modifier = Modifier
+                            .padding(start = 8.dp)
                     )
                 }
             } else {
-                Icon(
-                    imageVector = Icons.Outlined.Search,
-                    contentDescription = null,
-                    modifier = Modifier.padding(start = 8.dp)
-                )
-            }
-        },
-        trailingIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Outlined.List,
-                    contentDescription = null,
-                    modifier = Modifier.padding(end = 8.dp)
-                )
+                IconButton(onClick = { onFilterList() }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.List,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                }
             }
         },
         colors = SearchBarDefaults.colors(containerColor = if (active) Color.White else BgColor),
         shape = RoundedCornerShape(16.dp),
         modifier = modifier
+            .animateContentSize()
     ) {
         Column(
             Modifier
@@ -108,7 +107,7 @@ fun ProductSearchBar(
                 modifier = Modifier.padding(horizontal = 16.dp)
             ) {
                 items(List(10) { "search history $it" }) {
-                    SearchItem(name = it, onDelete = {}, onSelect = {})
+                    HistorySearchItem(name = it, onDelete = {}, onSelect = {})
                 }
             }
         }
@@ -116,7 +115,7 @@ fun ProductSearchBar(
 }
 
 @Composable
-fun SearchItem(
+fun HistorySearchItem(
     name: String,
     onDelete: () -> Unit,
     onSelect: () -> Unit,
@@ -161,7 +160,8 @@ fun ProductSearchBarPreview() {
                 active = isActivated,
                 query = query,
                 onActiveChange = {},
-                onClear = {}
+                onClear = {},
+                onFilterList = {}
             )
         }
     }

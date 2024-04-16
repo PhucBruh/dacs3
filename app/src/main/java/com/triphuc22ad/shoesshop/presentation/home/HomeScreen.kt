@@ -25,8 +25,8 @@ import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.home.components.BrandItem
 import com.triphuc22ad.shoesshop.util.component.FilterOption
 import com.triphuc22ad.shoesshop.util.component.ProductCard
-import com.triphuc22ad.shoesshop.presentation.home.components.ProductSearchBar
-import com.triphuc22ad.shoesshop.presentation.home.components.SectionHeader
+import com.triphuc22ad.shoesshop.util.component.ProductSearchBar
+import com.triphuc22ad.shoesshop.util.component.SectionHeader
 import com.triphuc22ad.shoesshop.presentation.home.components.SpecialOffer
 import com.triphuc22ad.shoesshop.presentation.home.components.UserBar
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
@@ -57,6 +57,7 @@ fun HomeScreen() {
                     query = query,
                     onActiveChange = { isActivated = !isActivated },
                     onClear = { isActivated = false },
+                    onFilterList = {},
                     modifier = Modifier
                         .padding(horizontal = if (!isActivated) 16.dp else 0.dp)
                 )

@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import com.triphuc22ad.shoesshop.presentation.home.HomeScreen
+import com.triphuc22ad.shoesshop.presentation.product.ProductScreen
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,7 +16,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Dacs3shoesshopandroidTheme {
                 // A surface container using the 'background' color from the theme
-                HomeScreen()
+                ProductScreen()
             }
         }
     }
