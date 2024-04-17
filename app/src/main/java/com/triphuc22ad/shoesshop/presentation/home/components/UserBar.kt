@@ -65,7 +65,7 @@ fun UserBar(
                     fontWeight = FontWeight.Light
                 )
                 Text(
-                    text = "Phúc Lỏ",
+                    text = "Phúc",
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
                 )

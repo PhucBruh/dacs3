@@ -149,7 +149,7 @@ fun ButtonComponent(modifier: Modifier = Modifier
     .fillMaxWidth()
     .heightIn(48.dp), value: String) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { },
         modifier = modifier,
         contentPadding = PaddingValues(),
         colors = ButtonDefaults.buttonColors(Color.Transparent)

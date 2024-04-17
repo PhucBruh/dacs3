@@ -55,11 +55,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.presentation.home.HomeScreen
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.SizeComponent
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.TextCircleButton
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
+import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 import com.triphuc22ad.shoesshop.ui.theme.GrayColor
 import com.triphuc22ad.shoesshop.ui.theme.Primary
 import com.triphuc22ad.shoesshop.ui.theme.Secondary
@@ -69,25 +71,30 @@ fun ProductDetailScreen() {
     Surface(
         modifier = Modifier
             .fillMaxSize()
-            .padding(28.dp)
+            .padding(20.dp)
+            .background(Color.White)
     ) {
         Column(
             modifier = Modifier
                 .background(Color.White)
+                .fillMaxSize()
         ) {
 
-            Back(onBack = {})
+            Column(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Back(onBack = { })
 
-            Image(
-                painter = painterResource(id = R.drawable.curry_6),
-                contentDescription = "giay",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 60.dp, bottom = 100.dp)
-                    .size(width = 100.dp, height = 200.dp)
-
-            )
+                Image(
+                    painter = painterResource(id = R.drawable.curry_6),
+                    contentDescription = "giay",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 60.dp, bottom = 100.dp)
+                        .size(width = 100.dp, height = 200.dp)
+                )
+            }
 
             TitleHeader(
                 name = "Air Jodan 3 retro",
@@ -189,7 +196,8 @@ fun ProductDetailScreen() {
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .padding(top = 10.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
             ) {
@@ -363,5 +371,10 @@ fun Back(onBack: () -> Unit) {
 @Preview
 @Composable
 fun PreviewProductDetailScreen() {
-    ProductDetailScreen()
+    Dacs3shoesshopandroidTheme {
+        Surface {
+            ProductDetailScreen()
+        }
+    }
+
 }
