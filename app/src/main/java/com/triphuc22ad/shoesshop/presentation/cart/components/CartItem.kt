@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.util.component.QuantityButton
 
 
 @Composable
@@ -125,37 +126,7 @@ fun CartItem(
                     .fillMaxWidth()
             ) {
                 Text(text = "$105.00")
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .background(BgColor, RoundedCornerShape(32.dp))
-                        .height(32.dp)
-                ) {
-                    Box(
-                        contentAlignment = Alignment.Center, modifier = Modifier
-                            .size(32.dp)
-                            .clip(CircleShape)
-                            .clickable { }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Remove, contentDescription = null,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                    Text(text = "1")
-                    Box(
-                        contentAlignment = Alignment.Center, modifier = Modifier
-                            .size(32.dp)
-                            .clip(CircleShape)
-                            .clickable { }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Add, contentDescription = null,
-                            modifier = Modifier.size(16.dp)
-                        )
-                    }
-                }
+                QuantityButton()
             }
         }
     }

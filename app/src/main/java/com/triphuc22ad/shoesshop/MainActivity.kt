@@ -8,6 +8,7 @@ import androidx.compose.material3.Surface
 import com.triphuc22ad.shoesshop.presentation.cart.CartScreen
 import com.triphuc22ad.shoesshop.presentation.home.HomeScreen
 import com.triphuc22ad.shoesshop.presentation.product.ProductScreen
+import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailScreen
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 class MainActivity : ComponentActivity() {
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             Dacs3shoesshopandroidTheme {
                 // A surface container using the 'background' color from the theme
-                CartScreen()
+                ProductDetailScreen()
             }
         }
     }

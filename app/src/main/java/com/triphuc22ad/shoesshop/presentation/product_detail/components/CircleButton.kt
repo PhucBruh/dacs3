@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
@@ -37,6 +38,7 @@ fun TextCircleButton(
     text: String,
     active: Boolean = false,
     onClick: (isActivated: Boolean) -> Unit,
+    size: Dp = 32.dp,
     modifier: Modifier = Modifier
 ) {
     var isActivated by remember { mutableStateOf(active) }
@@ -47,7 +49,7 @@ fun TextCircleButton(
         contentAlignment = Alignment.Center,
         modifier = modifier
             .border(2.dp, Color.Black, CircleShape)
-            .size(30.dp)
+            .size(size)
             .background(backgroundColor, CircleShape)
             .clip(CircleShape)
             .clickable {
@@ -55,7 +57,7 @@ fun TextCircleButton(
                 onClick(isActivated)
             }
     ) {
-        Text(text = text, color = textColor)
+        Text(text = text, fontSize = (size.value / 2).sp, color = textColor)
     }
 }
 
@@ -66,6 +68,7 @@ fun ColorCircleButton(
     checkedColor: Color = Color.White,
     active: Boolean = false,
     onClick: (isActivated: Boolean) -> Unit,
+    size: Dp = 32.dp,
     modifier: Modifier = Modifier
 ) {
     var isActivated by remember { mutableStateOf(active) }
@@ -73,7 +76,7 @@ fun ColorCircleButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(30.dp)
+            .size(size)
             .background(color, CircleShape)
             .clip(CircleShape)
             .clickable {
@@ -97,7 +100,7 @@ fun CircleButtonPreview() {
     Dacs3shoesshopandroidTheme {
         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             TextCircleButton(text = "40", onClick = {})
-            ColorCircleButton(color = Color.Cyan , onClick = {})
+            ColorCircleButton(color = Color.Cyan, onClick = {})
         }
     }
 }
