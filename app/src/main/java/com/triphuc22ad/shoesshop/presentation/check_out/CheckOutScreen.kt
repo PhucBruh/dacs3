@@ -1,6 +1,5 @@
-package com.triphuc22ad.shoesshop.presentation.CheckOut
+package com.triphuc22ad.shoesshop.presentation.check_out
 
-import android.graphics.drawable.Icon
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -43,80 +42,79 @@ import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 fun CheckOutScreen() {
 
     Box(contentAlignment = Alignment.BottomCenter) {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(10.dp),
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
-                .padding(top = 5.dp)
                 .padding(bottom = 100.dp)
         ) {
-            TopTitleBar(name = "Checkout")
 
-            Column(
-                verticalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .height(200.dp)
-                    .padding(vertical = 20.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = "Shipping Address",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                )
-
-                CartAddress()
-
-                HorizontalDivider()
+            item {
+                TopTitleBar(name = "Checkout", modifier = Modifier.padding(top = 16.dp))
             }
 
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SectionHeader(name = "Shipping address")
 
-            Column() {
-                Text(
-                    text = "Order List",
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Medium,
-                )
+                    CartAddress()
 
-                LazyColumn(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    modifier = Modifier
-                        .padding(top = 10.dp)
+                    HorizontalDivider(Modifier.padding(top = 8.dp))
+                }
+            }
+
+            item {
+            }
+
+            item {
+                SectionHeader(name = "Orders")
+            }
+
+            items(10) {
+                Row(Modifier.padding(vertical = 8.dp)) {
+                    CardOrder(
+                        modifier = Modifier
+                            .shadow(2.dp, RoundedCornerShape(32.dp))
+                    )
+                }
+            }
+
+            item {
+                HorizontalDivider(Modifier.padding(top = 8.dp))
+            }
+
+            item {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SectionHeader(name = "Choose Shipping")
+
+                    // Edit the column bellow to the component you want
+                    Column {
+                        Text(text = "Shipping type here")
+                    }
+
+                    HorizontalDivider(Modifier.padding(top = 8.dp))
+                }
+            }
+
+            item {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    modifier = Modifier.padding(bottom = 40.dp)
                 ) {
-                    items(10) {
-                        CardOrder(
-                            modifier = Modifier
-                                .shadow(2.dp, RoundedCornerShape(32.dp))
-                                .padding(top = 4.dp)
-                                .padding(bottom = 4.dp)
-                        )
+                    SectionHeader(name = "Promote Code")
+
+                    // Edit the column bellow to the component you want
+                    Column {
+                        Text(text = "Promote code here")
                     }
-
-                    item {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(15.dp),
-                            modifier = Modifier
-                                .padding(vertical = 20.dp)
-                                .fillMaxWidth()
-                        ) {
-                            HorizontalDivider()
-
-                            Text(
-                                text = "Shipping Address",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium,
-                            )
-
-
-                        }
-                    }
-
-
                 }
             }
         }
+
+
+
 
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -140,7 +138,7 @@ fun CheckOutScreen() {
                     modifier = Modifier
                         .size(height = 52.dp, width = 450.dp),
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically,)
+                    Row(verticalAlignment = Alignment.CenterVertically)
                     {
                         Text(text = "Continue to Payment", fontSize = 17.sp)
                         Spacer(modifier = Modifier.width(4.dp))
@@ -151,7 +149,6 @@ fun CheckOutScreen() {
                         )
                     }
                 }
-
             }
 
 
@@ -159,9 +156,24 @@ fun CheckOutScreen() {
     }
 }
 
+@Composable
+private fun SectionHeader(name: String, modifier: Modifier = Modifier) {
+    Row(
+        modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp)
+    ) {
+        Text(
+            text = name,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium,
+        )
+    }
+}
+
 @Preview
 @Composable
-fun PreviewCheckOut(){
+fun PreviewCheckOut() {
     Dacs3shoesshopandroidTheme {
         Surface {
             CheckOutScreen()
