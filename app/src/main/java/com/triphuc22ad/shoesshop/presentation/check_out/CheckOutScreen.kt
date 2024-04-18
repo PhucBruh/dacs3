@@ -15,20 +15,31 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
+import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowCircleDown
+import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,9 +101,35 @@ fun CheckOutScreen() {
                     SectionHeader(name = "Choose Shipping")
 
                     // Edit the column bellow to the component you want
-                    Column {
-                        Text(text = "Shipping type here")
-                    }
+
+                        Row(
+                          horizontalArrangement = Arrangement.SpaceAround,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .shadow(2.dp, RoundedCornerShape(20.dp))
+                                .padding(vertical = 20.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.LocalShipping,
+                                contentDescription = "Rating",
+                                tint = Color.Black,
+                            )
+
+                            Text(
+                                text = "Choose Shipping Type",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+
+                            )
+
+                            Icon(
+                                imageVector = Icons.Default.ArrowForwardIos,
+                                contentDescription = "Rating",
+                                tint = Color.Black,
+                            )
+
+                        }
+
 
                     HorizontalDivider(Modifier.padding(top = 8.dp))
                 }
@@ -106,8 +143,80 @@ fun CheckOutScreen() {
                     SectionHeader(name = "Promote Code")
 
                     // Edit the column bellow to the component you want
-                    Column {
-                        Text(text = "Promote code here")
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            InputCode(
+                                value = "",
+                                onValueChange = {},
+                                description = "Enter Promo Code",
+
+                            )
+
+                            Box(
+                                modifier = Modifier
+                                    .size(50.dp)
+                                    .background(Color.Gray, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ){
+                                Icon(
+                                    imageVector = Icons.Default.Add,
+                                    contentDescription = "Add",
+                                    tint = Color.Black,
+                                )
+                            }
+                        }
+
+                        Column(
+                            verticalArrangement = Arrangement.spacedBy(20.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .shadow(2.dp, RoundedCornerShape(20.dp))
+                                .padding(vertical = 20.dp, horizontal = 20.dp)
+                        ) {
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(text = "Amount",
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(text = "$585.00",
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
+
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(text = "Shipping",
+                                    fontWeight = FontWeight.Bold)
+                                Text(text = "-",
+                                    fontWeight = FontWeight.Bold)
+                            }
+
+                            HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 8.dp))
+
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Text(text = "Total",
+                                    fontWeight = FontWeight.Bold)
+                                Text(text = "-",
+                                    fontWeight = FontWeight.Bold)
+                            }
+                        }
                     }
                 }
             }
@@ -169,6 +278,33 @@ private fun SectionHeader(name: String, modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Medium,
         )
     }
+}
+
+@Composable
+fun InputCode(
+    value: String,
+    onValueChange: (String) -> Unit,
+    description: String,
+    modifier: Modifier = Modifier
+        .background(color = Color.White),
+) {
+    TextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        placeholder = {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(text = description)
+            }
+        },
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.colors(
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedIndicatorColor = Color.Transparent,
+            disabledIndicatorColor = Color.Transparent,
+        ),
+        modifier = modifier
+    )
 }
 
 @Preview
