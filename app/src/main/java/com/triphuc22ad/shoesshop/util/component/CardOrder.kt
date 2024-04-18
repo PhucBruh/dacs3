@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.cart.components
+package com.triphuc22ad.shoesshop.util.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -6,17 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DeleteOutline
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -31,13 +26,9 @@ import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.QuantityButton
-
 
 @Composable
-fun CartItem(
-    removable: Boolean = true,
-    onDelete: () -> Unit = {},
+fun CardOrder(
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -73,30 +64,13 @@ fun CartItem(
                 .padding(end = 20.dp)
                 .padding(vertical = 6.dp)
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
+
                 Text(
                     text = "Curry 6",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
-                if (removable) {
-                    IconButton(
-                        onClick = { onDelete() },
-                        modifier = Modifier.size(24.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Rounded.DeleteOutline,
-                            contentDescription = "",
-                            modifier = Modifier.fillMaxSize()
-                        )
-                    }
-                }
-            }
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -122,7 +96,15 @@ fun CartItem(
                     .fillMaxWidth()
             ) {
                 Text(text = "$105.00")
-                QuantityButton()
+
+                Box(
+                    modifier = Modifier
+                        .size(30.dp)
+                        .background(Color.Gray, CircleShape),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(text = "1")
+                }
             }
         }
     }
@@ -131,15 +113,8 @@ fun CartItem(
 
 @Preview
 @Composable
-fun CartItemPreview() {
+fun CardOrderPreview() {
     Dacs3shoesshopandroidTheme {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .background(BgColor)
-                .padding(16.dp)
-        ) {
-            CartItem(removable = false)
+            CardOrder()
         }
-    }
 }

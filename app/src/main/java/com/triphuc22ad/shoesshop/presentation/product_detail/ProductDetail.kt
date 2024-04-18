@@ -335,7 +335,6 @@ private fun DetailContainerHorizontal(
             fontSize = 18.sp,
             fontWeight = FontWeight.Medium,
         )
-
         content()
     }
 }
