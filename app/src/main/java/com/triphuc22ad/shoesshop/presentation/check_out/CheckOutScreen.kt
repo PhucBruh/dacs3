@@ -19,13 +19,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.automirrored.rounded.ArrowForwardIos
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowCircleDown
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -39,14 +35,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.triphuc22ad.shoesshop.presentation.check_out.components.CardAddress
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.CardOrder
-import com.triphuc22ad.shoesshop.util.component.CartAddress
+import com.triphuc22ad.shoesshop.presentation.check_out.components.CardOrder
 import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 
 @Composable
@@ -70,7 +65,7 @@ fun CheckOutScreen() {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     SectionHeader(name = "Shipping address")
 
-                    CartAddress()
+                    CardAddress()
 
                     HorizontalDivider(Modifier.padding(top = 8.dp))
                 }
