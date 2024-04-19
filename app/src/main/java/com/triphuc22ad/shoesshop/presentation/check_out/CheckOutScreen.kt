@@ -101,34 +101,32 @@ fun CheckOutScreen() {
                     SectionHeader(name = "Choose Shipping")
 
                     // Edit the column bellow to the component you want
+                    Row(
+                        horizontalArrangement = Arrangement.SpaceAround,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(2.dp, RoundedCornerShape(20.dp))
+                            .padding(vertical = 20.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.LocalShipping,
+                            contentDescription = "Rating",
+                            tint = Color.Black,
+                        )
 
-                        Row(
-                          horizontalArrangement = Arrangement.SpaceAround,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .shadow(2.dp, RoundedCornerShape(20.dp))
-                                .padding(vertical = 20.dp)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.LocalShipping,
-                                contentDescription = "Rating",
-                                tint = Color.Black,
-                            )
+                        Text(
+                            text = "Choose Shipping Type",
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Medium,
+                        )
 
-                            Text(
-                                text = "Choose Shipping Type",
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight.Medium,
+                        Icon(
+                            imageVector = Icons.Default.ArrowForwardIos,
+                            contentDescription = "Rating",
+                            tint = Color.Black,
+                        )
 
-                            )
-
-                            Icon(
-                                imageVector = Icons.Default.ArrowForwardIos,
-                                contentDescription = "Rating",
-                                tint = Color.Black,
-                            )
-
-                        }
+                    }
 
 
                     HorizontalDivider(Modifier.padding(top = 8.dp))
@@ -157,14 +155,14 @@ fun CheckOutScreen() {
                                 onValueChange = {},
                                 description = "Enter Promo Code",
 
-                            )
+                                )
 
                             Box(
                                 modifier = Modifier
                                     .size(50.dp)
                                     .background(Color.Gray, CircleShape),
                                 contentAlignment = Alignment.Center
-                            ){
+                            ) {
                                 Icon(
                                     imageVector = Icons.Default.Add,
                                     contentDescription = "Add",
@@ -185,10 +183,12 @@ fun CheckOutScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
-                                Text(text = "Amount",
+                                Text(
+                                    text = "Amount",
                                     fontWeight = FontWeight.Bold
                                 )
-                                Text(text = "$585.00",
+                                Text(
+                                    text = "$585.00",
                                     fontWeight = FontWeight.Bold
                                 )
                             }
@@ -198,10 +198,14 @@ fun CheckOutScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
-                                Text(text = "Shipping",
-                                    fontWeight = FontWeight.Bold)
-                                Text(text = "-",
-                                    fontWeight = FontWeight.Bold)
+                                Text(
+                                    text = "Shipping",
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "-",
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
 
                             HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 8.dp))
@@ -211,10 +215,14 @@ fun CheckOutScreen() {
                                 modifier = Modifier
                                     .fillMaxWidth()
                             ) {
-                                Text(text = "Total",
-                                    fontWeight = FontWeight.Bold)
-                                Text(text = "-",
-                                    fontWeight = FontWeight.Bold)
+                                Text(
+                                    text = "Total",
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "-",
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
                         }
                     }

@@ -1,6 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.product_detail
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -32,12 +31,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,7 +40,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.triphuc22ad.shoesshop.R
@@ -56,12 +48,21 @@ import com.triphuc22ad.shoesshop.presentation.product_detail.components.Expanded
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.TextCircleButton
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.PageIndicator
 import com.triphuc22ad.shoesshop.util.component.PagerIndicator
 import com.triphuc22ad.shoesshop.util.component.PriceBar
 import com.triphuc22ad.shoesshop.util.component.QuantityButton
 import kotlin.math.absoluteValue
 import kotlin.random.Random
+
+val listImgs = listOf(
+    R.drawable.kd_15,
+    R.drawable.curry_6,
+    R.drawable.kd_15,
+    R.drawable.curry_6,
+    R.drawable.kd_15,
+    R.drawable.curry_6,
+    R.drawable.kd_15,
+)
 
 @Composable
 fun ProductDetailScreen() {
@@ -81,16 +82,7 @@ fun ProductDetailScreen() {
                     .height(320.dp)
             ) {
                 ProductImagePager(
-                    images = listOf(
-                        R.drawable.curry_6,
-                        R.drawable.curry_6,
-                        R.drawable.kd_15,
-                        R.drawable.curry_6,
-                        R.drawable.kd_15,
-                        R.drawable.curry_6,
-                        R.drawable.kd_15,
-                        R.drawable.kd_15,
-                    ), modifier = Modifier.fillMaxSize()
+                    images = listImgs, modifier = Modifier.fillMaxSize()
                 )
 
                 Row(
@@ -225,8 +217,6 @@ fun ProductDetailScreen() {
 private fun ProductImagePager(
     images: List<Int>,
     modifier: Modifier = Modifier
-        .height(320.dp)
-        .fillMaxWidth()
 ) {
     val pagerState = rememberPagerState(pageCount = {
         images.size
@@ -235,6 +225,8 @@ private fun ProductImagePager(
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = modifier
+            .height(320.dp)
+            .fillMaxWidth()
             .background(BgColor)
     ) {
         HorizontalPager(state = pagerState) {
@@ -274,7 +266,7 @@ private fun ProductImagePager(
             ) {
                 Image(
                     painter = painterResource(images[it]),
-                    contentDescription = "giay",
+                    contentDescription = null,
                     modifier = Modifier
                         .background(BgColor)
                         .size(280.dp)
@@ -284,16 +276,13 @@ private fun ProductImagePager(
 
 
         Row(Modifier.padding(vertical = 16.dp)) {
-            PagerIndicator(
-                pagerState = pagerState,
-                indicatorCount = if (images.size > 6) 6 else images.size,
-                selectedColor = Color.Black,
-                defaultColor = Color.White,
-                defaultRadius = 8.dp,
-                selectedLength = 28.dp,
-                space = 6.dp,
-                animationDurationInMillis = 700,
-            )
+            if (images.size > 1) {
+                PagerIndicator(
+                    pagerState = pagerState,
+                    indicatorCount = if (images.size > 4) 4 else images.size,
+                    animationDurationInMillis = 500
+                )
+            }
         }
     }
 }
@@ -303,7 +292,7 @@ private fun ProductImagePager(
 private fun DetailContainerVertical(
     name: String,
     modifier: Modifier = Modifier,
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -323,7 +312,7 @@ private fun DetailContainerVertical(
 private fun DetailContainerHorizontal(
     name: String,
     modifier: Modifier = Modifier,
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
