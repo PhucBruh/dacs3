@@ -24,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,11 +48,13 @@ fun CardReviewItem(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White, RoundedCornerShape(32.dp))
+
     ) {
         Column(
             Modifier
                 .padding(vertical = 16.dp)
                 .padding(start = 15.dp)
+
         ) {
             Box(
                 contentAlignment = Alignment.Center,

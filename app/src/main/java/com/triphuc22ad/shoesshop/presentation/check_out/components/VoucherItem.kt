@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.AirplaneTicket
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -109,8 +110,7 @@ fun VoucherItem(
             }
         }
 
-        RadioButton(selected = selected, onClick = { setSelected(!selected) },)
-
+        RadioButton(selected = selected, onClick = { setSelected(!selected) })
     }
 }
 
