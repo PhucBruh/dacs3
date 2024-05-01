@@ -97,7 +97,7 @@ fun ShippingItem(
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp)
 
-        RadioButton(selected = selected, onClick = { setSelected(!selected) },)
+        RadioButton(selected = selected, onClick = { setSelected(!selected)})
 
     }
 }

@@ -17,6 +17,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
+
 }
 
 rootProject.name = "dacs3-shoesshop-android"
