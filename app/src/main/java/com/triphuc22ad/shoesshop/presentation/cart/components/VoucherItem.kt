@@ -1,41 +1,46 @@
-package com.triphuc22ad.shoesshop.presentation.check_out.components
+package com.triphuc22ad.shoesshop.presentation.cart.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BorderColor
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Checkbox
+import androidx.compose.material.icons.filled.AirplaneTicket
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 
 @Composable
-fun CardAddress(
-    update: Boolean = true,
-    onUpdate: () -> Unit = {},
+fun VoucherItem(
     modifier: Modifier = Modifier
 ) {
+
+    val (selected, setSelected) = remember { mutableStateOf(false) }
+
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -44,7 +49,7 @@ fun CardAddress(
             .background(BgColor, RoundedCornerShape(32.dp))
             .height(95.dp)
     ) {
-        Row {
+        Row() {
             Column(
                 Modifier
                     .padding(vertical = 16.dp)
@@ -55,8 +60,15 @@ fun CardAddress(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(60.dp)
-                        .background(Color.DarkGray, RoundedCornerShape(50.dp))
                 ) {
+
+                    Image(
+                        painter = painterResource(id = R.drawable.bg_voucher),
+                        contentDescription = "Background Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(80.dp)
+                            .clip(RoundedCornerShape(16.dp)))
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -64,7 +76,7 @@ fun CardAddress(
                             .background(Color.White, RoundedCornerShape(50.dp))
                     ) {
                         Icon(
-                            imageVector = Icons.Default.LocationOn,
+                            imageVector = Icons.Default.AirplaneTicket,
                             contentDescription = "Rating",
                             tint = Color.Black,
                         )
@@ -82,13 +94,13 @@ fun CardAddress(
             ) {
 
                 Text(
-                    text = "Home",
+                    text = "Special 25% Off",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
 
                 Text(
-                    text = "61480 Sunbrook Park ...",
+                    text = "61480 Sunbrook Park, PC 5679",
                     maxLines = 2,
                     fontWeight = FontWeight.Light,
                     fontSize = 14.sp
@@ -96,31 +108,15 @@ fun CardAddress(
             }
         }
 
+        RadioButton(selected = selected, onClick = { setSelected(!selected) },)
 
-        if (update) {
-            Box(
-                modifier = Modifier
-                    .padding(16.dp)
-            ) {
-                IconButton(
-                    onClick = { onUpdate() },
-                    modifier = Modifier.size(24.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.BorderColor,
-                        contentDescription = "",
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
-        }
     }
 }
 
 
 @Preview
 @Composable
-fun CardItemPreview() {
+fun VoucherItemPreview() {
     Dacs3shoesshopandroidTheme {
         Row(
             Modifier
@@ -128,7 +124,7 @@ fun CardItemPreview() {
                 .background(Color.White)
                 .padding(16.dp)
         ) {
-            CardAddress(update = true)
+            VoucherItem()
         }
     }
 }

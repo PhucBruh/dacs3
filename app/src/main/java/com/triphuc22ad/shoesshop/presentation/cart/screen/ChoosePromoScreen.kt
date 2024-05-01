@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.check_out
+package com.triphuc22ad.shoesshop.presentation.cart.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -13,13 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AirplaneTicket
-import androidx.compose.material.icons.filled.LocalShipping
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,12 +25,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.presentation.check_out.components.VoucherItem
+import com.triphuc22ad.shoesshop.presentation.cart.components.VoucherItem
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 
 @Composable
-fun AddPromoScreen() {
+fun ChoosePromoScreen() {
 
     Box(contentAlignment = Alignment.BottomCenter) {
         LazyColumn(
@@ -102,7 +97,7 @@ fun AddPromoScreen() {
 fun AddPromoPrivew() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            AddPromoScreen()
+            ChoosePromoScreen()
         }
     }
 }

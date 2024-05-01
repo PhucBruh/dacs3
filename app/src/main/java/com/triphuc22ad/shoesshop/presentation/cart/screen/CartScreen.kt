@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.check_out
+package com.triphuc22ad.shoesshop.presentation.cart.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -15,20 +15,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -37,56 +36,45 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.presentation.check_out.components.CardAddress
-import com.triphuc22ad.shoesshop.presentation.check_out.components.CardAddressItem
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.triphuc22ad.shoesshop.presentation.cart.CartAction
+import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
+import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.presentation.check_out.components.CardOrder
+import com.triphuc22ad.shoesshop.util.component.OptionSwipeableContainer
 import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 
 @Composable
-fun ShippingAddressScreen() {
+fun CartScreen(
+    viewModel: CartViewModel = hiltViewModel()
+) {
+    val state by viewModel.state.collectAsState()
 
     Box(contentAlignment = Alignment.BottomCenter) {
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
+                .padding(top = 12.dp)
                 .padding(bottom = 100.dp)
         ) {
-
-            item {
-                TopTitleBar(name = "Shipping Address", modifier = Modifier.padding(top = 16.dp))
-            }
-
-            items(5) {
-                Row(Modifier.padding(vertical = 8.dp)) {
-                    CardAddressItem(
+            TopTitleBar(name = "My Cart", leftIconAction = Icons.Default.ShoppingBag)
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                items(state.items) {
+                    CartItem(
+                        item = it,
+                        onDelete = { viewModel.dispatch(CartAction.ToggleDelete(it)) },
                         modifier = Modifier
                             .shadow(2.dp, RoundedCornerShape(32.dp))
+                            .padding(top = 4.dp)
+                            .padding(bottom = 4.dp),
                     )
                 }
             }
-
-            item {
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black
-                    ),
-                    onClick = {},
-                    modifier = Modifier
-                        .size(height = 52.dp, width = 450.dp)
-
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically)
-                    {
-                        Text(text = "Add New Address",
-                            fontSize = 17.sp)
-                    }
-                }
-            }
-
         }
 
         Row(
@@ -102,34 +90,59 @@ fun ShippingAddressScreen() {
                 )
                 .padding(16.dp)
         ) {
+            Column {
+                Text(text = "Total Price", fontSize = 12.sp, fontWeight = FontWeight.Light)
+                Text(text = "$555.555", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            }
             Box {
                 Button(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black
                     ),
-                    onClick = {},
-                    modifier = Modifier
-                        .size(height = 52.dp, width = 450.dp),
+                    onClick = { /*TODO*/ },
+                    modifier = Modifier.size(height = 52.dp, width = 200.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically)
-                    {
-                        Text(text = "Apply", fontSize = 17.sp)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(text = "Checkout", fontSize = 17.sp)
+                        Spacer(modifier = Modifier.width(4.dp))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
+                            contentDescription = null,
+                            modifier = Modifier.size(28.dp)
+                        )
                     }
                 }
             }
+        }
 
-
+        OptionSwipeableContainer(
+            active = state.deleteOption != null,
+            name = "Remove From Cart ?",
+            onSwipeDown = { viewModel.dispatch(CartAction.ToggleDelete()) },
+            firstActionName = "Cancel",
+            onFirstAction = { viewModel.dispatch(CartAction.ToggleDelete()) },
+            secondActionName = "Yes, Remove",
+            onSecondAction = { /*TODO*/ },
+        ) {
+            state.deleteOption?.let {
+                CartItem(
+                    item = it,
+                    removable = false,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .shadow(2.dp, RoundedCornerShape(32.dp)),
+                )
+            }
         }
     }
 }
 
-
-@Preview
+@Preview(showSystemUi = true)
 @Composable
-fun PreviewShippingAddress() {
+fun CartScreenPreview() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            ShippingAddressScreen()
+            CartScreen()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.check_out.components
+package com.triphuc22ad.shoesshop.presentation.cart.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
@@ -22,24 +21,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.PointerIcon
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 
 @Composable
-fun ShippingItem(
-    icon: ImageVector,
-    description: String,
-    title: String,
-    price: String,
+fun CardAddressItem(
     modifier: Modifier = Modifier
 ) {
 
@@ -53,6 +44,7 @@ fun ShippingItem(
             .background(BgColor, RoundedCornerShape(32.dp))
             .height(95.dp)
     ) {
+        Row() {
             Column(
                 Modifier
                     .padding(vertical = 16.dp)
@@ -63,14 +55,20 @@ fun ShippingItem(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(60.dp)
-                        .background(Color.White, RoundedCornerShape(50.dp))
+                        .background(Color.DarkGray, RoundedCornerShape(50.dp))
                 ) {
-
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .size(40.dp)
+                            .background(Color.White, RoundedCornerShape(50.dp))
+                    ) {
                         Icon(
-                            imageVector = icon, contentDescription = "",
+                            imageVector = Icons.Default.LocationOn,
+                            contentDescription = "Rating",
                             tint = Color.Black,
                         )
-
+                    }
 
                 }
             }
@@ -84,22 +82,19 @@ fun ShippingItem(
             ) {
 
                 Text(
-                    text = title,
+                    text = "Home",
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
 
                 Text(
-                    text = description,
+                    text = "61480 Sunbrook Park, PC 5679",
                     maxLines = 2,
                     fontWeight = FontWeight.Light,
                     fontSize = 14.sp
                 )
             }
-
-        Text(text = price,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp)
+        }
 
         RadioButton(selected = selected, onClick = { setSelected(!selected) },)
 
@@ -109,7 +104,7 @@ fun ShippingItem(
 
 @Preview
 @Composable
-fun ShippingItemPreview() {
+fun CartItemPreview() {
     Dacs3shoesshopandroidTheme {
         Row(
             Modifier
@@ -117,7 +112,7 @@ fun ShippingItemPreview() {
                 .background(Color.White)
                 .padding(16.dp)
         ) {
-            ShippingItem(icon = Icons.Default.LocalShipping, title = "home", description = "fasgfas vrer tsvdag", price = "188$")
+            CardAddressItem()
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.check_out
+package com.triphuc22ad.shoesshop.presentation.cart.screen
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -39,9 +39,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.presentation.check_out.components.CardAddress
+import com.triphuc22ad.shoesshop.presentation.cart.components.CardAddress
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.presentation.check_out.components.CardOrder
+import com.triphuc22ad.shoesshop.presentation.cart.components.CardOrder
 import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 
 @Composable
@@ -312,7 +312,7 @@ fun InputCode(
 
 @Preview
 @Composable
-fun PreviewCheckOut() {
+fun CheckOutScreenPreview() {
     Dacs3shoesshopandroidTheme {
         Surface {
             CheckOutScreen()

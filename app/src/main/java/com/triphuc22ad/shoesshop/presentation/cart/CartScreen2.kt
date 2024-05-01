@@ -17,10 +17,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowRight
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.filled.ArrowRight
-import androidx.compose.material.icons.filled.ArrowRightAlt
 import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -40,15 +37,26 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.CartItem
 import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 import com.triphuc22ad.shoesshop.util.component.OptionSwipeableContainer
 import com.triphuc22ad.shoesshop.util.component.TopTitleBar
 
+
 @Composable
-fun CartScreen() {
+fun CartScreen2() {
     var isRemoveActivated by remember { mutableStateOf(false) }
+
+    val cartItem = CartItem(
+        name = "Curry 6",
+        price = 200,
+        quantity = 4,
+        color = Pair("Black", Color.Black),
+        imageId = R.drawable.curry_6,
+        size = 42
+    )
 
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(
@@ -66,11 +74,12 @@ fun CartScreen() {
             ) {
                 items(10) {
                     CartItem(
+                        item = cartItem,
                         onDelete = { isRemoveActivated = true },
                         modifier = Modifier
                             .shadow(2.dp, RoundedCornerShape(32.dp))
                             .padding(top = 4.dp)
-                            .padding(bottom = 4.dp)
+                            .padding(bottom = 4.dp),
                     )
                 }
             }
@@ -124,10 +133,11 @@ fun CartScreen() {
             onSecondAction = { /*TODO*/ },
         ) {
             CartItem(
+                item = cartItem,
                 removable = false,
                 modifier = Modifier
                     .padding(16.dp)
-                    .shadow(2.dp, RoundedCornerShape(32.dp))
+                    .shadow(2.dp, RoundedCornerShape(32.dp)),
             )
         }
     }
@@ -135,10 +145,10 @@ fun CartScreen() {
 
 @Preview(showSystemUi = true)
 @Composable
-fun CartScreenPreview() {
+fun CartScreen2Preview() {
     Dacs3shoesshopandroidTheme {
         Surface {
-            CartScreen()
+            CartScreen2()
         }
     }
 }

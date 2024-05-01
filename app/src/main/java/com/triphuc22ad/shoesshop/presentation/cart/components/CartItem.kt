@@ -29,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.CartItem
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 import com.triphuc22ad.shoesshop.util.component.QuantityButton
@@ -36,9 +37,12 @@ import com.triphuc22ad.shoesshop.util.component.QuantityButton
 
 @Composable
 fun CartItem(
+    item: CartItem,
     removable: Boolean = true,
     onDelete: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onIncrease: (quantity: Int) -> Unit = {},
+    onDecrease: (quantity: Int) -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -59,7 +63,7 @@ fun CartItem(
                     .background(BgColor, RoundedCornerShape(32.dp))
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.curry_6),
+                    painter = painterResource(id = item.imageId),
                     contentDescription = null,
                     modifier = Modifier
                         .size(100.dp)
@@ -80,7 +84,7 @@ fun CartItem(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Curry 6",
+                    text = item.name,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
@@ -106,14 +110,14 @@ fun CartItem(
                 Box(
                     modifier = Modifier
                         .size(16.dp)
-                        .background(Color.Black, CircleShape)
+                        .background(item.color.second, CircleShape)
                 )
-                Text(text = "Black", fontWeight = FontWeight.Light, fontSize = 14.sp)
+                Text(text = item.color.first, fontWeight = FontWeight.Light, fontSize = 14.sp)
                 VerticalDivider(
                     color = Color.Black,
                     modifier = Modifier.height(12.dp)
                 )
-                Text(text = "Size = 42", fontWeight = FontWeight.Light, fontSize = 14.sp)
+                Text(text = "Size = ${item.size}", fontWeight = FontWeight.Light, fontSize = 14.sp)
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -121,8 +125,12 @@ fun CartItem(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "$105.00")
-                QuantityButton()
+                Text(text = "$${item.price}")
+                QuantityButton(
+                    quantity = item.quantity,
+                    onIncrease = { onIncrease(item.quantity) },
+                    onDecrease = { onDecrease(item.quantity) },
+                )
             }
         }
     }
@@ -131,7 +139,7 @@ fun CartItem(
 
 @Preview
 @Composable
-fun CartItemPreview() {
+fun CartItem2Preview() {
     Dacs3shoesshopandroidTheme {
         Row(
             Modifier
@@ -139,7 +147,15 @@ fun CartItemPreview() {
                 .background(BgColor)
                 .padding(16.dp)
         ) {
-            CartItem(removable = false)
+            val cartItem = CartItem(
+                name = "Curry 6",
+                price = 105,
+                quantity = 4,
+                color = Pair("Black", Color.Black),
+                imageId = R.drawable.curry_6,
+                size = 42
+            )
+            CartItem(item = cartItem, removable = false)
         }
     }
 }

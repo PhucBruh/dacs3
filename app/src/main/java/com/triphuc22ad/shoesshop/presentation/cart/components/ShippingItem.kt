@@ -1,6 +1,5 @@
-package com.triphuc22ad.shoesshop.presentation.check_out.components
+package com.triphuc22ad.shoesshop.presentation.cart.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,8 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AirplaneTicket
-import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material3.Icon
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
@@ -22,21 +20,22 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 
 @Composable
-fun VoucherItem(
+fun ShippingItem(
+    icon: ImageVector,
+    description: String,
+    title: String,
+    price: String,
     modifier: Modifier = Modifier
 ) {
 
@@ -50,7 +49,6 @@ fun VoucherItem(
             .background(BgColor, RoundedCornerShape(32.dp))
             .height(95.dp)
     ) {
-        Row() {
             Column(
                 Modifier
                     .padding(vertical = 16.dp)
@@ -61,27 +59,14 @@ fun VoucherItem(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .size(60.dp)
+                        .background(Color.White, RoundedCornerShape(50.dp))
                 ) {
 
-                    Image(
-                        painter = painterResource(id = R.drawable.bg_voucher),
-                        contentDescription = "Background Image",
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .size(80.dp)
-                            .clip(RoundedCornerShape(16.dp)))
-                    Box(
-                        contentAlignment = Alignment.Center,
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(Color.White, RoundedCornerShape(50.dp))
-                    ) {
                         Icon(
-                            imageVector = Icons.Default.AirplaneTicket,
-                            contentDescription = "Rating",
+                            imageVector = icon, contentDescription = "",
                             tint = Color.Black,
                         )
-                    }
+
 
                 }
             }
@@ -95,19 +80,22 @@ fun VoucherItem(
             ) {
 
                 Text(
-                    text = "Special 25% Off",
+                    text = title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
 
                 Text(
-                    text = "61480 Sunbrook Park, PC 5679",
+                    text = description,
                     maxLines = 2,
                     fontWeight = FontWeight.Light,
                     fontSize = 14.sp
                 )
             }
-        }
+
+        Text(text = price,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp)
 
         RadioButton(selected = selected, onClick = { setSelected(!selected) },)
 
@@ -117,7 +105,7 @@ fun VoucherItem(
 
 @Preview
 @Composable
-fun VoucherItemPreview() {
+fun ShippingItemPreview() {
     Dacs3shoesshopandroidTheme {
         Row(
             Modifier
@@ -125,7 +113,7 @@ fun VoucherItemPreview() {
                 .background(Color.White)
                 .padding(16.dp)
         ) {
-            VoucherItem()
+            ShippingItem(icon = Icons.Default.LocalShipping, title = "home", description = "fasgfas vrer tsvdag", price = "188$")
         }
     }
 }

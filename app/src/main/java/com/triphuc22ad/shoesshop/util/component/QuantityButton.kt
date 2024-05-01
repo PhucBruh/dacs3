@@ -29,6 +29,9 @@ import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
 
 @Composable
 fun QuantityButton(
+    quantity: Int = 0,
+    onIncrease: (quantity: Int) -> Unit = {},
+    onDecrease: (quantity: Int) -> Unit = {},
     size: Dp = 32.dp,
 ) {
     Row(
@@ -38,27 +41,31 @@ fun QuantityButton(
             .background(BgColor, RoundedCornerShape(32.dp))
             .height(size)
     ) {
-        Box(
-            contentAlignment = Alignment.Center, modifier = Modifier
+        Box(contentAlignment = Alignment.Center,
+            modifier = Modifier
                 .size(size)
                 .clip(CircleShape)
-                .clickable { }
-        ) {
+                .clickable { onIncrease(quantity) }) {
             Icon(
-                imageVector = Icons.Default.Remove, contentDescription = null,
+                imageVector = Icons.Default.Remove,
+                contentDescription = null,
                 modifier = Modifier.size(size / 2)
             )
         }
 
-        Text(text = "1", fontSize = (size.value / 2).sp, textAlign = TextAlign.Center)
-        Box(
-            contentAlignment = Alignment.Center, modifier = Modifier
+        Text(
+            text = quantity.toString(),
+            fontSize = (size.value / 2).sp,
+            textAlign = TextAlign.Center
+        )
+        Box(contentAlignment = Alignment.Center,
+            modifier = Modifier
                 .size(size)
                 .clip(CircleShape)
-                .clickable { }
-        ) {
+                .clickable { onDecrease(quantity) }) {
             Icon(
-                imageVector = Icons.Default.Add, contentDescription = null,
+                imageVector = Icons.Default.Add,
+                contentDescription = null,
                 modifier = Modifier.size(size / 2)
             )
         }

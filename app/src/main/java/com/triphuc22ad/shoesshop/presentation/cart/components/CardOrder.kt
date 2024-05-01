@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.check_out.components
+package com.triphuc22ad.shoesshop.presentation.cart.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
