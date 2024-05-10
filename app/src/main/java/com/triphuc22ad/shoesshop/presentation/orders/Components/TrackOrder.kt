@@ -1,17 +1,21 @@
 package com.triphuc22ad.shoesshop.presentation.orders.Components
 
 
+import android.graphics.DashPathEffect
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessAlarm
@@ -36,6 +40,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -117,16 +123,271 @@ fun TrackOrderScreen(){
 
         HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 8.dp))
 
-        Column {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
             Text(
                 text = "Order Status Details",
                 fontSize = 20.sp,
-                fontWeight = FontWeight.Medium,
+                fontWeight = FontWeight.Bold,
             )
+
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceAround,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+
+                item {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.Black, CircleShape)
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .background(Color.White, CircleShape)
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Order In Transit - Dec 17",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Text(
+                                text = "32 manchester Ave. Ringgold. GA 30736",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                        Text(
+                            text = "15:20 PM",
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    DashedVerticalDivider()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.Black, CircleShape)
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .background(Color.White, CircleShape)
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Order In Transit - Dec 17",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Text(
+                                text = "32 manchester Ave. Ringgold. GA 30736",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                        Text(
+                            text = "15:20 PM",
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    DashedVerticalDivider()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.Black, CircleShape)
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .background(Color.White, CircleShape)
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Order In Transit - Dec 17",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Text(
+                                text = "32 manchester Ave. Ringgold. GA 30736",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                        Text(
+                            text = "15:20 PM",
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    DashedVerticalDivider()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.Black, CircleShape)
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .background(Color.White, CircleShape)
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Order In Transit - Dec 17",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Text(
+                                text = "32 manchester Ave. Ringgold. GA 30736",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                        Text(
+                            text = "15:20 PM",
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    DashedVerticalDivider()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.Black, CircleShape)
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .background(Color.White, CircleShape)
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Order In Transit - Dec 17",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Text(
+                                text = "32 manchester Ave. Ringgold. GA 30736",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                        Text(
+                            text = "15:20 PM",
+                            fontSize = 12.sp
+                        )
+                    }
+
+                    DashedVerticalDivider()
+
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(10.dp)
+                    ){
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(30.dp)
+                                .background(Color.Black, CircleShape)
+                        ){
+                            Box(
+                                modifier = Modifier
+                                    .size(15.dp)
+                                    .background(Color.White, CircleShape)
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = "Order In Transit - Dec 17",
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                            )
+                            Text(
+                                text = "32 manchester Ave. Ringgold. GA 30736",
+                                fontSize = 13.sp,
+                                fontWeight = FontWeight.Normal,
+                            )
+                        }
+
+                        Text(
+                            text = "15:20 PM",
+                            fontSize = 12.sp
+                        )
+                    }
+                }
+
+            }
         }
 
     }
 
+}
+
+@Composable
+fun DashedVerticalDivider(){
+    Canvas(modifier = Modifier.height(30.dp)) {
+        val startX = -450f
+        val endY =  size.height
+
+        drawLine(
+            brush = Brush.verticalGradient(listOf(Color.Black, Color.Transparent)),
+            start = Offset(startX, 0f),
+            end = Offset(startX, endY),
+            strokeWidth = 2.dp.toPx(),
+            pathEffect = PathEffect.dashPathEffect(floatArrayOf(20f, 30f), 0f)// Độ rộng và khoảng cách giữa các đoạn nét đứt
+        )
+    }
 }
 
 @Composable
