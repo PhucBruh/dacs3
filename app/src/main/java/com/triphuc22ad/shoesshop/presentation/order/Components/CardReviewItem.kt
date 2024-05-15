@@ -1,31 +1,22 @@
-package com.triphuc22ad.shoesshop.presentation.orders.Components
-
+package com.triphuc22ad.shoesshop.presentation.order.Components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.DeleteOutline
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -35,15 +26,12 @@ import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.QuantityButton
 
 
 @Composable
-fun CardOrderItem(
+fun CardReviewItem(
     modifier: Modifier = Modifier,
-    onClick :  () -> Unit,
     status : String,
-    action: String
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -51,12 +39,13 @@ fun CardOrderItem(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White, RoundedCornerShape(32.dp))
+
     ) {
         Column(
             Modifier
                 .padding(vertical = 16.dp)
                 .padding(start = 15.dp)
-                .shadow(2.dp, RoundedCornerShape(32.dp))
+
         ) {
             Box(
                 contentAlignment = Alignment.Center,
@@ -134,15 +123,6 @@ fun CardOrderItem(
             ) {
                 Text(text = "$105.00")
 
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .background(BgColor, RoundedCornerShape(32.dp))
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
-                        .clickable{onClick()}
-                ) {
-                    Text(text = action)
-                }
             }
         }
     }
@@ -151,7 +131,7 @@ fun CardOrderItem(
 
 @Preview
 @Composable
-fun CartItemPreview() {
+fun CardReviewItemPreview() {
     Dacs3shoesshopandroidTheme {
         Row(
             Modifier
@@ -159,7 +139,7 @@ fun CartItemPreview() {
                 .background(BgColor)
                 .padding(16.dp)
         ) {
-            CardOrderItem(status = "complete", action = "track order" ,onClick = {})
+            CardReviewItem(status = "complete",)
         }
     }
 }

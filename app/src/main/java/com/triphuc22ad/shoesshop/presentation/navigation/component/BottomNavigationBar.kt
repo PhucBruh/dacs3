@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.navigation
+package com.triphuc22ad.shoesshop.presentation.navigation.component
 
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.runtime.Composable

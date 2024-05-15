@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.login;
+package com.triphuc22ad.shoesshop.presentation.signup;
 
 
 import androidx.compose.foundation.background

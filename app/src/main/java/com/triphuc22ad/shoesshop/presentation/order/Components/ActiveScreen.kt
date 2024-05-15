@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.orders.Components
+package com.triphuc22ad.shoesshop.presentation.order.Components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

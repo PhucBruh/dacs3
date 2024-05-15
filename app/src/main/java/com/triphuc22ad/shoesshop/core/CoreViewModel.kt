@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 abstract class CoreViewModel<STATE, EFFECT, ACTION, ENVIRONMENT>(
     initialState: STATE,
-    private val environment: ENVIRONMENT
+    private val environment: ENVIRONMENT,
 ) : ViewModel() {
     private val _effect = MutableStateFlow<EFFECT?>(null)
     val effect: StateFlow<EFFECT?> = _effect

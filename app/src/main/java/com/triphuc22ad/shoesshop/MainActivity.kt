@@ -12,7 +12,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             Dacs3shoesshopandroidTheme {
-                // A surface container using the 'background' color from the theme
                 ProductDetailScreen()
             }
         }
