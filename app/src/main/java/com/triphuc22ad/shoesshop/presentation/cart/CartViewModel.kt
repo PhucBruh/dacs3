@@ -5,18 +5,18 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor() : CoreViewModel<CartUiState, Unit, CartAction, Unit>(
+class CartViewModel @Inject constructor() : CoreViewModel<CartUiState, Unit, CartEvent, Unit>(
     initialState = CartUiState(),
     environment = Unit
 ) {
 
-    override fun dispatch(action: CartAction) {
+    override fun dispatch(action: CartEvent) {
         when (action) {
-            CartAction.CheckOut -> TODO()
-            is CartAction.DecreaseQuantity -> TODO()
-            is CartAction.DeleteItem -> TODO()
-            is CartAction.IncreaseQuantity -> TODO()
-            is CartAction.ToggleDelete -> {
+            CartEvent.CheckOut -> TODO()
+            is CartEvent.DecreaseQuantity -> TODO()
+            is CartEvent.DeleteItem -> TODO()
+            is CartEvent.IncreaseQuantity -> TODO()
+            is CartEvent.ToggleDelete -> {
                 setState { copy(deleteOption = action.item) }
             }
         }

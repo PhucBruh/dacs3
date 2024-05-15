@@ -1,4 +1,4 @@
 package com.triphuc22ad.shoesshop.presentation.order
 
-class OrderAction {
+class OrderUiState {
 }

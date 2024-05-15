@@ -37,7 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.triphuc22ad.shoesshop.presentation.cart.CartAction
+import com.triphuc22ad.shoesshop.presentation.cart.CartEvent
 import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
 import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
@@ -67,7 +67,7 @@ fun CartScreen(
                 items(state.items) {
                     CartItem(
                         item = it,
-                        onDelete = { viewModel.dispatch(CartAction.ToggleDelete(it)) },
+                        onDelete = { viewModel.dispatch(CartEvent.ToggleDelete(it)) },
                         modifier = Modifier
                             .shadow(2.dp, RoundedCornerShape(32.dp))
                             .padding(top = 4.dp)
@@ -118,9 +118,9 @@ fun CartScreen(
         OptionSwipeableContainer(
             active = state.deleteOption != null,
             name = "Remove From Cart ?",
-            onSwipeDown = { viewModel.dispatch(CartAction.ToggleDelete()) },
+            onSwipeDown = { viewModel.dispatch(CartEvent.ToggleDelete()) },
             firstActionName = "Cancel",
-            onFirstAction = { viewModel.dispatch(CartAction.ToggleDelete()) },
+            onFirstAction = { viewModel.dispatch(CartEvent.ToggleDelete()) },
             secondActionName = "Yes, Remove",
             onSecondAction = { /*TODO*/ },
         ) {
