@@ -40,9 +40,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.presentation.cart.components.CardAddress
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.cart.components.CardOrder
-import com.triphuc22ad.shoesshop.util.component.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun CheckOutScreen() {
@@ -313,7 +313,7 @@ fun InputCode(
 @Preview
 @Composable
 fun CheckOutScreenPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             CheckOutScreen()
         }

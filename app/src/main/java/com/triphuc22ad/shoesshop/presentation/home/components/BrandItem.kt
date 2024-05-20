@@ -1,7 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.home.components
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -14,29 +12,23 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.Brand
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 
 @Composable
 fun BrandItem(
-    name: String,
-    @DrawableRes logo: Int,
-    onClick: () -> Unit
+    brand: Brand,
+    onClick: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,8 +43,8 @@ fun BrandItem(
                 .clip(CircleShape)
                 .clickable { onClick() }
         ) {
-            Image(
-                painter = painterResource(id = logo),
+            AsyncImage(
+                model = brand.img_url, // Replace with your actual image URL
                 contentDescription = "",
                 modifier = Modifier
                     .size(50.dp)
@@ -61,38 +53,8 @@ fun BrandItem(
         }
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = name,
+            text = brand.name,
             fontSize = 18.sp,
-            fontWeight = FontWeight.Medium,
-            modifier = Modifier.padding(top = 8.dp)
-        )
-    }
-}
-
-
-@Composable
-fun BrandItem(
-    name: String,
-    logoUrl: String,
-    onClick: () -> Unit
-) {
-    val scope = rememberCoroutineScope()
-
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(horizontal = 4.dp, vertical = 4.dp)
-    ) {
-        AsyncImage(
-            model = ImageRequest.Builder(LocalContext.current)
-                .data(logoUrl)
-                .build(),
-            contentDescription = "nike logo",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier.size(120.dp)
-        )
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(
-            text = name,
             fontWeight = FontWeight.Medium,
             modifier = Modifier.padding(top = 8.dp)
         )
@@ -102,9 +64,16 @@ fun BrandItem(
 @Preview
 @Composable
 fun BrandItemPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
-            BrandItem(name = "nike", logo = R.drawable.nike_logo, onClick = {})
+            BrandItem(
+                brand = Brand(
+                    id = null,
+                    name = "",
+                    img_url = "https://image.similarpng.com/very-thumbnail/2021/12/Nike-logo-icon-on-transparent-background-PNG.png"
+                ),
+                onClick = {}
+            )
         }
     }
 }

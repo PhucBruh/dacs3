@@ -47,8 +47,8 @@ import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.profile.components.ProfileOption
 import com.triphuc22ad.shoesshop.presentation.profile.components.ProfileOptionContainer
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.TopTitleBar
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun ProfileScreen() {
@@ -191,7 +191,7 @@ data class ProfileOption(
 @Preview
 @Composable
 fun ProfileScreenPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             ProfileScreen()
         }

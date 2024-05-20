@@ -15,9 +15,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.util.component.FilterOption
-import com.triphuc22ad.shoesshop.util.component.ProductCard
-import com.triphuc22ad.shoesshop.util.component.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.components.FilterOption
+import com.triphuc22ad.shoesshop.presentation.components.ProductCard
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun WishListScreen() {

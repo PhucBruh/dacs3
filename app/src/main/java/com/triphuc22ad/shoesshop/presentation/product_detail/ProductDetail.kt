@@ -47,10 +47,10 @@ import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCir
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.TextCircleButton
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.PagerIndicator
-import com.triphuc22ad.shoesshop.util.component.PriceBar
-import com.triphuc22ad.shoesshop.util.component.QuantityButton
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.presentation.components.PagerIndicator
+import com.triphuc22ad.shoesshop.presentation.components.PriceBar
+import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
 import kotlin.math.absoluteValue
 import kotlin.random.Random
 
@@ -331,7 +331,7 @@ private fun DetailContainerHorizontal(
 @Preview
 @Composable
 fun PreviewProductDetailScreen() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             ProductDetailScreen()
         }

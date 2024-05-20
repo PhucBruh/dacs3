@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 
 @Composable
@@ -145,7 +145,7 @@ fun CardOrderItem(
 @Preview
 @Composable
 fun CartItemPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Row(
             Modifier
                 .fillMaxWidth()

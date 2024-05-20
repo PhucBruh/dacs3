@@ -40,9 +40,9 @@ import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.CartItem
 import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.OptionSwipeableContainer
-import com.triphuc22ad.shoesshop.util.component.TopTitleBar
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 
 @Composable
@@ -146,7 +146,7 @@ fun CartScreen2() {
 @Preview(showSystemUi = true)
 @Composable
 fun CartScreen2Preview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             CartScreen2()
         }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,19 +22,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.home.components.BrandItem
-import com.triphuc22ad.shoesshop.util.component.FilterOption
-import com.triphuc22ad.shoesshop.util.component.ProductCard
-import com.triphuc22ad.shoesshop.util.component.ProductSearchBar
-import com.triphuc22ad.shoesshop.util.component.SectionHeader
+import com.triphuc22ad.shoesshop.presentation.components.FilterOption
+import com.triphuc22ad.shoesshop.presentation.components.ProductCard
+import com.triphuc22ad.shoesshop.presentation.components.ProductSearchBar
+import com.triphuc22ad.shoesshop.presentation.components.SectionHeader
 import com.triphuc22ad.shoesshop.presentation.home.components.SpecialOffer
 import com.triphuc22ad.shoesshop.presentation.home.components.UserBar
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    viewModel: HomeViewModel = hiltViewModel(),
+) {
+    val state by viewModel.state.collectAsState()
     Scaffold(
         topBar = {
             var isActivated by remember { mutableStateOf(false) }
@@ -87,10 +92,8 @@ fun HomeScreen() {
             }
 
             val listBrand = List(8) { "Brand$it" }
-            items(items = listBrand, span = { GridItemSpan(3) }) {
-                Column {
-                }
-                BrandItem(name = it, logo = R.drawable.nike_logo, onClick = {})
+            items(items = state.listBrand, span = { GridItemSpan(3) }) {
+                BrandItem(brand = it, onClick = {})
             }
 
             item(span = { GridItemSpan(12) }) {
@@ -99,14 +102,6 @@ fun HomeScreen() {
                     actionName = "See All",
                     onClick = { /*TODO*/ }
                 )
-            }
-
-            item(span = { GridItemSpan(12) }) {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(10) {
-                        FilterOption(text = "Filter$it", onClick = {})
-                    }
-                }
             }
 
             items(count = 10, span = { GridItemSpan(6) }) {
@@ -119,7 +114,7 @@ fun HomeScreen() {
 @Preview
 @Composable
 fun HomeScreenPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             HomeScreen()
         }

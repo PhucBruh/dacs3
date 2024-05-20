@@ -40,13 +40,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.CartEvent
 import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.OptionSwipeableContainer
-import com.triphuc22ad.shoesshop.util.component.TopTitleBar
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun CartScreen(
-    viewModel: CartViewModel = hiltViewModel()
+    viewModel: CartViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -67,7 +67,7 @@ fun CartScreen(
                 items(state.items) {
                     CartItem(
                         item = it,
-                        onDelete = { viewModel.dispatch(CartEvent.ToggleDelete(it)) },
+                        onDelete = { viewModel.onEvent(CartEvent.ToggleDelete(it)) },
                         modifier = Modifier
                             .shadow(2.dp, RoundedCornerShape(32.dp))
                             .padding(top = 4.dp)
@@ -118,9 +118,9 @@ fun CartScreen(
         OptionSwipeableContainer(
             active = state.deleteOption != null,
             name = "Remove From Cart ?",
-            onSwipeDown = { viewModel.dispatch(CartEvent.ToggleDelete()) },
+            onSwipeDown = { viewModel.onEvent(CartEvent.ToggleDelete()) },
             firstActionName = "Cancel",
-            onFirstAction = { viewModel.dispatch(CartEvent.ToggleDelete()) },
+            onFirstAction = { viewModel.onEvent(CartEvent.ToggleDelete()) },
             secondActionName = "Yes, Remove",
             onSecondAction = { /*TODO*/ },
         ) {
@@ -140,7 +140,7 @@ fun CartScreen(
 @Preview(showSystemUi = true)
 @Composable
 fun CartScreenPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             CartScreen()
         }

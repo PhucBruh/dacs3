@@ -3,17 +3,17 @@ package com.triphuc22ad.shoesshop
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailScreen
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import androidx.activity.enableEdgeToEdge
+import com.triphuc22ad.shoesshop.presentation.app.App
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setContent {
-            Dacs3shoesshopandroidTheme {
-                ProductDetailScreen()
-            }
+            App()
         }
     }
 }

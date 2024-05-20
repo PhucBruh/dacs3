@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.CartItem
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.QuantityButton
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
 
 
 @Composable
@@ -140,7 +140,7 @@ fun CartItem(
 @Preview
 @Composable
 fun CartItem2Preview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Row(
             Modifier
                 .fillMaxWidth()

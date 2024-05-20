@@ -27,9 +27,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.cart.components.ShippingItem
-import com.triphuc22ad.shoesshop.util.component.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun ChooseShippingTypeScreen() {
@@ -101,7 +101,7 @@ fun ChooseShippingTypeScreen() {
 @Preview
 @Composable
 fun PreviewShipping() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             ChooseShippingTypeScreen()
         }

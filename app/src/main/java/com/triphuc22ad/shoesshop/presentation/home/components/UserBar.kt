@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 
 @Composable
@@ -99,7 +99,7 @@ fun UserBar(
 @Preview(showSystemUi = true)
 @Composable
 fun UserBarPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             UserBar(Modifier.padding(horizontal = 16.dp))
         }

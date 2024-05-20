@@ -26,12 +26,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.util.component.ProductSearchBar
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
-import com.triphuc22ad.shoesshop.util.component.FilterOption
-import com.triphuc22ad.shoesshop.util.component.OptionSwipeableContainer
-import com.triphuc22ad.shoesshop.util.component.ProductCard
-import com.triphuc22ad.shoesshop.util.component.SectionHeader
+import com.triphuc22ad.shoesshop.presentation.components.ProductSearchBar
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.presentation.components.FilterOption
+import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
+import com.triphuc22ad.shoesshop.presentation.components.ProductCard
+import com.triphuc22ad.shoesshop.presentation.components.SectionHeader
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedBoxWithConstraintsScope")
 @Composable
@@ -161,7 +161,7 @@ private fun FilterSection(
 @Preview
 @Composable
 fun ProductScreenPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             ProductScreen()
         }

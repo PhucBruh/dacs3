@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
 fun ProfileOption(
@@ -112,7 +112,7 @@ fun ProfileOptionContainer(
 @Preview
 @Composable
 fun ProfileOptionPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             Column(
                 modifier = Modifier.padding(horizontal = 16.dp)

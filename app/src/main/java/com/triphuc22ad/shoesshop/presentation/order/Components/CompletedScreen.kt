@@ -28,8 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.presentation.login.components.CustomTextField
-import com.triphuc22ad.shoesshop.util.component.OptionSwipeableContainer
+import com.triphuc22ad.shoesshop.presentation.auth.login.components.CustomTextField
+import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 
 @Composable
 fun CompletedScreen() {
