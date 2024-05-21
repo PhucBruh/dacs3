@@ -10,5 +10,5 @@ sealed class HomeEvent {
     data class ClickSpecialOffer(val specialOffer: SpecialOffer) : HomeEvent()
     data object SeeAllSpecialOffer : HomeEvent()
     data object SeeAllBrand : HomeEvent()
-    data object SeeAllProduct : HomeEvent()
+    data class SeeAllProduct(val navigateToProduct: () -> Unit) : HomeEvent()
 }

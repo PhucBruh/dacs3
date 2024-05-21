@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.order.Components
+package com.triphuc22ad.shoesshop.presentation.order.components
 
 
 import androidx.compose.foundation.Canvas

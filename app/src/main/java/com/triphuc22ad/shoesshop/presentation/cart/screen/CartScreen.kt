@@ -60,7 +60,7 @@ fun CartScreen(
                 .padding(top = 12.dp)
                 .padding(bottom = 100.dp)
         ) {
-            TopTitleBar(name = "My Cart", leftIconAction = Icons.Default.ShoppingBag)
+            TopTitleBar(name = "My Cart", leftIconAction = null)
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {

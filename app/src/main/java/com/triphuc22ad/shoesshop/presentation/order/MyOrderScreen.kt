@@ -14,19 +14,23 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
-fun MyOrderScreen(){
+fun MyOrderScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 20.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
-
     ) {
-        TopTitleBar(name = "My Orders", modifier = Modifier.padding(top = 16.dp))
+        Column(
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp),
+        ) {
+            TopTitleBar(
+                leftIconAction = null,
+                name = "My Orders",
+            )
+        }
 
         TabScreen()
-
-
     }
 
 }

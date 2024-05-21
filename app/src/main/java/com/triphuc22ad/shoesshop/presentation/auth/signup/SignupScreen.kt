@@ -1,20 +1,17 @@
-package com.triphuc22ad.shoesshop.presentation.auth.signup;
+package com.triphuc22ad.shoesshop.presentation.auth.signup
 
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.Composable;
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -27,19 +24,16 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.ButtonComponent
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.CheckboxComponent
-import com.triphuc22ad.shoesshop.presentation.auth.login.components.ClickLoginTextComponent
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.CustomTextField
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.DividerTextComponent
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.HeadingTextComponent
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.NormalTextComponent
-import com.triphuc22ad.shoesshop.presentation.auth.login.components.SocialMediaLogin
 
 
 @Composable
 fun SignupScreen(
     viewModel: SignupViewModel = hiltViewModel(),
     navigateToLogin: () -> Unit,
-    navigateToHome: () -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -105,7 +99,7 @@ fun SignupScreen(
             ButtonComponent(
                 modifier = Modifier.padding(top = 100.dp),
                 value = "Register",
-                onClick = { navigateToHome() })
+                onClick = { viewModel.onEvent(SignupEvent.SignUp) })
 
             DividerTextComponent()
 
@@ -122,8 +116,8 @@ fun SignupScreen(
 
 @Preview
 @Composable
-fun Previeww() {
-    SignupScreen(navigateToHome = {}, navigateToLogin = {})
+fun Preview() {
+    SignupScreen(navigateToLogin = {})
 }
 
 

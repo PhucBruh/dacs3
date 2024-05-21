@@ -65,7 +65,9 @@ val listImgs = listOf(
 )
 
 @Composable
-fun ProductDetailScreen() {
+fun ProductDetailScreen(
+    onBackClick: () -> Unit = {},
+) {
     Box(
         contentAlignment = Alignment.BottomEnd,
         modifier = Modifier
@@ -90,7 +92,7 @@ fun ProductDetailScreen() {
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {
-                    IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(32.dp)) {
+                    IconButton(onClick = onBackClick, modifier = Modifier.size(32.dp)) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = null,
@@ -216,7 +218,7 @@ fun ProductDetailScreen() {
 @Composable
 private fun ProductImagePager(
     images: List<Int>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = {
         images.size
@@ -292,7 +294,7 @@ private fun ProductImagePager(
 private fun DetailContainerVertical(
     name: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -312,7 +314,7 @@ private fun DetailContainerVertical(
 private fun DetailContainerHorizontal(
     name: String,
     modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,

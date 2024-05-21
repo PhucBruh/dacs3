@@ -1,6 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.home.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,19 +15,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.R
+import coil.compose.AsyncImage
+import com.triphuc22ad.shoesshop.domain.model.SpecialOffer
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
-fun SpecialOffer(
+fun SpecialOfferBanner(
+    specialOffer: SpecialOffer,
     shadow: Boolean = false,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -46,23 +46,23 @@ fun SpecialOffer(
                 .padding(start = 24.dp)
         ) {
             Text(
-                text = "25%",
+                text = "${specialOffer.value}% off",
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
             )
             Text(
-                text = "Today's Special",
+                text = specialOffer.name,
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
             Text(
-                text = "Get discount for every order, only valid for today",
+                text = specialOffer.description,
                 fontSize = 12.sp
             )
         }
         Box(modifier = Modifier.weight(1f)) {
-            Image(
-                painter = painterResource(id = R.drawable.curry_6),
+            AsyncImage(
+                model = specialOffer.img_url,
                 contentDescription = null,
                 modifier = Modifier.padding(12.dp)
             )
@@ -75,7 +75,17 @@ fun SpecialOffer(
 fun SpecialOfferPreview() {
     AppTheme {
         Surface {
-            SpecialOffer(modifier = Modifier.padding(vertical = 10.dp, horizontal = 16.dp))
+            SpecialOfferBanner(
+                modifier = Modifier.padding(
+                    vertical = 10.dp, horizontal = 16.dp
+                ),
+                specialOffer = SpecialOffer(
+                    name = "Today's Special",
+                    description = "Get discount for every order, only valid for today",
+                    value = 25,
+                    img_url = ""
+                ),
+            )
         }
     }
 }

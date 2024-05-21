@@ -12,15 +12,19 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.presentation.components.FilterOption
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
-fun WishListScreen() {
+fun WishListScreen(
+    navigateToHome: () -> Unit = {},
+) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -29,19 +33,30 @@ fun WishListScreen() {
             .padding(horizontal = 16.dp)
             .padding(top = 12.dp)
     ) {
-        TopTitleBar(name = "My Wishlist")
-        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            items(10) {
-                FilterOption(text = "Filter$it", onClick = {})
-            }
-        }
+        TopTitleBar(name = "My Wishlist", onLeftAction = navigateToHome)
+
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             columns = GridCells.Fixed(2)
         ) {
             items(14) {
-                ProductCard(image = R.drawable.curry_6)
+                ProductCard(
+                    product = Product(
+                        name = "Product 1",
+                        description = "",
+                        rating = 4.5f,
+                        price = 100000.0,
+                        totalSold = 100,
+                        brand = "Nike",
+                        img_url = "https://www.jordan1.vn/wp-content/uploads/2023/09/3022893_409.png_77c2f15034cf4fa3b92f07195024f407.png",
+                        isFavorite = false,
+                        colors = listOf(
+                            Pair("Red", Color.Red.value.toFloat()),
+                        ),
+                        sizes = listOf(41, 42, 43)
+                    )
+                )
             }
         }
     }

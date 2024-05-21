@@ -28,13 +28,13 @@ import androidx.navigation.compose.rememberNavController
 import com.triphuc22ad.shoesshop.presentation.admin.components.DashboardScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.OrdersScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.ProfileScreen
-import com.triphuc22ad.shoesshop.ui.theme.Dacs3shoesshopandroidTheme
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 sealed class AdminNavItem(val title: String, val icon: ImageVector, val path: String) {
-    object Dashboard : AdminNavItem("Dashboard", Icons.Default.Home, "dashboard")
-    object Products : AdminNavItem("Products", Icons.Default.List, "products")
-    object Orders : AdminNavItem("Orders", Icons.Default.ShoppingCart, "orders")
-    object Profile : AdminNavItem("Profile", Icons.Default.Person, "profile")
+    data object Dashboard : AdminNavItem("Dashboard", Icons.Default.Home, "dashboard")
+    data object Products : AdminNavItem("Products", Icons.Default.List, "products")
+    data object Orders : AdminNavItem("Orders", Icons.Default.ShoppingCart, "orders")
+    data object Profile : AdminNavItem("Profile", Icons.Default.Person, "profile")
 }
 
 @Composable
@@ -68,6 +68,7 @@ fun AdminBottomNavigationBar(navController: NavController) {
         }
     }
 }
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun AdminScreen(navController: NavHostController = rememberNavController()) {
@@ -82,7 +83,11 @@ fun AdminScreen(navController: NavHostController = rememberNavController()) {
 
 @Composable
 fun AdminNavigationScreens(navController: NavHostController, paddingValues: PaddingValues) {
-    NavHost(navController, startDestination = AdminNavItem.Dashboard.path, modifier = Modifier.padding(paddingValues)) {
+    NavHost(
+        navController,
+        startDestination = AdminNavItem.Dashboard.path,
+        modifier = Modifier.padding(paddingValues)
+    ) {
         composable(AdminNavItem.Dashboard.path) { DashboardScreen() }
         composable(AdminNavItem.Products.path) { ProductsScreen() }
         composable(AdminNavItem.Orders.path) { OrdersScreen() }
@@ -93,7 +98,7 @@ fun AdminNavigationScreens(navController: NavHostController, paddingValues: Padd
 @Preview
 @Composable
 fun AdminScreenPreview() {
-    Dacs3shoesshopandroidTheme {
+    AppTheme {
         Surface {
             AdminScreen()
         }

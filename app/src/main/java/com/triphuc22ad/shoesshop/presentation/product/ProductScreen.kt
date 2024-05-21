@@ -22,10 +22,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.presentation.components.ProductSearchBar
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.FilterOption
@@ -35,7 +37,9 @@ import com.triphuc22ad.shoesshop.presentation.components.SectionHeader
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedBoxWithConstraintsScope")
 @Composable
-fun ProductScreen() {
+fun ProductScreen(
+    navigateToProductDetail: (Int) -> Unit = {},
+) {
     var isFilterVisible by remember { mutableStateOf(false) }
     var isSearchBarActivated by remember { mutableStateOf(false) }
 
@@ -78,7 +82,23 @@ fun ProductScreen() {
                     columns = GridCells.Fixed(2)
                 ) {
                     items(14) {
-                        ProductCard(image = R.drawable.curry_6)
+                        ProductCard(
+                            product = Product(
+                                name = "Product 1",
+                                description = "",
+                                rating = 4.5f,
+                                price = 100000.0,
+                                totalSold = 100,
+                                brand = "Nike",
+                                img_url = "https://image.goat.com/glow-4-5-25/750/attachments/product_template_pictures/images/075/377/976/original/953670_00.png.png",
+                                isFavorite = false,
+                                colors = listOf(
+                                    Pair("Red", Color.Red.value.toFloat()),
+                                ),
+                                sizes = listOf(41, 42, 43)
+                            ),
+                            onClick = { navigateToProductDetail(1) }
+                        )
                     }
                 }
             }
@@ -94,7 +114,7 @@ fun ProductScreen() {
 @Composable
 fun FilterOptionList(
     visible: Boolean = false,
-    onSwipeDown: () -> Unit
+    onSwipeDown: () -> Unit,
 ) {
 
     OptionSwipeableContainer(
@@ -150,7 +170,7 @@ fun FilterOptionList(
 private fun FilterSection(
     sectionName: String,
     modifier: Modifier = Modifier,
-    content: @Composable() () -> Unit
+    content: @Composable() () -> Unit,
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(text = sectionName, fontSize = 20.sp, modifier = Modifier.padding(bottom = 16.dp))

@@ -15,13 +15,53 @@ class SignupViewModel @Inject constructor() : ViewModel() {
 
     fun onEvent(event: SignupEvent) {
         when (event) {
-            SignupEvent.AcceptPolicyToggle -> TODO()
-            is SignupEvent.ChangeConfirmPassword -> TODO()
-            is SignupEvent.ChangeEmail -> TODO()
-            is SignupEvent.ChangeFirstName -> TODO()
-            is SignupEvent.ChangeLastName -> TODO()
-            is SignupEvent.ChangePassword -> TODO()
-            SignupEvent.SignUp -> TODO()
+            SignupEvent.AcceptPolicyToggle -> {
+                _state.value = _state.value.copy(
+                    acceptPolicy = !state.value.acceptPolicy
+                )
+            }
+
+            is SignupEvent.ChangeEmail -> {
+                _state.value = _state.value.copy(
+                    signUpInfo = _state.value.signUpInfo.copy(
+                        email = event.email
+                    )
+                )
+            }
+
+            is SignupEvent.ChangeFirstName -> {
+                _state.value = _state.value.copy(
+                    signUpInfo = _state.value.signUpInfo.copy(
+                        firstName = event.firstName
+                    )
+                )
+            }
+
+            is SignupEvent.ChangeLastName -> {
+                _state.value = _state.value.copy(
+                    signUpInfo = _state.value.signUpInfo.copy(
+                        lastName = event.lastName
+                    )
+                )
+            }
+
+            is SignupEvent.ChangePassword -> {
+                _state.value = _state.value.copy(
+                    signUpInfo = _state.value.signUpInfo.copy(
+                        password = event.password
+                    )
+                )
+            }
+
+            is SignupEvent.ChangeConfirmPassword -> {
+                _state.value = _state.value.copy(
+                    confirmPassword = event.confirmPassword
+                )
+            }
+
+            SignupEvent.SignUp -> {
+
+            }
         }
     }
 }

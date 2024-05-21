@@ -40,10 +40,12 @@ fun LoginScreen(
             .fillMaxSize()
             .fillMaxSize()
             .background(Color.White)
-            .padding(28.dp)
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(28.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             NormalTextComponent(value = stringResource(id = R.string.hello))
@@ -76,7 +78,7 @@ fun LoginScreen(
             ButtonComponent(
                 modifier = Modifier.padding(top = 200.dp),
                 value = "Login",
-                onClick = { navigateToHome() })
+                onClick = { viewModel.onEvent(LoginEvent.Login(navigateToHome)) })
 
             DividerTextComponent()
 

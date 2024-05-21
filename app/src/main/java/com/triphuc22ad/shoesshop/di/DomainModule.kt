@@ -1,4 +1,7 @@
 package com.triphuc22ad.shoesshop.di
 
-class DomainModule {
+import dagger.Module
+import dagger.Provides
+
+object DomainModule {
 }

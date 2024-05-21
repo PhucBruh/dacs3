@@ -2,6 +2,7 @@ package com.triphuc22ad.shoesshop.presentation.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +35,9 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
 fun UserBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onWishListClick: () -> Unit = {},
+    onUserClick: () -> Unit = {},
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -48,6 +51,7 @@ fun UserBar(
                     .background(BgColor, CircleShape)
                     .clip(CircleShape)
                     .size(50.dp)
+                    .clickable { onUserClick() }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.pepe_pro),
@@ -83,7 +87,7 @@ fun UserBar(
                 )
             }
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = { onWishListClick() },
             ) {
                 Icon(
                     imageVector = Icons.Outlined.FavoriteBorder,

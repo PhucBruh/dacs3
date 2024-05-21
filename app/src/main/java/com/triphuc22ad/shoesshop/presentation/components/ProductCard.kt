@@ -1,7 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.components
 
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,33 +26,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
+import androidx.core.util.rangeTo
+import coil.compose.AsyncImage
+import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 @Composable
 fun ProductCard(
-    @DrawableRes image: Int,
-    modifier: Modifier = Modifier
+    product: Product,
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
     ) {
-        Box(
-            contentAlignment = Alignment.Center,
+        Box(contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(170.dp)
                 .clip(RoundedCornerShape(32.dp))
                 .background(BgColor)
-                .clickable {  }
-        ) {
-            Image(
-                painter = painterResource(id = image),
+                .clickable { onClick() }) {
+            AsyncImage(
+                model = product.img_url,
                 contentScale = ContentScale.Fit,
                 contentDescription = null,
                 modifier = Modifier
@@ -62,8 +60,7 @@ fun ProductCard(
                     .background(BgColor)
             )
             Box(
-                contentAlignment = Alignment.TopEnd,
-                modifier = Modifier.fillMaxSize()
+                contentAlignment = Alignment.TopEnd, modifier = Modifier.fillMaxSize()
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
@@ -76,14 +73,13 @@ fun ProductCard(
                         imageVector = Icons.Default.FavoriteBorder,
                         tint = Color.White,
                         contentDescription = null,
-                        modifier = Modifier
-                            .size(20.dp)
+                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
         }
         Text(
-            text = "Shoes n...",
+            text = product.name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 12.dp)
@@ -94,12 +90,12 @@ fun ProductCard(
         ) {
             Icon(imageVector = Icons.Default.Star, contentDescription = "Rating")
             Spacer(modifier = Modifier.width(4.dp))
-            Text(text = "4.5")
+            Text(text = "${product.rating}")
             Spacer(modifier = Modifier.width(8.dp))
             VerticalDivider(modifier = Modifier.height(14.dp), color = Color.Black)
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "8,374 sold",
+                text = "${product.totalSold}",
                 fontSize = 12.sp,
                 modifier = Modifier
                     .background(BgColor, RoundedCornerShape(8.dp))
@@ -107,9 +103,7 @@ fun ProductCard(
             )
         }
         Text(
-            text = "$85.00",
-            fontWeight = FontWeight.Bold,
-            fontSize = 22.sp
+            text = "${product.price}", fontWeight = FontWeight.Bold, fontSize = 22.sp
         )
     }
 }
@@ -119,7 +113,22 @@ fun ProductCard(
 fun ProductCardPreview() {
     AppTheme {
         Surface {
-            ProductCard(image = R.drawable.curry_6)
+            ProductCard(
+                product = Product(
+                    name = "Product 1",
+                    description = "",
+                    rating = 4.5f,
+                    price = 100000.0,
+                    totalSold = 100,
+                    brand = "Nike",
+                    img_url = "",
+                    isFavorite = false,
+                    colors = listOf(
+                        Pair("Red", Color.Red.value.toFloat()),
+                    ),
+                    sizes = listOf(41, 42, 43)
+                )
+            )
         }
     }
 }

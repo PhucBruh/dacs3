@@ -1,3 +1,4 @@
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.triphuc22ad.shoesshop.presentation.order.Components.ActiveScreen
-import com.triphuc22ad.shoesshop.presentation.order.Components.CompletedScreen
+import androidx.compose.ui.unit.dp
+import com.triphuc22ad.shoesshop.presentation.order.components.ActiveScreen
+import com.triphuc22ad.shoesshop.presentation.order.components.CompletedScreen
 import kotlinx.coroutines.launch
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun TabScreen() {
@@ -28,7 +31,7 @@ fun TabScreen() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = it.calculateTopPadding())
+                .padding(top = 0.dp)
         ) {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
