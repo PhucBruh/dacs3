@@ -6,17 +6,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.ShoppingBag
-import androidx.compose.material.icons.filled.Store
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.outlined.Store
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -53,14 +47,10 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
     val navItems = listOf(
         BottomNavItem(title = "Home", icon = Icons.Outlined.Home, route = Screen.Home.route),
         BottomNavItem(
-            title = "Product",
-            icon = Icons.Outlined.Store,
-            route = Screen.Product.route
+            title = "Product", icon = Icons.Outlined.Store, route = Screen.Product.route
         ),
         BottomNavItem(
-            title = "Cart",
-            icon = Icons.Outlined.ShoppingBag,
-            route = Screen.Cart.route
+            title = "Cart", icon = Icons.Outlined.ShoppingBag, route = Screen.Cart.route
         ),
         BottomNavItem(
             title = "Order", icon = Icons.Outlined.ShoppingCart, route = Screen.Order.route
@@ -90,8 +80,7 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     Screen.Home.route
                 } else {
                     Screen.Login.route
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .fillMaxSize()
                     .padding(
                         bottom = if (state.showBottomBar) 96.dp else 0.dp,
@@ -109,43 +98,71 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     BackHandler(true) {
                         // Or do nothing
                     }
-                    HomeScreen(
-                        navigateToWishlist = { navController.navigate(Screen.WishList.route) },
+                    HomeScreen(navigateToWishlist = { navController.navigate(Screen.WishList.route) },
                         navigateToProfile = { navController.navigate(Screen.Profile.route) },
                         navigateToSpecialOffer = { navController.navigate(Screen.SpecialOffer.route) },
-                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) }
-                    )
+                        navigateToProduct = { navController.navigate(Screen.Product.route) },
+                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) })
                 }
                 composable(Screen.Product.route) {
+
+                    BackHandler(true) {
+                        // Or do nothing
+                    }
+
                     ProductScreen(
-                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) }
+                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) },
                     )
                 }
 
                 composable(Screen.ProductDetail.route) { ProductDetailScreen(onBackClick = { navController.popBackStack() }) }
 
-                composable(Screen.Cart.route) { CartScreen() }
+                composable(Screen.Cart.route) {
 
-                composable(Screen.Order.route) { MyOrderScreen() }
+                    BackHandler(true) {
+                        // Or do nothing
+                    }
+                    CartScreen(navigateToCheckout = { navController.navigate(Screen.Checkout.route) })
+                }
 
-                composable(Screen.Profile.route) { ProfileScreen() }
+                composable(Screen.Order.route) {
+                    BackHandler(true) {
+                        // Or do nothing
+                    }
+                    MyOrderScreen()
+                }
 
-                composable(Screen.Checkout.route) { CheckOutScreen() }
+                composable(Screen.Profile.route) {
+                    BackHandler(true) {
+                        // Or do nothing
+                    }
+
+                    ProfileScreen()
+                }
+
+                composable(Screen.Checkout.route) {
+                    BackHandler(true) {
+                        // Or do nothing
+                    }
+
+                    CheckOutScreen(navigateBack = { navController.popBackStack() })
+                }
 
                 composable(Screen.WishList.route) {
-                    WishListScreen(navigateToHome = { navController.navigate(Screen.Home.route) })
+                    WishListScreen(navigateBack = { navController.navigate(Screen.Home.route) })
                 }
 
                 composable(Screen.SpecialOffer.route) {
-                    SpecialOffersScreen(navigateToHome = {
-                        navController.navigate(Screen.Home.route)
-                    })
+                    SpecialOffersScreen(
+                        navigateBack = { navController.popBackStack() },
+                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) })
                 }
             }
 
-            if (state.showBottomBar)
-                BottomNavigationBar(navItems = navItems, navController = navController)
-
+            if (state.showBottomBar) BottomNavigationBar(
+                navItems = navItems,
+                navController = navController
+            )
         }
     }
 }

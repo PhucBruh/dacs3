@@ -45,7 +45,9 @@ import com.triphuc22ad.shoesshop.presentation.cart.components.CardOrder
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
-fun CheckOutScreen() {
+fun CheckOutScreen(
+    navigateBack: () -> Unit = {},
+) {
 
     Box(contentAlignment = Alignment.BottomCenter) {
         LazyColumn(
@@ -58,7 +60,10 @@ fun CheckOutScreen() {
         ) {
 
             item {
-                TopTitleBar(name = "Checkout", modifier = Modifier.padding(top = 16.dp))
+                TopTitleBar(
+                    name = "Checkout", modifier = Modifier.padding(top = 16.dp),
+                    onLeftAction = navigateBack
+                )
             }
 
             item {

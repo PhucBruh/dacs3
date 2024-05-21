@@ -47,6 +47,7 @@ import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 @Composable
 fun CartScreen(
     viewModel: CartViewModel = hiltViewModel(),
+    navigateToCheckout: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
 
@@ -99,7 +100,7 @@ fun CartScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black
                     ),
-                    onClick = { /*TODO*/ },
+                    onClick = { navigateToCheckout() },
                     modifier = Modifier.size(height = 52.dp, width = 200.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {

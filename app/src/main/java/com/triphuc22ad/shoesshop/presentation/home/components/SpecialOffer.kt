@@ -27,6 +27,7 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 @Composable
 fun SpecialOfferBanner(
     specialOffer: SpecialOffer,
+    onClick: () -> Unit = {},
     shadow: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
@@ -36,7 +37,7 @@ fun SpecialOfferBanner(
             .shadow(shape = RoundedCornerShape(if (shadow) 32.dp else 36.dp), elevation = 4.dp)
             .background(BgColor, RoundedCornerShape(36.dp))
             .clip(RoundedCornerShape(36.dp))
-            .clickable { }
+            .clickable { onClick() }
     ) {
         Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),

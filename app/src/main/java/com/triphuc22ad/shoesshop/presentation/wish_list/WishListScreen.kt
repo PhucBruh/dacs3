@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
@@ -15,15 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.Product
-import com.triphuc22ad.shoesshop.presentation.components.FilterOption
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun WishListScreen(
-    navigateToHome: () -> Unit = {},
+    navigateBack: () -> Unit = {},
+    navigateToProductDetail: (Int) -> Unit = {},
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -33,7 +31,7 @@ fun WishListScreen(
             .padding(horizontal = 16.dp)
             .padding(top = 12.dp)
     ) {
-        TopTitleBar(name = "My Wishlist", onLeftAction = navigateToHome)
+        TopTitleBar(name = "My Wishlist", onLeftAction = navigateBack)
 
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -55,7 +53,8 @@ fun WishListScreen(
                             Pair("Red", Color.Red.value.toFloat()),
                         ),
                         sizes = listOf(41, 42, 43)
-                    )
+                    ),
+                    onClick = { navigateToProductDetail(it) }
                 )
             }
         }

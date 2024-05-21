@@ -16,10 +16,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.Product
+import com.triphuc22ad.shoesshop.domain.model.SpecialOffer
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
 import com.triphuc22ad.shoesshop.presentation.components.SectionHeader
 import com.triphuc22ad.shoesshop.presentation.home.components.BrandItem
@@ -31,10 +34,11 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
-    navigateToWishlist: () -> Unit,
-    navigateToProductDetail: () -> Unit,
-    navigateToSpecialOffer: () -> Unit,
-    navigateToProfile: () -> Unit,
+    navigateToWishlist: () -> Unit = {},
+    navigateToProduct: () -> Unit = {},
+    navigateToProductDetail: (Int) -> Unit = {},
+    navigateToSpecialOffer: () -> Unit = {},
+    navigateToProfile: () -> Unit = {},
 ) {
     val state by viewModel.state.collectAsState()
     Scaffold(
@@ -73,25 +77,49 @@ fun HomeScreen(
                 )
             }
 
+
             item(span = { GridItemSpan(12) }) {
-                state.specialOffer?.let { SpecialOfferBanner(specialOffer = it, shadow = true) }
+                SpecialOfferBanner(
+                    specialOffer = SpecialOffer(
+                        name = "Special Offer 1",
+                        description = "Description 1",
+                        value = 25,
+                        img_url = "https://www.jordan1.vn/wp-content/uploads/2023/09/3022893_409.png_77c2f15034cf4fa3b92f07195024f407.png"
+                    ),
+                    onClick = { navigateToProductDetail(1) }
+                )
             }
 
             val listBrand = List(8) { "Brand$it" }
             items(items = state.listBrand, span = { GridItemSpan(3) }) {
-                BrandItem(brand = it, onClick = { navigateToProductDetail() })
+                BrandItem(brand = it, onClick = { navigateToProduct() })
             }
 
             item(span = { GridItemSpan(12) }) {
-                SectionHeader(
-                    name = "Most Popular",
-                    actionName = "",
-                    onClick = {}
-                )
+                SectionHeader(name = "Most Popular", actionName = "", onClick = {})
             }
 
-            items(items = state.listPopularProduct, span = { GridItemSpan(6) }) {
-                ProductCard(it)
+            val listPopularProduct = List(8) {
+                Product(
+                    id = it,
+                    name = "Product 1",
+                    description = "",
+                    rating = 4.5f,
+                    price = 100000.0,
+                    totalSold = 100,
+                    brand = "Nike",
+                    img_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEc4NH68my5V52slAx1cyss86EyNs3wUXOaXt1nG05hQ&s",
+                    isFavorite = false,
+                    colors = listOf(
+                        Pair("Red", Color.Red.value.toFloat()),
+                    ),
+                    sizes = listOf(41, 42, 43)
+                )
+            }
+            items(items = listPopularProduct, span = { GridItemSpan(6) }) {
+                ProductCard(product = it,
+                    onClick = { it.id?.let { it1 -> navigateToProductDetail(it1) } }
+                )
             }
         }
     }
@@ -102,11 +130,7 @@ fun HomeScreen(
 fun HomeScreenPreview() {
     AppTheme {
         Surface {
-            HomeScreen(
-                navigateToProfile = {},
-                navigateToWishlist = {},
-                navigateToSpecialOffer = {},
-                navigateToProductDetail = {})
+            HomeScreen()
         }
     }
 }

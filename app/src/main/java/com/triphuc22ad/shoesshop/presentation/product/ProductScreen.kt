@@ -42,75 +42,68 @@ fun ProductScreen(
 ) {
     var isFilterVisible by remember { mutableStateOf(false) }
     var isSearchBarActivated by remember { mutableStateOf(false) }
-
-    Scaffold(
-        topBar = {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .animateContentSize()
-                    .padding(if (!isSearchBarActivated) 16.dp else 0.dp)
-            ) {
-                ProductSearchBar(
-                    query = "",
-                    active = isSearchBarActivated,
-                    onActiveChange = { isSearchBarActivated = it },
-                    onClear = { isSearchBarActivated = false },
-                    onFilterList = { isFilterVisible = true },
-                )
-            }
-        },
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(top = paddingValues.calculateTopPadding())) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 16.dp)
-                    .padding(top = 16.dp)
-            ) {
-                SectionHeader(
-                    name = """Results for "Running" """,
-                    actionName = "12.483 founds",
-                    onClick = { /*TODO*/ })
-
-                LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    columns = GridCells.Fixed(2)
-                ) {
-                    items(14) {
-                        ProductCard(
-                            product = Product(
-                                name = "Product 1",
-                                description = "",
-                                rating = 4.5f,
-                                price = 100000.0,
-                                totalSold = 100,
-                                brand = "Nike",
-                                img_url = "https://image.goat.com/glow-4-5-25/750/attachments/product_template_pictures/images/075/377/976/original/953670_00.png.png",
-                                isFavorite = false,
-                                colors = listOf(
-                                    Pair("Red", Color.Red.value.toFloat()),
-                                ),
-                                sizes = listOf(41, 42, 43)
-                            ),
-                            onClick = { navigateToProductDetail(1) }
-                        )
-                    }
-                }
-            }
-            FilterOptionList(
-                visible = isFilterVisible,
-                onSwipeDown = { isFilterVisible = false }
+    Box(modifier = Modifier) {
+        Box(
+            contentAlignment = Alignment.TopCenter,
+            modifier = Modifier
+                .fillMaxWidth()
+                .animateContentSize()
+                .padding(if (!isSearchBarActivated) 16.dp else 0.dp)
+        ) {
+            ProductSearchBar(
+                query = "",
+                active = isSearchBarActivated,
+                onActiveChange = { isSearchBarActivated = it },
+                onClear = { isSearchBarActivated = false },
+                onFilterList = { isFilterVisible = true },
             )
         }
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+                .padding(top = 120.dp)
+        ) {
+            SectionHeader(
+                name = """Results for "Running"""",
+                actionName = "12.483 founds",
+                onClick = { /*TODO*/ })
+
+            LazyVerticalGrid(
+                horizontalArrangement = Arrangement.spacedBy(12.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                columns = GridCells.Fixed(2)
+            ) {
+                items(14) {
+                    ProductCard(
+                        product = Product(
+                            name = "Product 1",
+                            description = "",
+                            rating = 4.5f,
+                            price = 100000.0,
+                            totalSold = 100,
+                            brand = "Nike",
+                            img_url = "https://image.goat.com/glow-4-5-25/750/attachments/product_template_pictures/images/075/377/976/original/953670_00.png.png",
+                            isFavorite = false,
+                            colors = listOf(
+                                Pair("Red", Color.Red.value.toFloat()),
+                            ),
+                            sizes = listOf(41, 42, 43)
+                        ),
+                        onClick = { navigateToProductDetail(1) }
+                    )
+                }
+            }
+        }
+        FilterOptionList(
+            visible = isFilterVisible,
+            onSwipeDown = { isFilterVisible = false }
+        )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterOptionList(
     visible: Boolean = false,

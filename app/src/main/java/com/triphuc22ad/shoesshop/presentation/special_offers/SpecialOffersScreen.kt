@@ -18,7 +18,8 @@ import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun SpecialOffersScreen(
-    navigateToHome: () -> Unit = {},
+    navigateBack: () -> Unit = {},
+    navigateToProductDetail: (Int) -> Unit = {},
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -28,7 +29,7 @@ fun SpecialOffersScreen(
             .padding(horizontal = 16.dp)
             .padding(top = 12.dp)
     ) {
-        TopTitleBar(name = "Special Offers", onLeftAction = navigateToHome)
+        TopTitleBar(name = "Special Offers", onLeftAction = navigateBack)
         LazyColumn(verticalArrangement = Arrangement.spacedBy(20.dp)) {
             items(10) {
                 SpecialOfferBanner(
@@ -37,7 +38,8 @@ fun SpecialOffersScreen(
                         description = "Description $it",
                         value = 25,
                         img_url = "https://www.jordan1.vn/wp-content/uploads/2023/09/3022893_409.png_77c2f15034cf4fa3b92f07195024f407.png"
-                    )
+                    ),
+                    onClick = { navigateToProductDetail(it) }
                 )
             }
         }
