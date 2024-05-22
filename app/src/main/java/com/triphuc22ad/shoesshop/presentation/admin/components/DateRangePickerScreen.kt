@@ -19,9 +19,6 @@ import androidx.compose.ui.zIndex
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerSample() {
-    val snackState = remember { SnackbarHostState() }
-    SnackbarHost(hostState = snackState, Modifier.zIndex(1f))
-
     val state = rememberDateRangePickerState()
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
         DateRangePicker(state = state, modifier = Modifier.weight(1f), title = {},)
