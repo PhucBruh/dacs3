@@ -141,7 +141,7 @@ fun SmallExample(onClick: () -> Unit) {
 
     if (isOptionVisible) {
         OptionSwipeableContainer(
-            name = "Add Product",
+            name = "Test",
             active = true,
             onSwipeDown = { isOptionVisible = false },
             firstActionName = "Reset",
@@ -167,6 +167,7 @@ fun SmallExample(onClick: () -> Unit) {
         }
     }
 }
+
 
 
 
