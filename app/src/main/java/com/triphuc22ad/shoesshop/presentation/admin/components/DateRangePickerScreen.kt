@@ -21,7 +21,7 @@ import androidx.compose.ui.zIndex
 fun DateRangePickerSample() {
     val state = rememberDateRangePickerState()
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
-        DateRangePicker(state = state, modifier = Modifier.weight(1f), title = {},)
+        DateRangePicker(state = state, modifier = Modifier.weight(1f), title = {}, )
     }
 }
 
