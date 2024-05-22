@@ -1,23 +1,22 @@
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
+package com.triphuc22ad.shoesshop.presentation.admin.components
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
+import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 
 data class MenuItem(val name: String, val unitPrice: Double)
 
@@ -75,7 +74,7 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
             .fillMaxWidth()
             .padding(8.dp)
         ) {
-            Text("Item Name", modifier = Modifier.weight(1f))
+            Text("Item Name", modifier = Modifier.weight(1.2f))
             Text(
                 " ${if (isAscending) "↑↓" else "↓↑"}",
                 modifier = Modifier
@@ -84,6 +83,9 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold
             )
+            // Thêm cột cho các nút "Edit" và "Delete"
+            Spacer(modifier = Modifier.width(16.dp))
+            Text("Actions", modifier = Modifier.weight(0.6f))
         }
 
         val filteredItems = sortedMenuItems.filter {
@@ -96,10 +98,21 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
             val item = filteredItems[i]
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp)
+                .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(item.name, modifier = Modifier.weight(1f))
-                Text(item.unitPrice.toString(), modifier = Modifier.weight(1f))
+                Text(item.unitPrice.toString(), modifier = Modifier.weight(0.8f))
+
+
+                IconButton(onClick = { /* Handle edit action */ }) {
+                    Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                }
+
+                IconButton(onClick = { /* Handle delete action */ }) {
+                    Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                }
             }
         }
 
@@ -109,7 +122,7 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
                 .padding(8.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
-            ) {
+        ) {
             Button(onClick = { if (currentPage > 0) currentPage-- }, enabled = currentPage > 0) {
                 Text("Previous")
             }
@@ -121,22 +134,40 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
     }
 }
 
+
 @Composable
 fun SmallExample(onClick: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxSize(),
-        horizontalArrangement = Arrangement.End,
-        verticalAlignment = Alignment.Bottom
-    ) {
-        SmallFloatingActionButton(
-            onClick = { onClick() },
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.secondary,
+    var isOptionVisible by remember { mutableStateOf(false) }
+
+    if (isOptionVisible) {
+        OptionSwipeableContainer(
+            name = "Add Product",
+            active = true,
+            onSwipeDown = { isOptionVisible = false },
+            firstActionName = "Reset",
+            onFirstAction = { },
+            secondActionName = "Apply",
+            onSecondAction = { }
         ) {
-            Icon(Icons.Filled.Add, "Small floating action button.")
+            // Content of the OptionSwipeableContainer goes here
+        }
+    } else {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            SmallFloatingActionButton(
+                onClick = { isOptionVisible = true },
+                containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                contentColor = MaterialTheme.colorScheme.secondary,
+            ) {
+                Icon(Icons.Filled.Add, "Small floating action button.")
+            }
         }
     }
 }
+
 
 
 @Preview(showBackground = true)

@@ -7,6 +7,7 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -19,10 +20,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -63,6 +68,7 @@ fun OptionSwipeableContainer(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .clickable { onSwipeDown() } // Close on background click
             )
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -76,37 +82,14 @@ fun OptionSwipeableContainer(
                     )
                     .background(Color.White, RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(24.dp),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .scrollable(
-                            orientation = Orientation.Vertical,
-                            state = rememberScrollableState { delta ->
-                                if (delta > 40) {
-                                    onSwipeDown()
-                                    delta
-                                } else {
-                                    0f
-                                }
-                            }
-                        )
-                ) {
-                    HorizontalDivider(
-                        thickness = DividerDefaults.Thickness.plus(2.dp),
-                        modifier = Modifier
-                            .padding(top = 8.dp)
-                            .width(20.dp)
-                    )
-                    Text(
-                        text = name,
-                        fontSize = 24.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
-                HorizontalDivider(Modifier.padding(horizontal = 16.dp))
 
+                Text(
+                    text = name,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier
+                        .padding(top = 10.dp)
+                )
                 content()
 
                 HorizontalDivider(Modifier.padding(horizontal = 16.dp))
@@ -137,11 +120,18 @@ fun OptionSwipeableContainer(
                     ) {
                         Text(text = secondActionName)
                     }
+                    IconButton(
+                        onClick = { onSwipeDown() }, // Close button
+                        modifier = Modifier.align(Alignment.CenterVertically)
+                    ) {
+                        Icon(Icons.Filled.Close, contentDescription = "Close")
+                    }
                 }
             }
         }
     }
 }
+
 
 @Preview(showSystemUi = true)
 @Composable
