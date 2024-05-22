@@ -50,7 +50,7 @@ fun WishListScreen(
                         img_url = "https://www.jordan1.vn/wp-content/uploads/2023/09/3022893_409.png_77c2f15034cf4fa3b92f07195024f407.png",
                         isFavorite = false,
                         colors = listOf(
-                            Pair("Red", Color.Red.value.toFloat()),
+                            Pair("Red", "FF0000"),
                         ),
                         sizes = listOf(41, 42, 43)
                     ),

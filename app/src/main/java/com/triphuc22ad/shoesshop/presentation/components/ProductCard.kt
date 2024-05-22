@@ -124,7 +124,7 @@ fun ProductCardPreview() {
                     img_url = "",
                     isFavorite = false,
                     colors = listOf(
-                        Pair("Red", Color.Red.value.toFloat()),
+                        Pair("Red", "FF0000"),
                     ),
                     sizes = listOf(41, 42, 43)
                 )

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -31,6 +32,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,6 +45,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
@@ -66,8 +70,11 @@ val listImgs = listOf(
 
 @Composable
 fun ProductDetailScreen(
+    viewModel: ProductDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {},
 ) {
+    val state by viewModel.state.collectAsState()
+
     Box(
         contentAlignment = Alignment.BottomEnd,
         modifier = Modifier
@@ -117,7 +124,7 @@ fun ProductDetailScreen(
                             .padding(top = 16.dp)
                     ) {
                         Text(
-                            text = "New Balance 996V2",
+                            text = state.product.name,
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
                         )
@@ -135,7 +142,7 @@ fun ProductDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
-                            text = "8,374 sold",
+                            text = "${state.product.totalSold} sold",
                             fontSize = 12.sp,
                             modifier = Modifier
                                 .background(BgColor, RoundedCornerShape(8.dp))
@@ -146,7 +153,7 @@ fun ProductDetailScreen(
                             contentDescription = "Rating",
                             tint = Color.Black
                         )
-                        Text(text = "4.9 (6.573 reviews)")
+                        Text(text = "${state.product.rating} (6.573 reviews)")
                     }
 
                     HorizontalDivider()
@@ -171,8 +178,13 @@ fun ProductDetailScreen(
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(4) {
-                                TextCircleButton(text = "4$it", onClick = {}, size = 40.dp)
+                            items(items = state.product.sizes) { size ->
+                                TextCircleButton(
+                                    text = "$size",
+                                    onClick = { viewModel.onEvent(ProductDetailEvent.ChangeSize(size)) },
+                                    active = size == state.selectedSize,
+                                    size = 40.dp
+                                )
                             }
                         }
                     }

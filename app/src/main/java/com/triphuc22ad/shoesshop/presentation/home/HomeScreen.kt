@@ -111,7 +111,7 @@ fun HomeScreen(
                     img_url = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSEc4NH68my5V52slAx1cyss86EyNs3wUXOaXt1nG05hQ&s",
                     isFavorite = false,
                     colors = listOf(
-                        Pair("Red", Color.Red.value.toFloat()),
+                        Pair("Red", "F00000"),
                     ),
                     sizes = listOf(41, 42, 43)
                 )

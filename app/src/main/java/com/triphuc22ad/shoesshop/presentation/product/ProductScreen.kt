@@ -88,7 +88,7 @@ fun ProductScreen(
                             img_url = "https://image.goat.com/glow-4-5-25/750/attachments/product_template_pictures/images/075/377/976/original/953670_00.png.png",
                             isFavorite = false,
                             colors = listOf(
-                                Pair("Red", Color.Red.value.toFloat()),
+                                Pair("Red", "F00000"),
                             ),
                             sizes = listOf(41, 42, 43)
                         ),
