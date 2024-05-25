@@ -1,6 +1,7 @@
 package com.triphuc22ad.shoesshop.presentation.admin
 
 
+import OrderScreen
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -26,7 +27,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.triphuc22ad.shoesshop.presentation.admin.components.DashboardScreen
-import com.triphuc22ad.shoesshop.presentation.admin.components.OrdersScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.ProductsScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.ProfileScreen
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
@@ -91,7 +91,7 @@ fun AdminNavigationScreens(navController: NavHostController, paddingValues: Padd
     ) {
         composable(AdminNavItem.Dashboard.path) { DashboardScreen() }
         composable(AdminNavItem.Products.path) { ProductsScreen() }
-        composable(AdminNavItem.Orders.path) { OrdersScreen() }
+        composable(AdminNavItem.Orders.path) { OrderScreen() }
         composable(AdminNavItem.Profile.path) { ProfileScreen() }
     }
 }

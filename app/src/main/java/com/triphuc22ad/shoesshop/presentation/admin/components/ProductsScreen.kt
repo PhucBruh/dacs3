@@ -1,7 +1,11 @@
 package com.triphuc22ad.shoesshop.presentation.admin.components
 
+import android.net.Uri
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -12,10 +16,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberImagePainter
 import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 
 data class MenuItem(val name: String, val unitPrice: Double)
@@ -59,8 +66,9 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
         }
     }
 
-    Column {
-        TextField(
+    LazyColumn {
+        item {
+            TextField(
             value = searchText,
             onValueChange = { searchText = it },
             label = { Text("Search") },
@@ -68,55 +76,58 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
                 .fillMaxWidth()
                 .padding(8.dp)
                 .clip(RoundedCornerShape(20.dp))
-        )
+        ) }
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(8.dp)
-        ) {
-            Text("Item Name", modifier = Modifier.weight(1.2f))
-            Text(
-                " ${if (isAscending) "↑↓" else "↓↑"}",
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable { isAscending = !isAscending; sortItems() },
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-            // Thêm cột cho các nút "Edit" và "Delete"
-            Spacer(modifier = Modifier.width(16.dp))
-            Text("Actions", modifier = Modifier.weight(0.6f))
-        }
-
-        val filteredItems = sortedMenuItems.filter {
-            it.name.contains(searchText, ignoreCase = true)
-        }
-
-        val startIndex = currentPage * itemsPerPage
-        val endIndex = (startIndex + itemsPerPage).coerceAtMost(filteredItems.size)
-        for (i in startIndex until endIndex) {
-            val item = filteredItems[i]
+        item {
             Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceAround,
-                verticalAlignment = Alignment.CenterVertically
+                .padding(8.dp)
             ) {
-                Text(item.name, modifier = Modifier.weight(1f))
-                Text(item.unitPrice.toString(), modifier = Modifier.weight(0.8f))
+                Text("Item Name", modifier = Modifier.weight(1.2f))
+                Text(
+                    " ${if (isAscending) "↑↓" else "↓↑"}",
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable { isAscending = !isAscending; sortItems() },
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                // Thêm cột cho các nút "Edit" và "Delete"
+                Spacer(modifier = Modifier.width(16.dp))
+                Text("Actions", modifier = Modifier.weight(0.6f))
+            }
+
+            val filteredItems = sortedMenuItems.filter {
+                it.name.contains(searchText, ignoreCase = true)
+            }
+
+            val startIndex = currentPage * itemsPerPage
+            val endIndex = (startIndex + itemsPerPage).coerceAtMost(filteredItems.size)
+            for (i in startIndex until endIndex) {
+                val item = filteredItems[i]
+                Row(modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(item.name, modifier = Modifier.weight(1f))
+                    Text(item.unitPrice.toString(), modifier = Modifier.weight(0.8f))
 
 
-                IconButton(onClick = { /* Handle edit action */ }) {
-                    Icon(Icons.Filled.Edit, contentDescription = "Edit")
-                }
+                    IconButton(onClick = { /* Handle edit action */ }) {
+                        Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                    }
 
-                IconButton(onClick = { /* Handle delete action */ }) {
-                    Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                    IconButton(onClick = { /* Handle delete action */ }) {
+                        Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                    }
                 }
             }
         }
 
-        Row(
+        item {
+            Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -131,6 +142,8 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
                 Text("Next")
             }
         }
+
+        }
     }
 }
 
@@ -138,10 +151,14 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
 @Composable
 fun SmallExample(onClick: () -> Unit) {
     var isOptionVisible by remember { mutableStateOf(false) }
+    var productName by remember { mutableStateOf("") }
+    var productPrice by remember { mutableStateOf("") }
+    var productType by remember { mutableStateOf("") }
+    var uploadedImageUri by remember { mutableStateOf<Uri?>(null) }
 
     if (isOptionVisible) {
         OptionSwipeableContainer(
-            name = "Test",
+            name = "add product",
             active = true,
             onSwipeDown = { isOptionVisible = false },
             firstActionName = "Reset",
@@ -149,7 +166,53 @@ fun SmallExample(onClick: () -> Unit) {
             secondActionName = "Apply",
             onSecondAction = { }
         ) {
-            // Content of the OptionSwipeableContainer goes here
+            Column(
+                modifier = Modifier
+                    .padding(10.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                // TextField for product name
+                TextField(
+                    value = productName,
+                    onValueChange = { productName = it },
+                    label = { Text("Product Name") },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                )
+
+
+                TextField(
+                    value = productPrice,
+                    onValueChange = { productPrice = it },
+                    label = { Text("Price") },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                )
+
+                TextField(
+                    value = productType,
+                    onValueChange = { productType = it },
+                    label = { Text("Product Type") },
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(20.dp))
+                )
+
+                
+                Button(onClick = {
+                    onClick.invoke()
+                }) {
+                    Text("Upload Image")
+                }
+
+                uploadedImageUri?.let { uri ->
+                    Image(
+                        painter = rememberImagePainter(uri),
+                        contentDescription = "Uploaded Image",
+                        modifier = Modifier.size(100.dp)
+                    )
+                }
+            }
         }
     } else {
         Row(
@@ -167,6 +230,7 @@ fun SmallExample(onClick: () -> Unit) {
         }
     }
 }
+
 
 
 
