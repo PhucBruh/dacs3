@@ -16,32 +16,41 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
-data class MenuItem(val name: String, val unitPrice: Double)
+data class MenuItem(
+    val name: String,
+    val unitPrice: Double,
+    val imageResourceId: Int // Add this field for image resource ID
+)
+
 
 @Composable
 fun ProductsScreen() {
     val menuItems = listOf(
-        MenuItem("Item 1", 10.0),
-        MenuItem("Item 2", 15.0),
-        MenuItem("Item 3", 20.0),
-        MenuItem("Item 4", 25.0),
-        MenuItem("Item 5", 30.0),
-        MenuItem("Item 6", 35.0),
-        MenuItem("Item 7", 10.0),
-        MenuItem("Item 8", 15.0),
-        MenuItem("Item 9", 20.0),
-        MenuItem("Item 10", 25.0),
-        MenuItem("Item 11", 30.0),
-        MenuItem("Item 12", 35.0)
+        MenuItem("Item 1", 10.0, R.drawable.curry_6),
+        MenuItem("Item 2", 15.0, R.drawable.curry_6),
+        MenuItem("Item 3", 20.0, R.drawable.curry_6),
+        MenuItem("Item 4", 25.0, R.drawable.curry_6),
+        MenuItem("Item 5", 30.0, R.drawable.curry_6),
+        MenuItem("Item 6", 35.0, R.drawable.curry_6),
+        MenuItem("Item 7", 10.0, R.drawable.curry_6),
+        MenuItem("Item 8", 15.0, R.drawable.curry_6),
+        MenuItem("Item 9", 20.0, R.drawable.curry_6),
+        MenuItem("Item 10", 25.0, R.drawable.curry_6),
+        MenuItem("Item 11", 30.0, R.drawable.curry_6),
+        MenuItem("Item 12", 35.0, R.drawable.curry_6)
     )
 
     PaginatedSortableTable(menuItems)
@@ -83,18 +92,18 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
                 .fillMaxWidth()
                 .padding(8.dp)
             ) {
-                Text("Item Name", modifier = Modifier.weight(1.2f))
+                Text("Item Name", modifier = Modifier.weight(1f))
                 Text(
                     " ${if (isAscending) "↑↓" else "↓↑"}",
                     modifier = Modifier
-                        .weight(1f)
+                        .weight(0.5f)
                         .clickable { isAscending = !isAscending; sortItems() },
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold
                 )
                 // Thêm cột cho các nút "Edit" và "Delete"
                 Spacer(modifier = Modifier.width(16.dp))
-                Text("Actions", modifier = Modifier.weight(0.6f))
+                Text("Actions", modifier = Modifier.weight(0.5f))
             }
 
             val filteredItems = sortedMenuItems.filter {
@@ -108,19 +117,55 @@ fun PaginatedSortableTable(menuItems: List<MenuItem>) {
                 Row(modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceAround,
+                    horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(item.name, modifier = Modifier.weight(1f))
-                    Text(item.unitPrice.toString(), modifier = Modifier.weight(0.8f))
-
-
-                    IconButton(onClick = { /* Handle edit action */ }) {
-                        Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                    Column(
+                        Modifier
+                            .padding(vertical = 10.dp)
+                            .padding(start = 5.dp)
+                            .shadow(2.dp, RoundedCornerShape(32.dp))
+                    ) {
+                        Box(
+                            contentAlignment = Alignment.Center,
+                            modifier = Modifier
+                                .size(120.dp)
+                                .background(BgColor, RoundedCornerShape(32.dp))
+                        ) {
+                            Image(
+                                painter = painterResource(id = item.imageResourceId),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(100.dp)
+                            )
+                        }
                     }
 
-                    IconButton(onClick = { /* Handle delete action */ }) {
-                        Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
+                        Text(
+                            item.name,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            "$ " + item.unitPrice.toString(),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Normal
+                        )
+                    }
+
+
+                    Row {
+                        IconButton(onClick = { /* Handle edit action */ }) {
+                            Icon(Icons.Filled.Edit, contentDescription = "Edit")
+                        }
+
+                        IconButton(onClick = { /* Handle delete action */ }) {
+                            Icon(Icons.Filled.Delete, contentDescription = "Delete")
+                        }
                     }
                 }
             }

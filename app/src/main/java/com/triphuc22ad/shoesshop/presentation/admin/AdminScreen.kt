@@ -29,7 +29,6 @@ import com.triphuc22ad.shoesshop.presentation.admin.components.DashboardScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.OrderScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.ProductsScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.ProfileScreen
-import com.triphuc22ad.shoesshop.presentation.admin.components.editOrder
 import com.triphuc22ad.shoesshop.presentation.admin.components.orders
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
@@ -93,7 +92,7 @@ fun AdminNavigationScreens(navController: NavHostController, paddingValues: Padd
     ) {
         composable(AdminNavItem.Dashboard.path) { DashboardScreen() }
         composable(AdminNavItem.Products.path) { ProductsScreen() }
-        composable(AdminNavItem.Orders.path) { OrderScreen(orders = orders, onEditOrder = ::editOrder) }
+        composable(AdminNavItem.Orders.path) { OrderScreen(orders = orders) }
         composable(AdminNavItem.Profile.path) { ProfileScreen() }
     }
 }
