@@ -90,16 +90,7 @@ fun CardOrderItem(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Box(
-                    modifier = Modifier
-                        .size(16.dp)
-                        .background(Color.Black, CircleShape)
-                )
-                Text(text = "Black", fontWeight = FontWeight.Light, fontSize = 14.sp)
-                VerticalDivider(
-                    color = Color.Black,
-                    modifier = Modifier.height(12.dp)
-                )
+
                 Text(text = "Size = 42", fontWeight = FontWeight.Light, fontSize = 14.sp)
                 VerticalDivider(
                     color = Color.Black,
@@ -130,11 +121,14 @@ fun CardOrderItem(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .background(BgColor, RoundedCornerShape(32.dp))
-                        .padding(horizontal = 10.dp, vertical = 4.dp)
                         .clickable{onClick()}
                 ) {
-                    Text(text = action)
+                    Text(
+                        text = action,
+                        modifier = Modifier
+                            .background(BgColor, RoundedCornerShape(25.dp))
+
+                    )
                 }
             }
         }
@@ -152,7 +146,7 @@ fun CartItemPreview() {
                 .background(BgColor)
                 .padding(16.dp)
         ) {
-            CardOrderItem(status = "complete", action = "track order" ,onClick = {})
+            CardOrderItem(status = "complete", action = "" ,onClick = {})
         }
     }
 }

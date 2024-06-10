@@ -1,7 +1,9 @@
 package com.triphuc22ad.shoesshop.presentation.product
 
 import android.annotation.SuppressLint
+import android.view.Display.Mode
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,8 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.RangeSlider
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -154,6 +159,10 @@ fun FilterOptionList(
                     }
                 }
             }
+
+            FilterSection(sectionName = "Price") {
+                RangeSliderExample()
+            }
         }
     }
 
@@ -170,6 +179,46 @@ private fun FilterSection(
         content()
     }
 }
+
+@Composable
+fun RangeSliderExample() {
+    var sliderPosition by remember { mutableStateOf(0f..100f) }
+
+    fun formatCurrency(value: Float): String {
+        return "$" + String.format("%.2f", value)
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        RangeSlider(
+            value = sliderPosition,
+            steps = 0,
+            onValueChange = { range ->
+                sliderPosition = range
+            },
+            valueRange = 0f.rangeTo(100f),
+            onValueChangeFinished = {
+                // Khi hoàn tất sự thay đổi giá trị, bạn có thể thực hiện các logic kinh doanh ở đây
+                // viewModel.updateSelectedSliderValue(sliderPosition)
+            },
+            colors = SliderDefaults.colors(
+                thumbColor = Color.Black,
+                activeTrackColor = Color.Black,
+                inactiveTrackColor = Color.Gray
+            ),
+        )
+
+        Text(
+            text = formatCurrency(sliderPosition.start) + " - " + formatCurrency(sliderPosition.endInclusive),
+            modifier = Modifier.padding(top = 16.dp),
+            color = Color.Black
+        )
+    }
+}
+
+
 
 @Preview
 @Composable

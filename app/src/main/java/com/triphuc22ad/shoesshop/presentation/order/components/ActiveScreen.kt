@@ -25,7 +25,7 @@ fun ActiveScreen() {
 
             items(10) {
                 Row(Modifier.padding(vertical = 8.dp)) {
-                    CardOrderItem(status = "in delivery", action = "track order" ,onClick = {})
+                    CardOrderItem(status = "in delivery", action = "" ,onClick = {})
                 }
             }
 
