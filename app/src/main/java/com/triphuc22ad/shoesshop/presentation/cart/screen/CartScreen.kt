@@ -19,7 +19,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.filled.ShoppingBag
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -37,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.CartEvent
 import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
@@ -46,10 +46,12 @@ import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun CartScreen(
-    viewModel: CartViewModel = hiltViewModel(),
+    cartViewModel: CartViewModel = hiltViewModel(),
+    appViewModel: AppViewModel = hiltViewModel(),
     navigateToCheckout: () -> Unit = {},
 ) {
-    val state by viewModel.state.collectAsState()
+    val state by cartViewModel.state.collectAsState()
+    val appState by appViewModel.state.collectAsState()
 
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(
@@ -68,7 +70,7 @@ fun CartScreen(
                 items(state.items) {
                     CartItem(
                         item = it,
-                        onDelete = { viewModel.onEvent(CartEvent.ToggleDelete(it)) },
+                        onDelete = { cartViewModel.onEvent(CartEvent.ToggleDelete(it)) },
                         modifier = Modifier
                             .shadow(2.dp, RoundedCornerShape(32.dp))
                             .padding(top = 4.dp)
@@ -119,9 +121,9 @@ fun CartScreen(
         OptionSwipeableContainer(
             active = state.deleteOption != null,
             name = "Remove From Cart ?",
-            onSwipeDown = { viewModel.onEvent(CartEvent.ToggleDelete()) },
+            onSwipeDown = { cartViewModel.onEvent(CartEvent.ToggleDelete()) },
             firstActionName = "Cancel",
-            onFirstAction = { viewModel.onEvent(CartEvent.ToggleDelete()) },
+            onFirstAction = { cartViewModel.onEvent(CartEvent.ToggleDelete()) },
             secondActionName = "Yes, Remove",
             onSecondAction = { /*TODO*/ },
         ) {

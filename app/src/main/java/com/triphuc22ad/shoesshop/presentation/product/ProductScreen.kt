@@ -1,26 +1,25 @@
 package com.triphuc22ad.shoesshop.presentation.product
 
 import android.annotation.SuppressLint
-import android.view.Display.Mode
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.RangeSlider
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,20 +30,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.domain.model.Product
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.components.ProductSearchBar
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.FilterOption
 import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
-import com.triphuc22ad.shoesshop.presentation.components.SectionHeader
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedBoxWithConstraintsScope")
 @Composable
 fun ProductScreen(
+    productViewModel: ProductViewModel = hiltViewModel(),
+    appViewModel: AppViewModel = hiltViewModel(),
     navigateToProductDetail: (Int) -> Unit = {},
 ) {
+    val state by productViewModel.state.collectAsState()
+    val appState by appViewModel.state.collectAsState()
+
     var isFilterVisible by remember { mutableStateOf(false) }
     var isSearchBarActivated by remember { mutableStateOf(false) }
     Box(modifier = Modifier) {
@@ -56,7 +59,7 @@ fun ProductScreen(
                 .padding(if (!isSearchBarActivated) 16.dp else 0.dp)
         ) {
             ProductSearchBar(
-                query = "",
+                query = appState.productFilter.query,
                 active = isSearchBarActivated,
                 onActiveChange = { isSearchBarActivated = it },
                 onClear = { isSearchBarActivated = false },
@@ -69,35 +72,18 @@ fun ProductScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
-                .padding(top = 120.dp)
+                .padding(top = 140.dp)
         ) {
-            SectionHeader(
-                name = """Results for "Running"""",
-                actionName = "12.483 founds",
-                onClick = { /*TODO*/ })
 
             LazyVerticalGrid(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
                 columns = GridCells.Fixed(2)
             ) {
-                items(14) {
+                items(state.productList) {
                     ProductCard(
-                        product = Product(
-                            name = "Product 1",
-                            description = "",
-                            rating = 4.5f,
-                            price = 100000.0,
-                            totalSold = 100,
-                            brand = "Nike",
-                            img_url = "https://image.goat.com/glow-4-5-25/750/attachments/product_template_pictures/images/075/377/976/original/953670_00.png.png",
-                            isFavorite = false,
-                            colors = listOf(
-                                Pair("Red", "F00000"),
-                            ),
-                            sizes = listOf(41, 42, 43)
-                        ),
-                        onClick = { navigateToProductDetail(1) }
+                        product = it,
+                        onClick = { navigateToProductDetail(it.id) }
                     )
                 }
             }
@@ -122,46 +108,58 @@ fun FilterOptionList(
         firstActionName = "Reset",
         onFirstAction = {},
         secondActionName = "Apply",
-        onSecondAction = {}
+        onSecondAction = {},
+//        paddingBottom = 100.dp
     ) {
-        Column(
+        LazyColumn(
             verticalArrangement = Arrangement.spacedBy(16.dp),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .height(400.dp)
         ) {
-            FilterSection(sectionName = "Categories") {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(4) {
-                        FilterOption(text = "Filter $it", onClick = {})
+            item {
+                FilterSection(sectionName = "Categories") {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(4) {
+                            FilterOption(text = "Filter $it", onClick = {})
+                        }
                     }
                 }
             }
-            FilterSection(sectionName = "Gender") {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(4) {
-                        FilterOption(text = "Gender $it", onClick = {})
+            item {
+                FilterSection(sectionName = "Gender") {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(4) {
+                            FilterOption(text = "Gender $it", onClick = {})
+                        }
                     }
                 }
             }
-            FilterSection(sectionName = "Price Range") {
+            item {
 
-            }
-            FilterSection(sectionName = "Sort By") {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(4) {
-                        FilterOption(text = "Sort $it", onClick = {})
+                FilterSection(sectionName = "Sort By") {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(4) {
+                            FilterOption(text = "Sort $it", onClick = {})
+                        }
                     }
                 }
             }
-            FilterSection(sectionName = "Rating") {
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    items(4) {
-                        FilterOption(text = "★  $it", onClick = {})
-                    }
-                }
-            }
+            item {
 
-            FilterSection(sectionName = "Price") {
-                RangeSliderExample()
+                FilterSection(sectionName = "Rating") {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        items(4) {
+                            FilterOption(text = "★  $it", onClick = {})
+                        }
+                    }
+                }
+            }
+            item {
+
+                FilterSection(sectionName = "Price") {
+                    RangeSliderExample()
+                }
             }
         }
     }
@@ -217,7 +215,6 @@ fun RangeSliderExample() {
         )
     }
 }
-
 
 
 @Preview

@@ -7,14 +7,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
-fun MyOrderScreen() {
+fun MyOrderScreen(
+    orderViewModel: OrderViewModel = hiltViewModel(),
+) {
+    val state = orderViewModel.state.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,7 +36,10 @@ fun MyOrderScreen() {
             )
         }
 
-        TabScreen()
+        TabScreen(
+            inCompletedOrders = state.value.inCompletedOrders,
+            completedOrders = state.value.completedOrders
+        )
     }
 
 }

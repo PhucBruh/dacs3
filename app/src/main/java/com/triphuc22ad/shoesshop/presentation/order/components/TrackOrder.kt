@@ -41,7 +41,7 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
-fun TrackOrderScreen(){
+fun TrackOrderScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -56,8 +56,7 @@ fun TrackOrderScreen(){
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
-            CardReviewItem(status = "In Delivery")
-
+//            CardReviewItem(status = "In Delivery")
 
             Track(
                 items = 4,
@@ -74,12 +73,40 @@ fun TrackOrderScreen(){
 
                     PathEffect.dashPathEffect(floatArrayOf(30f, 35f), 10f)
                 },
-                iconstart  = listOf(
-                    { Icon(imageVector = Icons.Default.GifBox, tint = Color.Black, contentDescription = null, modifier = Modifier.size(24.dp)) },
-                    { Icon(imageVector = Icons.Default.LocalShipping, tint = Color.Black, contentDescription = null, modifier = Modifier.size(24.dp)) },
-                    { Icon(imageVector = Icons.Default.Stroller, tint = Color.Black, contentDescription = null, modifier = Modifier.size(24.dp)) },
-                    { Icon(imageVector = Icons.Default.OpenInBrowser, tint = Color.Black, contentDescription = null, modifier = Modifier.size(24.dp)) },
-            ),
+                iconstart = listOf(
+                    {
+                        Icon(
+                            imageVector = Icons.Default.GifBox,
+                            tint = Color.Black,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    {
+                        Icon(
+                            imageVector = Icons.Default.LocalShipping,
+                            tint = Color.Black,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    {
+                        Icon(
+                            imageVector = Icons.Default.Stroller,
+                            tint = Color.Black,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                    {
+                        Icon(
+                            imageVector = Icons.Default.OpenInBrowser,
+                            tint = Color.Black,
+                            contentDescription = null,
+                            modifier = Modifier.size(24.dp)
+                        )
+                    },
+                ),
                 iconend = { index ->
 
                     Box(
@@ -90,7 +117,7 @@ fun TrackOrderScreen(){
                             modifier = Modifier
                                 .size(16.dp)
                                 .background(Color.Black, shape = CircleShape)
-                        ){
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Done,
                                 tint = Color.White,
@@ -131,13 +158,13 @@ fun TrackOrderScreen(){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(30.dp)
                                 .background(Color.Black, CircleShape)
-                        ){
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
@@ -169,13 +196,13 @@ fun TrackOrderScreen(){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(30.dp)
                                 .background(Color.Black, CircleShape)
-                        ){
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
@@ -207,13 +234,13 @@ fun TrackOrderScreen(){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(30.dp)
                                 .background(Color.Black, CircleShape)
-                        ){
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
@@ -245,13 +272,13 @@ fun TrackOrderScreen(){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(30.dp)
                                 .background(Color.Black, CircleShape)
-                        ){
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
@@ -283,13 +310,13 @@ fun TrackOrderScreen(){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(30.dp)
                                 .background(Color.Black, CircleShape)
-                        ){
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
@@ -321,13 +348,13 @@ fun TrackOrderScreen(){
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
-                    ){
+                    ) {
                         Box(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .size(30.dp)
                                 .background(Color.Black, CircleShape)
-                        ){
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(15.dp)
@@ -363,17 +390,20 @@ fun TrackOrderScreen(){
 }
 
 @Composable
-fun DashedVerticalDivider(){
+fun DashedVerticalDivider() {
     Canvas(modifier = Modifier.height(30.dp)) {
         val startX = -450f
-        val endY =  size.height
+        val endY = size.height
 
         drawLine(
             brush = Brush.verticalGradient(listOf(Color.Black, Color.Transparent)),
             start = Offset(startX, 0f),
             end = Offset(startX, endY),
             strokeWidth = 2.dp.toPx(),
-            pathEffect = PathEffect.dashPathEffect(floatArrayOf(20f, 30f), 0f)// Độ rộng và khoảng cách giữa các đoạn nét đứt
+            pathEffect = PathEffect.dashPathEffect(
+                floatArrayOf(20f, 30f),
+                0f
+            )// Độ rộng và khoảng cách giữa các đoạn nét đứt
         )
     }
 }
@@ -385,8 +415,9 @@ fun Track(
     modifier: Modifier = Modifier,
     lineWidth: Dp = 1.dp,
     pathEffect: ((from: Int) -> androidx.compose.ui.graphics.PathEffect?)? = null,
-    iconstart:  List<@Composable () -> Unit>,
-    iconend: @Composable (index: Int) -> Unit) {
+    iconstart: List<@Composable () -> Unit>,
+    iconend: @Composable (index: Int) -> Unit,
+) {
     Box(
         modifier = modifier,
         contentAlignment = Alignment.Center,

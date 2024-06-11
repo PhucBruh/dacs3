@@ -47,7 +47,7 @@ fun SpecialOfferBanner(
                 .padding(start = 24.dp)
         ) {
             Text(
-                text = "${specialOffer.value}% off",
+                text = "${specialOffer.value.toInt()}% off",
                 fontWeight = FontWeight.Bold,
                 fontSize = 32.sp,
             )
@@ -63,7 +63,7 @@ fun SpecialOfferBanner(
         }
         Box(modifier = Modifier.weight(1f)) {
             AsyncImage(
-                model = specialOffer.img_url,
+                model = specialOffer.img,
                 contentDescription = null,
                 modifier = Modifier.padding(12.dp)
             )
@@ -81,10 +81,12 @@ fun SpecialOfferPreview() {
                     vertical = 10.dp, horizontal = 16.dp
                 ),
                 specialOffer = SpecialOffer(
+                    value = 25.0,
                     name = "Today's Special",
                     description = "Get discount for every order, only valid for today",
-                    value = 25,
-                    img_url = ""
+                    img = "",
+                    active = true,
+                    productId = 1
                 ),
             )
         }

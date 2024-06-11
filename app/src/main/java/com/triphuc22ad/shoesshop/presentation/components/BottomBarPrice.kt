@@ -3,6 +3,7 @@ package com.triphuc22ad.shoesshop.presentation.components
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,12 +40,14 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 fun PriceBar(
     price: String,
     border: Boolean = true,
+    onAction: () -> Unit = {},
     modifier: Modifier = Modifier,
+    isDisableClick: Boolean = false,
     actionButtonContent: @Composable () -> Unit,
 ) {
 
     Column(
-        verticalArrangement = if (border) Arrangement.Center  else Arrangement.Top,
+        verticalArrangement = if (border) Arrangement.Center else Arrangement.Top,
         modifier = modifier
             .fillMaxWidth()
             .let {
@@ -77,15 +81,19 @@ fun PriceBar(
         ) {
             Column {
                 Text(text = "Total Price", fontSize = 12.sp, fontWeight = FontWeight.Light)
-                Text(text = price, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                Text(text = price, fontSize = 16.sp, fontWeight = FontWeight.Bold)
             }
             Box {
                 Button(
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black
+                        containerColor = Color.Black,
+                        disabledContainerColor = Color.Black,
+                        disabledContentColor = Color.White,
                     ),
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.size(height = 52.dp, width = 200.dp)
+                    onClick = { onAction() },
+                    enabled = !isDisableClick,
+                    modifier = Modifier
+                        .size(height = 52.dp, width = 160.dp)
                 ) {
                     actionButtonContent()
                 }
@@ -107,7 +115,7 @@ fun BottomBarPricePreview() {
                         BgColor
                     )
             ) {
-                PriceBar(price = "$555.555") {
+                PriceBar(price = "$555.555", isDisableClick = true) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Text(text = "Checkout", fontSize = 17.sp)
                         Spacer(modifier = Modifier.width(4.dp))

@@ -31,13 +31,12 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 fun TextCircleButton(
     text: String,
     active: Boolean = false,
-    onClick: (isActivated: Boolean) -> Unit,
+    onClick: () -> Unit,
     size: Dp = 32.dp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    var isActivated by remember { mutableStateOf(active) }
-    val backgroundColor = if (isActivated) Color.Black else Color.White
-    val textColor = if (isActivated) Color.White else Color.Black
+    val backgroundColor = if (active) Color.Black else Color.White
+    val textColor = if (active) Color.White else Color.Black
 
     Box(
         contentAlignment = Alignment.Center,
@@ -47,8 +46,7 @@ fun TextCircleButton(
             .background(backgroundColor, CircleShape)
             .clip(CircleShape)
             .clickable {
-                isActivated = !isActivated
-                onClick(isActivated)
+                onClick()
             }
     ) {
         Text(text = text, fontSize = (size.value / 2).sp, color = textColor)
@@ -61,11 +59,10 @@ fun ColorCircleButton(
     color: Color,
     checkedColor: Color = Color.White,
     active: Boolean = false,
-    onClick: (isActivated: Boolean) -> Unit,
+    onClick: () -> Unit,
     size: Dp = 32.dp,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    var isActivated by remember { mutableStateOf(active) }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -74,11 +71,10 @@ fun ColorCircleButton(
             .background(color, CircleShape)
             .clip(CircleShape)
             .clickable {
-                isActivated = !isActivated
-                onClick(isActivated)
+                onClick()
             }
     ) {
-        if (isActivated) {
+        if (active) {
             Icon(
                 imageVector = Icons.Default.Check,
                 contentDescription = null,

@@ -38,6 +38,7 @@ fun UserBar(
     modifier: Modifier = Modifier,
     onWishListClick: () -> Unit = {},
     onUserClick: () -> Unit = {},
+    name: String = "",
 ) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -69,31 +70,9 @@ fun UserBar(
                     fontWeight = FontWeight.Light
                 )
                 Text(
-                    text = "Phúc",
+                    text = name,
                     fontSize = 24.sp,
                     fontWeight = FontWeight.Bold
-                )
-            }
-        }
-        Row {
-            IconButton(
-                onClick = { /*TODO*/ },
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Notifications,
-                    contentDescription = null,
-                    tint = Color.Black,
-                    modifier = Modifier.size(32.dp)
-                )
-            }
-            IconButton(
-                onClick = { onWishListClick() },
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.FavoriteBorder,
-                    contentDescription = null,
-                    tint = Color.Black,
-                    modifier = Modifier.size(32.dp)
                 )
             }
         }

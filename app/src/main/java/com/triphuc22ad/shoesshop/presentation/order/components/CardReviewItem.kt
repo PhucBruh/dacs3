@@ -122,7 +122,6 @@ fun CardReviewItem(
                     .fillMaxWidth()
             ) {
                 Text(text = "$105.00")
-
             }
         }
     }

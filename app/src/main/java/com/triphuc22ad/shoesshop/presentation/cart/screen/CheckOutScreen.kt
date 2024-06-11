@@ -39,6 +39,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.components.CardAddress
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.cart.components.CardOrder
@@ -46,6 +48,7 @@ import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 
 @Composable
 fun CheckOutScreen(
+    cartViewModel: CartViewModel = hiltViewModel(),
     navigateBack: () -> Unit = {},
 ) {
 

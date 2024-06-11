@@ -34,10 +34,12 @@ fun SpecialOffersScreen(
             items(10) {
                 SpecialOfferBanner(
                     specialOffer = SpecialOffer(
+                        value = 25.0,
                         name = "Special Offer $it",
                         description = "Description $it",
-                        value = 25,
-                        img_url = "https://www.jordan1.vn/wp-content/uploads/2023/09/3022893_409.png_77c2f15034cf4fa3b92f07195024f407.png"
+                        img = "https://www.jordan1.vn/wp-content/uploads/2023/09/3022893_409.png_77c2f15034cf4fa3b92f07195024f407.png",
+                        active = true,
+                        productId = 1
                     ),
                     onClick = { navigateToProductDetail(it) }
                 )

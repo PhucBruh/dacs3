@@ -11,17 +11,24 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingBag
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.outlined.Store
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.triphuc22ad.shoesshop.presentation.app.navigation.BottomNavItem
 import com.triphuc22ad.shoesshop.presentation.app.navigation.BottomNavigationBar
 import com.triphuc22ad.shoesshop.presentation.app.navigation.Screen
@@ -33,16 +40,28 @@ import com.triphuc22ad.shoesshop.presentation.home.HomeScreen
 import com.triphuc22ad.shoesshop.presentation.order.MyOrderScreen
 import com.triphuc22ad.shoesshop.presentation.product.ProductScreen
 import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailScreen
+import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailViewModel
 import com.triphuc22ad.shoesshop.presentation.profile.ProfileScreen
 import com.triphuc22ad.shoesshop.presentation.special_offers.SpecialOffersScreen
-import com.triphuc22ad.shoesshop.presentation.wish_list.WishListScreen
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import kotlinx.coroutines.launch
+import okhttp3.internal.notify
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun App(appViewModel: AppViewModel = hiltViewModel()) {
     val state by appViewModel.state.collectAsState()
     val navController = rememberNavController()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(state.notify.id) {
+        if (state.notify.value.isNotEmpty()) {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(state.notify.value)
+            }
+        }
+    }
 
     val navItems = listOf(
         BottomNavItem(title = "Home", icon = Icons.Outlined.Home, route = Screen.Home.route),
@@ -98,24 +117,34 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     BackHandler(true) {
                         // Or do nothing
                     }
-                    HomeScreen(navigateToWishlist = { navController.navigate(Screen.WishList.route) },
-                        navigateToProfile = { navController.navigate(Screen.Profile.route) },
+                    HomeScreen(
                         navigateToSpecialOffer = { navController.navigate(Screen.SpecialOffer.route) },
-                        navigateToProduct = { navController.navigate(Screen.Product.route) },
-                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) })
+                        navigateToProduct = {
+                            navController.navigate(Screen.Product.route) {
+                                popUpTo(Screen.Product.route) { inclusive = true }
+                            }
+                        },
+                        navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") })
                 }
                 composable(Screen.Product.route) {
-
                     BackHandler(true) {
                         // Or do nothing
                     }
 
                     ProductScreen(
-                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) },
+                        navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") }
                     )
                 }
 
-                composable(Screen.ProductDetail.route) { ProductDetailScreen(onBackClick = { navController.popBackStack() }) }
+                composable(
+                    Screen.Product.route + "/{productId}",
+                    arguments = listOf(navArgument("productId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val productId =
+                        backStackEntry.arguments?.getInt("productId") ?: return@composable
+                    ProductDetailScreen(
+                        onBackClick = { navController.popBackStack() })
+                }
 
                 composable(Screen.Cart.route) {
 
@@ -148,20 +177,21 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     CheckOutScreen(navigateBack = { navController.popBackStack() })
                 }
 
-                composable(Screen.WishList.route) {
-                    WishListScreen(navigateBack = { navController.navigate(Screen.Home.route) })
-                }
-
                 composable(Screen.SpecialOffer.route) {
                     SpecialOffersScreen(
                         navigateBack = { navController.popBackStack() },
-                        navigateToProductDetail = { navController.navigate(Screen.ProductDetail.route) })
+                        navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") })
                 }
             }
 
             if (state.showBottomBar) BottomNavigationBar(
                 navItems = navItems,
                 navController = navController
+            )
+
+            SnackbarHost(
+                hostState = snackbarHostState,
+                modifier = Modifier.padding(bottom = 100.dp)
             )
         }
     }

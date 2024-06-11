@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
@@ -49,7 +50,8 @@ fun OptionSwipeableContainer(
     secondActionName: String,
     onSecondAction: () -> Unit,
     modifier: Modifier = Modifier,
-    content: @Composable() () -> Unit
+    paddingBottom: Dp = 0.dp,
+    content: @Composable() () -> Unit,
 ) {
     AnimatedVisibility(
         visible = active,
@@ -113,7 +115,7 @@ fun OptionSwipeableContainer(
                 Row(
                     Modifier
                         .padding(horizontal = 16.dp)
-                        .padding(bottom = 16.dp)
+                        .padding(bottom = 16.dp + paddingBottom)
                 ) {
                     Button(
                         colors = ButtonDefaults.buttonColors(

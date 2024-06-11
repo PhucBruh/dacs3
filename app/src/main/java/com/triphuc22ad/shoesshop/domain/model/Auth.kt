@@ -10,4 +10,5 @@ data class SignupInfo(
     val lastName: String = "",
     val password: String = "",
     val email: String = "",
+    val phone: String = "",
 )

@@ -1,6 +1,7 @@
 package com.triphuc22ad.shoesshop.presentation.cart
 
 import androidx.lifecycle.ViewModel
+import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -8,7 +9,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor() : ViewModel() {
+class CartViewModel @Inject constructor(
+    private val appStateRepository: AppStateRepository,
+) : ViewModel() {
 
     private val _state = MutableStateFlow<CartUiState>(CartUiState())
     val state: StateFlow<CartUiState> = _state.asStateFlow()

@@ -30,8 +30,8 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 @Composable
 fun QuantityButton(
     quantity: Int = 0,
-    onIncrease: (quantity: Int) -> Unit = {},
-    onDecrease: (quantity: Int) -> Unit = {},
+    onIncrease: () -> Unit = {},
+    onDecrease: () -> Unit = {},
     size: Dp = 32.dp,
 ) {
     Row(
@@ -45,7 +45,7 @@ fun QuantityButton(
             modifier = Modifier
                 .size(size)
                 .clip(CircleShape)
-                .clickable { onIncrease(quantity) }) {
+                .clickable { onDecrease() }) {
             Icon(
                 imageVector = Icons.Default.Remove,
                 contentDescription = null,
@@ -62,7 +62,7 @@ fun QuantityButton(
             modifier = Modifier
                 .size(size)
                 .clip(CircleShape)
-                .clickable { onDecrease(quantity) }) {
+                .clickable { onIncrease() }) {
             Icon(
                 imageVector = Icons.Default.Add,
                 contentDescription = null,

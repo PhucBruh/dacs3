@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
@@ -70,10 +71,11 @@ val listImgs = listOf(
 
 @Composable
 fun ProductDetailScreen(
-    viewModel: ProductDetailViewModel = hiltViewModel(),
     onBackClick: () -> Unit = {},
+    productDetailViewModel: ProductDetailViewModel = hiltViewModel(),
 ) {
-    val state by viewModel.state.collectAsState()
+
+    val state by productDetailViewModel.state.collectAsState()
 
     Box(
         contentAlignment = Alignment.BottomEnd,
@@ -128,13 +130,6 @@ fun ProductDetailScreen(
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
                         )
-                        IconButton(onClick = { /*TODO*/ }, modifier = Modifier.size(28.dp)) {
-                            Icon(
-                                imageVector = Icons.Outlined.FavoriteBorder,
-                                contentDescription = null,
-                                modifier = Modifier.fillMaxSize()
-                            )
-                        }
                     }
 
                     Row(
@@ -153,7 +148,7 @@ fun ProductDetailScreen(
                             contentDescription = "Rating",
                             tint = Color.Black
                         )
-                        Text(text = "${state.product.rating} (6.573 reviews)")
+                        Text(text = "${state.product.rating}")
                     }
 
                     HorizontalDivider()
@@ -167,8 +162,8 @@ fun ProductDetailScreen(
 
                     DetailContainerVertical(name = "Description") {
                         ExpandedText(
-                            text = stringResource(id = R.string.nofull),
-                            expandedText = stringResource(id = R.string.full),
+                            text = state.product.description,
+                            expandedText = state.product.description,
                             expandedTextButton = " view more..",
                             shrinkTextButton = " less",
                         )
@@ -180,9 +175,15 @@ fun ProductDetailScreen(
                         ) {
                             items(items = state.product.sizes) { size ->
                                 TextCircleButton(
-                                    text = "$size",
-                                    onClick = { viewModel.onEvent(ProductDetailEvent.ChangeSize(size)) },
-                                    active = size == state.selectedSize,
+                                    text = "${size.size}",
+                                    onClick = {
+                                        productDetailViewModel.onEvent(
+                                            ProductDetailEvent.ChangeSize(
+                                                sizeId = size.id
+                                            )
+                                        )
+                                    },
+                                    active = size.id == state.selectedSizeId,
                                     size = 40.dp
                                 )
                             }
@@ -193,40 +194,46 @@ fun ProductDetailScreen(
                         LazyRow(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            items(4) {
+                            items(state.product.colors) { color ->
                                 ColorCircleButton(
-                                    color = Color(
-                                        red = Random.nextInt(256),
-                                        blue = Random.nextInt(256),
-                                        green = Random.nextInt(256),
-                                    ), onClick = {}, size = 40.dp
+                                    color = Color(android.graphics.Color.parseColor(color.value)),
+                                    onClick = {
+                                        productDetailViewModel.onEvent(
+                                            ProductDetailEvent.ChangeColor(
+                                                color.id
+                                            )
+                                        )
+                                    },
+                                    active = color.id == state.selectedColorId,
+                                    size = 40.dp
                                 )
                             }
                         }
                     }
 
                     DetailContainerHorizontal(name = "Quantity") {
-                        QuantityButton(size = 44.dp)
+                        QuantityButton(
+                            size = 44.dp,
+                            quantity = state.quantity,
+                            onIncrease = { productDetailViewModel.onEvent(ProductDetailEvent.IncreaseQuantity) },
+                            onDecrease = { productDetailViewModel.onEvent(ProductDetailEvent.DecreaseQuantity) }
+                        )
                     }
                 }
             }
         }
 
-        PriceBar(price = "$5.555", border = false) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.AddShoppingCart,
-                    contentDescription = null,
-                    modifier = Modifier.size(28.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(text = "Add to Cart", fontSize = 17.sp)
-            }
+        PriceBar(
+            price = "${if (state.product.promotionalPrice != 0.0) state.product.promotionalPrice.toInt() else state.product.price.toInt()} vnđ",
+            border = false,
+            onAction = { productDetailViewModel.onEvent(ProductDetailEvent.AddToCart) },
+            isDisableClick = state.isInCart,
+        ) {
+            Text(text = if (state.isInCart) "In Cart" else "Add to cart", fontSize = 14.sp)
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun ProductImagePager(
     images: List<Int>,

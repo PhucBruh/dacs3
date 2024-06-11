@@ -1,16 +1,13 @@
 package com.triphuc22ad.shoesshop.domain.model
 
 data class Product(
-    val id: Int? = null,
-    val name: String,
+    val id: Int,
     val description: String,
+    val mainImg: String,
+    val name: String,
     val price: Double,
-    val colors: List<Pair<String, String>>,
-    val sizes: List<Int>,
-    val brand: String,
-    val isFavorite: Boolean,
+    val promotionPrice: Double,
+    val rating: Double,
+    val status: String,
     val totalSold: Int,
-    val rating: Float,
-    val img_url: String,
-    val imgs: List<String> = emptyList(),
 )

@@ -19,6 +19,7 @@ import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -27,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.OrderInfo
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
@@ -34,9 +36,9 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 @Composable
 fun CardOrderItem(
     modifier: Modifier = Modifier,
-    onClick :  () -> Unit,
-    status : String,
-    action: String
+    onClick: () -> Unit,
+    status: String,
+    action: String,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -44,6 +46,8 @@ fun CardOrderItem(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.White, RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(32.dp))
+            .clickable { onClick() }
     ) {
         Column(
             Modifier
@@ -121,7 +125,7 @@ fun CardOrderItem(
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .clickable{onClick()}
+                        .clickable { onClick() }
                 ) {
                     Text(
                         text = action,
@@ -130,6 +134,98 @@ fun CardOrderItem(
 
                     )
                 }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun OrderItem(
+    order: OrderInfo,
+    onClick: () -> Unit,
+    completed: Boolean = false,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.White, RoundedCornerShape(32.dp))
+            .clip(RoundedCornerShape(32.dp))
+            .clickable { onClick() }
+    ) {
+        Column(
+            Modifier
+                .padding(vertical = 16.dp)
+                .padding(start = 15.dp)
+                .shadow(2.dp, RoundedCornerShape(32.dp))
+        ) {
+            Box(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier
+                    .size(120.dp)
+                    .background(BgColor, RoundedCornerShape(32.dp))
+            ) {
+                Image(
+                    painter = painterResource(
+                        id = if (completed) R.drawable.completed_order
+                        else R.drawable.incompleted_order
+                    ),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                )
+            }
+        }
+        Column(
+            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .height(150.dp)
+                .padding(end = 20.dp)
+                .padding(vertical = 10.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = order.shippingAddress,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                )
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+
+                Text(text = order.description, fontWeight = FontWeight.Light, fontSize = 14.sp)
+            }
+
+            Row {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier
+                        .background(BgColor, RoundedCornerShape(10.dp))
+                        .padding(horizontal = 5.dp, vertical = 2.dp)
+                ) {
+                    Text(text = order.status)
+                }
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                Text(text = "${order.price} vnđ")
             }
         }
     }
@@ -146,7 +242,17 @@ fun CartItemPreview() {
                 .background(BgColor)
                 .padding(16.dp)
         ) {
-            CardOrderItem(status = "complete", action = "" ,onClick = {})
+            OrderItem(
+                order = OrderInfo(
+                    id = 1,
+                    description = "giao vao buoi chieu",
+                    shippingAddress = "da nang",
+                    price = 100000.0,
+                    status = "COMPLETED"
+                ),
+                onClick = {},
+                completed = false,
+            )
         }
     }
 }
