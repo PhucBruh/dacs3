@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,6 +32,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -40,6 +43,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
+import com.triphuc22ad.shoesshop.presentation.cart.CartEvent
 import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.components.CardAddress
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
@@ -49,11 +54,18 @@ import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 @Composable
 fun CheckOutScreen(
     cartViewModel: CartViewModel = hiltViewModel(),
+    appViewModel: AppViewModel = hiltViewModel(),
     navigateBack: () -> Unit = {},
 ) {
+    val state = cartViewModel.state.collectAsState()
+    val appState = appViewModel.state.collectAsState()
 
-    Box(contentAlignment = Alignment.BottomCenter) {
-        LazyColumn(
+    LaunchedEffect(Unit) {
+        cartViewModel.validateCart()
+    }
+
+    if (appState.value.cartItems.isEmpty() && state.value.isCreatedOrder) {
+        Column(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
@@ -61,217 +73,122 @@ fun CheckOutScreen(
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 100.dp)
         ) {
-
-            item {
-                TopTitleBar(
-                    name = "Checkout", modifier = Modifier.padding(top = 16.dp),
-                    onLeftAction = navigateBack
-                )
-            }
-
-            item {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SectionHeader(name = "Shipping address")
-
-                    CardAddress()
-
-                    HorizontalDivider(Modifier.padding(top = 8.dp))
-                }
-            }
-
-            item {
-            }
-
-            item {
-                SectionHeader(name = "Orders")
-            }
-
-            items(10) {
-                Row(Modifier.padding(vertical = 8.dp)) {
-                    CardOrder(
-                        modifier = Modifier
-                            .shadow(2.dp, RoundedCornerShape(32.dp))
+            TopTitleBar(
+                name = "Checkout", modifier = Modifier.padding(top = 16.dp),
+                onLeftAction = navigateBack
+            )
+            Text(text = "Create success")
+        }
+    } else if (appState.value.cartItems.isEmpty() && !state.value.isCreatedOrder) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp)
+                .padding(bottom = 100.dp)
+        ) {
+            TopTitleBar(
+                name = "Checkout", modifier = Modifier.padding(top = 16.dp),
+                onLeftAction = navigateBack
+            )
+            Text(text = "The cart is empty now")
+        }
+    } else {
+        Box(contentAlignment = Alignment.BottomCenter) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 100.dp)
+            ) {
+                item {
+                    TopTitleBar(
+                        name = "Checkout", modifier = Modifier.padding(top = 16.dp),
+                        onLeftAction = navigateBack
                     )
                 }
-            }
 
-            item {
-                HorizontalDivider(Modifier.padding(top = 8.dp))
-            }
+                item {
+                    SectionHeader(name = "Orders")
+                }
 
-            item {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    SectionHeader(name = "Choose Shipping")
-
-                    // Edit the column bellow to the component you want
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceAround,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .shadow(2.dp, RoundedCornerShape(20.dp))
-                            .padding(vertical = 20.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.LocalShipping,
-                            contentDescription = "Rating",
-                            tint = Color.Black,
+                items(appState.value.cartItems) {
+                    Row(Modifier.padding(vertical = 8.dp)) {
+                        CardOrder(
+                            cartItem = it,
+                            modifier = Modifier
+                                .shadow(2.dp, RoundedCornerShape(32.dp))
                         )
-
-                        Text(
-                            text = "Choose Shipping Type",
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.Medium,
-                        )
-
-                        Icon(
-                            imageVector = Icons.Default.ArrowForwardIos,
-                            contentDescription = "Rating",
-                            tint = Color.Black,
-                        )
-
                     }
+                }
 
-
+                item {
                     HorizontalDivider(Modifier.padding(top = 8.dp))
                 }
-            }
 
-            item {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.padding(bottom = 40.dp)
-                ) {
-                    SectionHeader(name = "Promote Code")
-
-                    // Edit the column bellow to the component you want
+                item {
                     Column(
-                        verticalArrangement = Arrangement.spacedBy(20.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.padding(bottom = 40.dp)
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            InputCode(
-                                value = "",
-                                onValueChange = {},
-                                description = "Enter Promo Code",
-
-                                )
-
-                            Box(
-                                modifier = Modifier
-                                    .size(50.dp)
-                                    .background(Color.Gray, CircleShape),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Add,
-                                    contentDescription = "Add",
-                                    tint = Color.Black,
-                                )
+                        SectionHeader(name = "Total price")
+                        val totalPrice = appState.value.cartItems.sumOf {
+                            if (it.promotionPrice != 0.0) {
+                                it.promotionPrice * it.quantity
+                            } else {
+                                it.price * it.quantity
                             }
                         }
 
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(20.dp),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .shadow(2.dp, RoundedCornerShape(20.dp))
-                                .padding(vertical = 20.dp, horizontal = 20.dp)
-                        ) {
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "Amount",
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "$585.00",
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "Shipping",
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "-",
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-
-                            HorizontalDivider(Modifier.padding(top = 8.dp, bottom = 8.dp))
-
-                            Row(
-                                horizontalArrangement = Arrangement.SpaceBetween,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                            ) {
-                                Text(
-                                    text = "Total",
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "-",
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-
-
-
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .background(Color.White, RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-                .border(
-                    border = BorderStroke(2.dp, Color.Gray),
-                    shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
-                )
-                .padding(16.dp)
-        ) {
-            Box {
-                Button(
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Black
-                    ),
-                    onClick = {},
-                    modifier = Modifier
-                        .size(height = 52.dp, width = 450.dp),
-                ) {
-                    Row(verticalAlignment = Alignment.CenterVertically)
-                    {
-                        Text(text = "Continue to Payment", fontSize = 17.sp)
-                        Spacer(modifier = Modifier.width(4.dp))
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
-                            contentDescription = null,
-                            modifier = Modifier.size(28.dp)
+                        Text(
+                            text = "$totalPrice vnđ",
+                            fontWeight = FontWeight.Bold
                         )
                     }
                 }
             }
 
-
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp)
+                    .background(
+                        Color.White,
+                        RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+                    )
+                    .border(
+                        border = BorderStroke(2.dp, Color.Gray),
+                        shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+                    )
+                    .padding(16.dp)
+            ) {
+                Box {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black
+                        ),
+                        onClick = { cartViewModel.onEvent(CartEvent.CreateOrder) },
+                        modifier = Modifier
+                            .size(height = 52.dp, width = 450.dp),
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically)
+                        {
+                            Text(text = "Create order", fontSize = 16.sp)
+                            Spacer(modifier = Modifier.width(4.dp))
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Filled.ArrowRightAlt,
+                                contentDescription = null,
+                                modifier = Modifier.size(28.dp)
+                            )
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -289,33 +206,6 @@ private fun SectionHeader(name: String, modifier: Modifier = Modifier) {
             fontWeight = FontWeight.Medium,
         )
     }
-}
-
-@Composable
-fun InputCode(
-    value: String,
-    onValueChange: (String) -> Unit,
-    description: String,
-    modifier: Modifier = Modifier
-        .background(color = Color.White),
-) {
-    TextField(
-        value = value,
-        onValueChange = { onValueChange(it) },
-        placeholder = {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(text = description)
-            }
-        },
-        shape = RoundedCornerShape(16.dp),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-        ),
-        modifier = modifier
-    )
 }
 
 @Preview

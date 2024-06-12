@@ -1,19 +1,16 @@
 package com.triphuc22ad.shoesshop.presentation.product_detail
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
@@ -23,9 +20,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.AddShoppingCart
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,14 +34,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
@@ -57,7 +50,6 @@ import com.triphuc22ad.shoesshop.presentation.components.PagerIndicator
 import com.triphuc22ad.shoesshop.presentation.components.PriceBar
 import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
 import kotlin.math.absoluteValue
-import kotlin.random.Random
 
 val listImgs = listOf(
     R.drawable.kd_15,
@@ -179,11 +171,11 @@ fun ProductDetailScreen(
                                     onClick = {
                                         productDetailViewModel.onEvent(
                                             ProductDetailEvent.ChangeSize(
-                                                sizeId = size.id
+                                                size = size
                                             )
                                         )
                                     },
-                                    active = size.id == state.selectedSizeId,
+                                    active = size.id == state.selectedSize.id,
                                     size = 40.dp
                                 )
                             }
@@ -199,12 +191,10 @@ fun ProductDetailScreen(
                                     color = Color(android.graphics.Color.parseColor(color.value)),
                                     onClick = {
                                         productDetailViewModel.onEvent(
-                                            ProductDetailEvent.ChangeColor(
-                                                color.id
-                                            )
+                                            ProductDetailEvent.ChangeColor(color)
                                         )
                                     },
-                                    active = color.id == state.selectedColorId,
+                                    active = color.id == state.selectedColor.id,
                                     size = 40.dp
                                 )
                             }

@@ -5,11 +5,9 @@ import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.CartItem
 
 data class CartUiState(
-    val items: List<CartItem> = cartItems,
-    val deleteOption: CartItem? = null,
-    val shippingAddress: String? = null,
-    val shippingType: String? = null,
-    val promo: String? = null,
+    val shippingAddress: String = "",
+    val description: String = "",
+    val isCreatedOrder: Boolean = false,
 )
 
 private val cartItems = listOf(

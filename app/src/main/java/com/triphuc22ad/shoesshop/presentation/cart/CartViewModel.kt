@@ -1,16 +1,21 @@
 package com.triphuc22ad.shoesshop.presentation.cart
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.triphuc22ad.shoesshop.data.service.InventoryService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
+import com.triphuc22ad.shoesshop.presentation.cart.CartEvent.CheckOut
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val appStateRepository: AppStateRepository,
+    private val inventoryService: InventoryService,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CartUiState>(CartUiState())
@@ -18,14 +23,71 @@ class CartViewModel @Inject constructor(
 
     fun onEvent(event: CartEvent) {
         when (event) {
-            CartEvent.CheckOut -> TODO()
-            is CartEvent.DecreaseQuantity -> TODO()
-            is CartEvent.DeleteItem -> TODO()
-            is CartEvent.IncreaseQuantity -> TODO()
+            is CartEvent.DecreaseQuantity -> {
+                appStateRepository.decreaseQuantityCartItem(event.productId)
+            }
+
+            is CartEvent.IncreaseQuantity -> {
+                appStateRepository.increaseQuantityCartItem(event.productId)
+            }
+
+            is CartEvent.DeleteItem -> {
+                appStateRepository.deleteCartItem(event.productId)
+            }
+
             is CartEvent.ToggleDelete -> TODO()
+            is CheckOut -> {
+                if (appStateRepository.isEmptyCart()) {
+                    appStateRepository.updateNotify("Cart now is empty")
+                } else {
+                    event.navigateToCheckOut()
+                }
+            }
+
+            CartEvent.CreateOrder -> {
+                appStateRepository.clearCart()
+                _state.value = state.value.copy(
+                    isCreatedOrder = true
+                )
+            }
         }
     }
 
     private fun checkOut() {
+    }
+
+    fun validateCart() {
+        viewModelScope.launch {
+            val cart = appStateRepository.appUiState.value.cartItems
+            var notify = false
+            if (!cart.isEmpty()) {
+                cart.forEach {
+                    val productResponse =
+                        inventoryService.getProductByInventoryInfo(
+                            productId = it.productId,
+                            colorId = it.color.id,
+                            sizeId = it.size.id
+                        );
+                    if (productResponse.isSuccessful) {
+                        val product = productResponse.body()?.data
+                        product?.let { it1 ->
+                            if (it1.status == "ACTIVE") {
+                                appStateRepository.updateCartItemPrice(it1)
+                            } else {
+                                appStateRepository.deleteCartItem(it.productId)
+                                notify = true
+                            }
+                        }
+                    } else if (productResponse.code() == 404) {
+                        appStateRepository.deleteCartItem(it.productId)
+                        notify = true
+                    }
+                }
+            }
+            if (notify) {
+                appStateRepository.updateNotify("Update cart and delete item that not found in inventory or inactive")
+            }
+        }
+
     }
 }

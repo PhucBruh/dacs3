@@ -25,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -53,6 +54,10 @@ fun CartScreen(
     val state by cartViewModel.state.collectAsState()
     val appState by appViewModel.state.collectAsState()
 
+    LaunchedEffect(Unit) {
+        cartViewModel.validateCart()
+    }
+
     Box(contentAlignment = Alignment.BottomCenter) {
         Column(
             verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -67,10 +72,12 @@ fun CartScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(state.items) {
+                items(appState.cartItems) {
                     CartItem(
                         item = it,
-                        onDelete = { cartViewModel.onEvent(CartEvent.ToggleDelete(it)) },
+                        onIncrease = { cartViewModel.onEvent(CartEvent.IncreaseQuantity(it.productId)) },
+                        onDecrease = { cartViewModel.onEvent(CartEvent.DecreaseQuantity(it.productId)) },
+                        onDelete = { cartViewModel.onEvent(CartEvent.DeleteItem(it.productId)) },
                         modifier = Modifier
                             .shadow(2.dp, RoundedCornerShape(32.dp))
                             .padding(top = 4.dp)
@@ -95,14 +102,25 @@ fun CartScreen(
         ) {
             Column {
                 Text(text = "Total Price", fontSize = 12.sp, fontWeight = FontWeight.Light)
-                Text(text = "$555.555", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+                val totalPrice = appState.cartItems.sumOf {
+                    if (it.promotionPrice != 0.0) {
+                        it.promotionPrice * it.quantity
+                    } else {
+                        it.price * it.quantity
+                    }
+                }
+                Text(
+                    text = "${totalPrice.toInt()} vnđ",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
             Box {
                 Button(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color.Black
                     ),
-                    onClick = { navigateToCheckout() },
+                    onClick = { cartViewModel.onEvent(CartEvent.CheckOut(navigateToCheckout)) },
                     modifier = Modifier.size(height = 52.dp, width = 200.dp)
                 ) {
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -115,26 +133,6 @@ fun CartScreen(
                         )
                     }
                 }
-            }
-        }
-
-        OptionSwipeableContainer(
-            active = state.deleteOption != null,
-            name = "Remove From Cart ?",
-            onSwipeDown = { cartViewModel.onEvent(CartEvent.ToggleDelete()) },
-            firstActionName = "Cancel",
-            onFirstAction = { cartViewModel.onEvent(CartEvent.ToggleDelete()) },
-            secondActionName = "Yes, Remove",
-            onSecondAction = { /*TODO*/ },
-        ) {
-            state.deleteOption?.let {
-                CartItem(
-                    item = it,
-                    removable = false,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .shadow(2.dp, RoundedCornerShape(32.dp)),
-                )
             }
         }
     }

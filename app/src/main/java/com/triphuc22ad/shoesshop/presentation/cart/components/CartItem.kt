@@ -28,8 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.domain.model.CartItem
+import com.triphuc22ad.shoesshop.presentation.app.CartItem
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
@@ -40,8 +41,8 @@ fun CartItem(
     item: CartItem,
     removable: Boolean = true,
     onDelete: () -> Unit = {},
-    onIncrease: (quantity: Int) -> Unit = {},
-    onDecrease: (quantity: Int) -> Unit = {},
+    onIncrease: () -> Unit = {},
+    onDecrease: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -62,8 +63,9 @@ fun CartItem(
                     .size(120.dp)
                     .background(BgColor, RoundedCornerShape(32.dp))
             ) {
-                Image(
-                    painter = painterResource(id = item.imageId),
+
+                AsyncImage(
+                    model = item.productImg,
                     contentDescription = null,
                     modifier = Modifier
                         .size(100.dp)
@@ -84,7 +86,7 @@ fun CartItem(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = item.name,
+                    text = item.productName,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp,
                 )
@@ -110,14 +112,21 @@ fun CartItem(
                 Box(
                     modifier = Modifier
                         .size(16.dp)
-                        .background(item.color.second, CircleShape)
+                        .background(
+                            Color(android.graphics.Color.parseColor(item.color.value)),
+                            CircleShape
+                        )
                 )
-                Text(text = item.color.first, fontWeight = FontWeight.Light, fontSize = 14.sp)
+                Text(text = item.color.name, fontWeight = FontWeight.Light, fontSize = 14.sp)
                 VerticalDivider(
                     color = Color.Black,
                     modifier = Modifier.height(12.dp)
                 )
-                Text(text = "Size = ${item.size}", fontWeight = FontWeight.Light, fontSize = 14.sp)
+                Text(
+                    text = "Size = ${item.size.size}",
+                    fontWeight = FontWeight.Light,
+                    fontSize = 14.sp
+                )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -125,37 +134,13 @@ fun CartItem(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "$${item.price}")
+                Text(text = "${item.price.toInt()} vnđ", fontSize = 12.sp)
                 QuantityButton(
                     quantity = item.quantity,
-                    onIncrease = { onIncrease(item.quantity) },
-                    onDecrease = { onDecrease(item.quantity) },
+                    onIncrease = { onIncrease() },
+                    onDecrease = { onDecrease() },
                 )
             }
-        }
-    }
-}
-
-
-@Preview
-@Composable
-fun CartItem2Preview() {
-    AppTheme {
-        Row(
-            Modifier
-                .fillMaxWidth()
-                .background(BgColor)
-                .padding(16.dp)
-        ) {
-            val cartItem = CartItem(
-                name = "Curry 6",
-                price = 105,
-                quantity = 4,
-                color = Pair("Black", Color.Black),
-                imageId = R.drawable.curry_6,
-                size = 42
-            )
-            CartItem(item = cartItem, removable = false)
         }
     }
 }

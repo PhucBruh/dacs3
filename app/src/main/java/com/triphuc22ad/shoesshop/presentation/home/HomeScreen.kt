@@ -12,6 +12,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,6 +41,12 @@ fun HomeScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val appState by appViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchSpecialOffer()
+        viewModel.fetchPopularProduct()
+        viewModel.fetchBrandList()
+    }
 
     Scaffold(
         topBar = {

@@ -1,7 +1,9 @@
 package com.triphuc22ad.shoesshop.presentation.product_detail
 
 import com.triphuc22ad.shoesshop.domain.model.Brand
+import com.triphuc22ad.shoesshop.domain.model.Color
 import com.triphuc22ad.shoesshop.domain.model.ProductDetail
+import com.triphuc22ad.shoesshop.domain.model.Size
 
 data class ProductDetailUiState(
     val product: ProductDetail = ProductDetail(
@@ -19,8 +21,8 @@ data class ProductDetailUiState(
         totalSold = 0,
         mainImg = ""
     ),
-    val selectedSizeId: Int = 0,
-    val selectedColorId: Int = 0,
+    val selectedSize: Size = Size(id = 0, size = 0),
+    val selectedColor: Color = Color(id = 0, name = "", value = ""),
     val isInCart: Boolean = false,
     val quantity: Int = 1,
 )

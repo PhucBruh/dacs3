@@ -23,13 +23,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.Size
+import com.triphuc22ad.shoesshop.presentation.app.CartItem
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
 fun CardOrder(
-    modifier: Modifier = Modifier
+    cartItem: CartItem,
+    modifier: Modifier = Modifier,
 ) {
     Row(
         horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -49,8 +53,8 @@ fun CardOrder(
                     .size(120.dp)
                     .background(BgColor, RoundedCornerShape(32.dp))
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.curry_6),
+                AsyncImage(
+                    model = cartItem.productImg,
                     contentDescription = null,
                     modifier = Modifier
                         .size(100.dp)
@@ -65,11 +69,11 @@ fun CardOrder(
                 .padding(vertical = 6.dp)
         ) {
 
-                Text(
-                    text = "Curry 6",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                )
+            Text(
+                text = cartItem.productName,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+            )
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -82,12 +86,16 @@ fun CardOrder(
                         .size(16.dp)
                         .background(Color.Black, CircleShape)
                 )
-                Text(text = "Black", fontWeight = FontWeight.Light, fontSize = 14.sp)
+                Text(text = cartItem.color.name, fontWeight = FontWeight.Light, fontSize = 14.sp)
                 VerticalDivider(
                     color = Color.Black,
                     modifier = Modifier.height(12.dp)
                 )
-                Text(text = "Size = 42", fontWeight = FontWeight.Light, fontSize = 14.sp)
+                Text(
+                    text = "Size = ${cartItem.size.size}",
+                    fontWeight = FontWeight.Light,
+                    fontSize = 14.sp
+                )
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -95,15 +103,15 @@ fun CardOrder(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "$105.00")
+                Text(text = "${cartItem.price.toInt()} vnđ")
 
                 Box(
                     modifier = Modifier
                         .size(30.dp)
                         .background(Color.Gray, CircleShape),
                     contentAlignment = Alignment.Center
-                ){
-                    Text(text = "1")
+                ) {
+                    Text(text = "${cartItem.quantity}")
                 }
             }
         }
@@ -115,6 +123,21 @@ fun CardOrder(
 @Composable
 fun CardOrderPreview() {
     AppTheme {
-            CardOrder()
-        }
+        CardOrder(
+            cartItem = CartItem(
+                productId = 10,
+                price = 150000.0,
+                promotionPrice = 0.0,
+                size = Size(10, 42),
+                color = com.triphuc22ad.shoesshop.domain.model.Color(
+                    10,
+                    name = "red",
+                    value = "#ffffff"
+                ),
+                productImg = "imgTest",
+                quantity = 10,
+                productName = "Curry 6"
+            )
+        )
+    }
 }

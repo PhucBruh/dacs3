@@ -30,6 +30,8 @@ data class ProductFilter(
 
 data class CartItem(
     val productId: Int,
+    val productName: String,
+    val productImg: String,
     val color: Color,
     val size: Size,
     val quantity: Int,

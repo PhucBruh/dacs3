@@ -5,6 +5,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.triphuc22ad.shoesshop.data.TokenManager
 import com.triphuc22ad.shoesshop.data.service.AuthService
 import com.triphuc22ad.shoesshop.data.service.BrandService
+import com.triphuc22ad.shoesshop.data.service.InventoryService
 import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.data.service.SpecialOfferService
 import com.triphuc22ad.shoesshop.data.service.UserService
@@ -81,5 +82,11 @@ class NetworkModule {
     @Provides
     fun providesSpecialOfferService(retrofit: Retrofit): SpecialOfferService {
         return retrofit.create(SpecialOfferService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesInventoryService(retrofit: Retrofit): InventoryService {
+        return retrofit.create(InventoryService::class.java)
     }
 }
