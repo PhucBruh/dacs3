@@ -2,6 +2,7 @@ package com.triphuc22ad.shoesshop.presentation.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +16,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Sailing
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -26,11 +29,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.domain.model.ProductInfo
 import com.triphuc22ad.shoesshop.presentation.util.formatPrice
@@ -103,11 +109,50 @@ fun ProductCard(
                     .padding(vertical = 2.dp, horizontal = 6.dp)
             )
         }
-        Text(
-            text = formatPrice(productDetail.price),
-            fontWeight = FontWeight.Bold,
-            fontSize = 16.sp
-        )
+//        Text(
+//            text = formatPrice(productDetail.price),
+//            fontWeight = FontWeight.Bold,
+//            fontSize = 16.sp
+//        )
+        // Xác định giá muốn hiển thị và áp dụng gạch ngang nếu có giá khuyến mãi
+        val originalPrice = formatPrice(productDetail.price)
+        val promotionalPrice = formatPrice(productDetail.promotionPrice)
+
+        // Hiển thị cả giá gốc và giá khuyến mãi (nếu có)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            if (productDetail.promotionPrice != 0.0) {
+                Row {
+
+                    Icon(
+                        imageVector = Icons.Default.LocalFireDepartment,
+                        contentDescription = "",
+                        tint = Color.DarkGray
+                    )
+
+                    Text(
+                        text = promotionalPrice,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                    )
+                }
+            }
+
+            Text(
+                text = originalPrice,
+                fontWeight = FontWeight.Bold,
+                fontSize = if (productDetail.promotionPrice != 0.0)
+                    10.sp else 16.sp,
+                style = TextStyle(
+                    textDecoration = if (productDetail.promotionPrice != 0.0)
+                        TextDecoration.LineThrough else TextDecoration.None
+                ),
+                modifier = Modifier.padding(end = 8.dp)
+            )
+        }
     }
 }
 
@@ -185,7 +230,7 @@ fun ProductCardPreview() {
                     totalSold = 100,
                     rating = 4.5,
                     img_url = "",
-                    promotionPrice = 0.0
+                    promotionPrice = 22000.0
                 )
             )
         }
