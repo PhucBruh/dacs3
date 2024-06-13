@@ -25,12 +25,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.triphuc22ad.shoesshop.presentation.admin.components.DashboardScreen
+import com.triphuc22ad.shoesshop.presentation.admin.components.AdminDashBoardScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.OrderScreen
-import com.triphuc22ad.shoesshop.presentation.admin.components.ProductsScreen
+import com.triphuc22ad.shoesshop.presentation.admin.product.list.AdminProductScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.ProfileScreen
 import com.triphuc22ad.shoesshop.presentation.admin.components.account
-import com.triphuc22ad.shoesshop.presentation.admin.components.orders
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 sealed class AdminNavItem(val title: String, val icon: ImageVector, val path: String) {
@@ -91,9 +90,9 @@ fun AdminNavigationScreens(navController: NavHostController, paddingValues: Padd
         startDestination = AdminNavItem.Dashboard.path,
         modifier = Modifier.padding(paddingValues)
     ) {
-        composable(AdminNavItem.Dashboard.path) { DashboardScreen() }
-        composable(AdminNavItem.Products.path) { ProductsScreen() }
-        composable(AdminNavItem.Orders.path) { OrderScreen(orders = orders) }
+        composable(AdminNavItem.Dashboard.path) { AdminDashBoardScreen() }
+        composable(AdminNavItem.Products.path) { AdminProductScreen() }
+        composable(AdminNavItem.Orders.path) { OrderScreen() }
         composable(AdminNavItem.Profile.path) { ProfileScreen(account = account) }
     }
 }

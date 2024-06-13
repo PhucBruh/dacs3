@@ -21,50 +21,51 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.max
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.domain.model.OrderInfo
+import com.triphuc22ad.shoesshop.presentation.util.limitText
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
-
-data class Order(val customerName: String,
-                 val totalAmount: Double,
-                 val status: String,
-                 val imageResourceId: Int
-    )
-
-
 val orders = listOf(
-    Order( "Customer 1", 50.0, "Pending", R.drawable.curry_6),
-    Order( "Customer 2", 100.0, "Pending", R.drawable.curry_6),
-    Order( "Customer 3", 75.0, "Approved", R.drawable.curry_6)
+    OrderInfo(
+        id = 10,
+        price = 1000.0,
+        status = "COMPLETED",
+        description = "gia vao buoi chieu",
+        shippingAddress = "da nang"
+    )
 )
 
 @Composable
-fun OrderScreen(orders: List<Order>) {
+fun OrderScreen() {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(orders) { order ->
-            AdminOrderCard(order = order, onEditClick = {
-                // Xử lý sự kiện chỉnh sửa ở đây
-            })
+        items(orders) {
+            AdminOrderCard(order = it, onEditClick = {})
             Spacer(modifier = Modifier.height(10.dp))
         }
     }
 }
 
 @Composable
-fun AdminOrderCard(order: Order, onEditClick: () -> Unit) {
+fun AdminOrderCard(
+    order: OrderInfo,
+    onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-
-        ) {
+    ) {
         Row(
             modifier = Modifier
                 .padding(10.dp)
@@ -82,30 +83,38 @@ fun AdminOrderCard(order: Order, onEditClick: () -> Unit) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .size(120.dp)
-                        .background(BgColor, RoundedCornerShape(32.dp))
+                        .size(80.dp)
+                        .background(BgColor, RoundedCornerShape(20.dp))
                 ) {
                     Image(
-                        painter = painterResource(id = order.imageResourceId),
+                        painter = painterResource(
+                            id = if (order.status == "COMPLETED"
+                            ) R.drawable.completed_order else R.drawable.incompleted_order
+                        ),
                         contentDescription = null,
                         modifier = Modifier
-                            .size(100.dp)
+                            .size(60.dp)
                     )
                 }
             }
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(10.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.Start
             ) {
-
                 Text(
-                    text = order.customerName,
+                    text = "ID: ${order.id}",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "$${order.totalAmount}",
+                    text = limitText("Address: ${order.shippingAddress}", maxLength = 16),
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = limitText("Description: ${order.description}", maxLength = 16),
+                    overflow = TextOverflow.Ellipsis,
                     fontSize = 17.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -132,7 +141,7 @@ fun AdminOrderCard(order: Order, onEditClick: () -> Unit) {
                     Icons.Default.Delete,
                     contentDescription = "Delete",
                     tint = Color.Black,
-                    modifier = Modifier.clickable {  }
+                    modifier = Modifier.clickable { onDeleteClick() }
                 )
             }
         }
@@ -140,9 +149,8 @@ fun AdminOrderCard(order: Order, onEditClick: () -> Unit) {
 }
 
 
-
 @Preview
 @Composable
 fun PreviewAdminOrderList() {
-    OrderScreen(orders = orders)
+    OrderScreen()
 }

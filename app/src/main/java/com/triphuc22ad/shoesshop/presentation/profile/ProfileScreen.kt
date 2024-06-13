@@ -21,6 +21,7 @@ import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.CreditCard
+import androidx.compose.material.icons.outlined.Dashboard
 import androidx.compose.material.icons.outlined.Language
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Notifications
@@ -33,6 +34,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +46,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
+import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.profile.components.ProfileOption
 import com.triphuc22ad.shoesshop.presentation.profile.components.ProfileOptionContainer
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
@@ -53,7 +58,10 @@ import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 @Composable
 fun ProfileScreen(
     navigateToLogin: () -> Unit = {},
+    appViewModel: AppViewModel = hiltViewModel(),
 ) {
+    val appState by appViewModel.state.collectAsState()
+
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier
@@ -105,13 +113,18 @@ fun ProfileScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Phúc lỏ", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                Text(text = "+84 797 777 777", fontWeight = FontWeight.Medium)
+                Text(
+                    text = "${appState.user.firstName} ${appState.user.lastName}",
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(text = appState.user.phone, fontWeight = FontWeight.Medium)
             }
 
             HorizontalDivider(Modifier.padding(top = 8.dp))
         }
 
+//        val listOption = emptyList()
         val listOption = listOf(
             ProfileOption(
                 name = "Edit Profile",
@@ -146,7 +159,7 @@ fun ProfileScreen(
                         name = option.name,
                         icon = option.icon,
                         color = option.color,
-                        onClick = { /*TODO*/ }) {
+                        onClick = { option.onClick() }) {
                         option.content.let { it() }
                     }
                 } else {
@@ -155,7 +168,7 @@ fun ProfileScreen(
                         leftIcon = option.icon,
                         color = option.color,
                         description = option.description,
-                        onClick = { /*TODO*/ })
+                        onClick = { option.onClick() })
                 }
             }
         }

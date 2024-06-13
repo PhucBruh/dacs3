@@ -11,15 +11,21 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ProductService {
-
     @GET("/api/products")
     suspend fun getAllProducts(
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 10,
     ): Response<PagedResponse<Product>>
 
+    @GET("/api/products/admin")
+    suspend fun getAllProductsForAdmin(
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 10,
+    ): Response<PagedResponse<Product>>
+
     @GET("/api/products/{id}")
     suspend fun getProductById(@Path("id") id: Int): Response<DataResponse<ProductDetail>>
+
 
     @GET("/api/products/{id}/price")
     suspend fun getProductPriceById(@Path("id") id: Int): Response<DataResponse<ProductPrice>>

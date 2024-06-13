@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
 import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
@@ -85,7 +86,8 @@ fun ProductDetailScreen(
                     .height(320.dp)
             ) {
                 ProductImagePager(
-                    images = listImgs, modifier = Modifier.fillMaxSize()
+                    images = state.product.imgs.map { it.url },
+                    modifier = Modifier.fillMaxSize()
                 )
 
                 Row(
@@ -226,7 +228,7 @@ fun ProductDetailScreen(
 
 @Composable
 private fun ProductImagePager(
-    images: List<Int>,
+    images: List<String>,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = {
@@ -275,8 +277,8 @@ private fun ProductImagePager(
                         }
                     }
             ) {
-                Image(
-                    painter = painterResource(images[it]),
+                AsyncImage(
+                    model = images[it],
                     contentDescription = null,
                     modifier = Modifier
                         .background(BgColor)

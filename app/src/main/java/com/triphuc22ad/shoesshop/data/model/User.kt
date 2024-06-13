@@ -1,10 +1,5 @@
 package com.triphuc22ad.shoesshop.data.model
 
-import androidx.annotation.Keep
-import com.squareup.moshi.JsonClass
-
-//@JsonClass(generateAdapter = true)
-//@Keep
 data class UserInfoResponse(
     val email: String,
     val firstName: String,

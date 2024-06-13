@@ -27,6 +27,10 @@ class AppViewModel @Inject constructor(
         appStateRepository.showBottomBar(isShowed)
     }
 
+    fun showAdminBottomBar(isShowed: Boolean) {
+        appStateRepository.showAdminBottomBar(isShowed)
+    }
+
     fun updateUserInfo(userInfo: UserInfoResponse) {
 //        viewModelScope.launch {
 //            val role = if (userInfo.roles.contains("ROLE_ADMIN")) "ADMIN" else "USER"

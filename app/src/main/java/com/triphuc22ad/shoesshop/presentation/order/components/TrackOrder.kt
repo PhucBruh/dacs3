@@ -108,7 +108,6 @@ fun TrackOrderScreen() {
                     },
                 ),
                 iconend = { index ->
-
                     Box(
                         modifier = Modifier.size(30.dp),
                         contentAlignment = Alignment.Center,

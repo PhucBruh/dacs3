@@ -58,7 +58,7 @@ fun HomeScreen(
 
             ) {
                 UserBar(
-                    name = "${appState.user?.firstName} ${appState.user?.lastName}",
+                    name = "${appState.user.firstName} ${appState.user.lastName}",
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .padding(top = 8.dp)

@@ -144,8 +144,9 @@ fun CheckOutScreen(
                         }
 
                         Text(
-                            text = "$totalPrice vnđ",
-                            fontWeight = FontWeight.Bold
+                            text = "${totalPrice.toInt()} vnđ",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 20.sp
                         )
                     }
                 }

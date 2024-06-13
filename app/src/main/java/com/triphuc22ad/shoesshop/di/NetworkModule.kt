@@ -26,7 +26,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-    private val BASE_URL = "http://192.168.129.160:8080/"
+    private val BASE_URL = "http://192.168.95.160:8080/"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())

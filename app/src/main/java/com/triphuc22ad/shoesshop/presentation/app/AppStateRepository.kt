@@ -4,6 +4,12 @@ import com.triphuc22ad.shoesshop.data.model.UserInfoResponse
 import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.domain.model.User
+import com.triphuc22ad.shoesshop.presentation.admin.brand.list.AdminBrandUiState
+import com.triphuc22ad.shoesshop.presentation.admin.inventory.list.AdminInventoryUiState
+import com.triphuc22ad.shoesshop.presentation.admin.order.list.AdminOrderUiState
+import com.triphuc22ad.shoesshop.presentation.admin.product.list.AdminProductUiState
+import com.triphuc22ad.shoesshop.presentation.admin.special_offer.list.AdminSpecialOfferUiState
+import com.triphuc22ad.shoesshop.presentation.product.ProductUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,6 +27,42 @@ class AppStateRepository @Inject constructor(
         _appUiState.value = AppUiState()
     }
 
+    fun updateAdminProductUiState(adminProductUiState: AdminProductUiState) {
+        _appUiState.value = _appUiState.value.copy(
+            adminProductUiState = adminProductUiState
+        )
+    }
+
+    fun updateAdminBrandUiState(adminBrandUiState: AdminBrandUiState) {
+        _appUiState.value = _appUiState.value.copy(
+            adminBrandUIState = adminBrandUiState
+        )
+    }
+
+    fun updateAdminOrderUiState(adminOrderUiState: AdminOrderUiState) {
+        _appUiState.value = _appUiState.value.copy(
+            adminOrderUiState = adminOrderUiState
+        )
+    }
+
+    fun updateAdminInventoryUiState(adminInventoryUiState: AdminInventoryUiState) {
+        _appUiState.value = _appUiState.value.copy(
+            adminInventoryUiState = adminInventoryUiState
+        )
+    }
+
+    fun updateAdminSpecialOfferUiState(adminSpecialOfferUiState: AdminSpecialOfferUiState) {
+        _appUiState.value = _appUiState.value.copy(
+            adminSpecialOfferUiState = adminSpecialOfferUiState
+        )
+    }
+
+    fun updateProductUiState(productUiState: ProductUiState) {
+        _appUiState.value = _appUiState.value.copy(
+            productListUiState = productUiState
+        )
+    }
+
     fun updateUserInfo(userInfo: UserInfoResponse) {
         val role = if (userInfo.roles.contains("ROLE_ADMIN")) "ADMIN" else "USER"
         _appUiState.value = _appUiState.value.copy(
@@ -36,6 +78,10 @@ class AppStateRepository @Inject constructor(
 
     fun showBottomBar(isShowed: Boolean) {
         _appUiState.value = _appUiState.value.copy(showBottomBar = isShowed)
+    }
+
+    fun showAdminBottomBar(isShowed: Boolean) {
+        _appUiState.value = _appUiState.value.copy(showAdminBottomBar = isShowed)
     }
 
     fun updateNotify(message: String) {

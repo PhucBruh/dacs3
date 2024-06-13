@@ -18,6 +18,7 @@ class HomeViewModel @Inject constructor(
     private val brandService: BrandService,
     private val specialOfferService: SpecialOfferService,
 ) : ViewModel() {
+
     private val _state = MutableStateFlow(HomeUiState())
     val state: StateFlow<HomeUiState> = _state.asStateFlow()
 
