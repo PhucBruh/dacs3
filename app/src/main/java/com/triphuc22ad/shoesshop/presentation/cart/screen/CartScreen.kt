@@ -41,9 +41,9 @@ import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.CartEvent
 import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
 import com.triphuc22ad.shoesshop.presentation.cart.components.CartItem
-import com.triphuc22ad.shoesshop.ui.theme.AppTheme
-import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
 fun CartScreen(
@@ -110,7 +110,7 @@ fun CartScreen(
                     }
                 }
                 Text(
-                    text = "${totalPrice.toInt()} vnđ",
+                    text = formatPrice(totalPrice),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
