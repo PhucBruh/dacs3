@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.domain.model.ProductInfo
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
@@ -103,7 +104,9 @@ fun ProductCard(
             )
         }
         Text(
-            text = "${productDetail.price} vnđ", fontWeight = FontWeight.Bold, fontSize = 16.sp
+            text = formatPrice(productDetail.price),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
         )
     }
 }
