@@ -11,13 +11,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
@@ -27,6 +27,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,15 +41,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.OrderInfo
-import com.triphuc22ad.shoesshop.presentation.admin.product.list.AdminProductEvent
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.util.limitText
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
@@ -62,6 +60,9 @@ fun AdminOrderScreen(
     val appState by appViewModel.state.collectAsState()
     val state = appState.adminOrderUiState
 
+    LaunchedEffect(Unit) {
+        adminOrderViewModel.fetchData()
+    }
 
     Column(Modifier.fillMaxSize()) {
         Row(
@@ -223,21 +224,25 @@ fun AdminOrderScreen(
             item {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(horizontal = 12.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {}, enabled = state.page > 0
+                        onClick = {},
+                        enabled = state.page > 0,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Previous")
+                        Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${state.totalPage} ")
+                    Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
                     Button(
-                        onClick = {}, enabled = state.page + 1 < state.totalPage
+                        onClick = {},
+                        enabled = state.page + 1 < state.totalPage,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Next")
+                        Text("Next", fontSize = 12.sp)
                     }
                 }
             }

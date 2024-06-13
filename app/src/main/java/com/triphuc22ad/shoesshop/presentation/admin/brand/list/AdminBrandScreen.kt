@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +29,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -59,6 +61,9 @@ fun AdminBrandScreen(
 ) {
     val appState by appViewModel.state.collectAsState()
     val state = appState.adminBrandUIState
+    LaunchedEffect(Unit) {
+        adminBrandViewModel.fetchData()
+    }
 
     Column(Modifier.fillMaxSize()) {
         Row(
@@ -234,21 +239,25 @@ fun AdminBrandScreen(
             item {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(horizontal = 12.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {}, enabled = state.page > 0
+                        onClick = {},
+                        enabled = state.page > 0,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Previous")
+                        Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${state.totalPage} ")
+                    Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
                     Button(
-                        onClick = {}, enabled = state.page + 1 < state.totalPage
+                        onClick = {},
+                        enabled = state.page + 1 < state.totalPage,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Next")
+                        Text("Next", fontSize = 12.sp)
                     }
                 }
             }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -16,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,7 +52,7 @@ fun AdminAddBrandScreen(
                 TextField(
                     value = state.name,
                     onValueChange = {
-
+                        adminAddBraViewModel.onEvent(AdminAddBrandEvent.ChangeName(it))
                     },
                     singleLine = true,
                     label = { Text("Name") },
@@ -69,7 +71,7 @@ fun AdminAddBrandScreen(
                     TextField(
                         value = state.img,
                         onValueChange = {
-
+                            adminAddBraViewModel.onEvent(AdminAddBrandEvent.ChangeImage(it))
                         },
                         label = { Text("Img") },
                         modifier = Modifier
@@ -77,7 +79,13 @@ fun AdminAddBrandScreen(
                             .weight(0.7f)
                             .padding(end = 8.dp)
                     )
-                    Button(onClick = {}) {
+                    Button(
+                        onClick = { adminAddBraViewModel.onEvent(AdminAddBrandEvent.CheckImg) },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                    ) {
                         Text(text = "Check")
                     }
                 }
@@ -88,7 +96,21 @@ fun AdminAddBrandScreen(
                     ImagePreview(
                         model = state.img,
                         description = state.brandToAddMainImgPreview.toString(),
-                        onClick = {})
+                        onClick = { adminAddBraViewModel.onEvent(AdminAddBrandEvent.DeleteCheckImg) })
+                }
+            }
+
+            item {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(text = "Add")
                 }
             }
         }

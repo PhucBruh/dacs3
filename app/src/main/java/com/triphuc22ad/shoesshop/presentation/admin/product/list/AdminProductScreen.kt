@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -49,7 +50,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
-import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
@@ -242,21 +242,25 @@ fun AdminProductScreen(
             item {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(horizontal = 12.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {}, enabled = state.page > 0
+                        onClick = {},
+                        enabled = state.page > 0,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Previous")
+                        Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${state.totalPage} ")
+                    Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
                     Button(
-                        onClick = {}, enabled = state.page + 1 < state.totalPage
+                        onClick = {},
+                        enabled = state.page + 1 < state.totalPage,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Next")
+                        Text("Next", fontSize = 12.sp)
                     }
                 }
             }

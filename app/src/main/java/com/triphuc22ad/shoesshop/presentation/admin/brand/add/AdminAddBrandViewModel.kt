@@ -16,5 +16,31 @@ class AdminAddBrandViewModel @Inject constructor(
     val state: StateFlow<AdminAddBrandUiState> = _state.asStateFlow()
 
     fun onEvent(event: AdminAddBrandEvent) {
+        when (event) {
+            is AdminAddBrandEvent.ChangeImage -> {
+                _state.value = _state.value.copy(
+                    img = event.image
+                )
+            }
+
+            is AdminAddBrandEvent.ChangeName -> {
+                _state.value = _state.value.copy(
+                    name = event.name
+                )
+            }
+
+            AdminAddBrandEvent.CheckImg -> {
+                _state.value = _state.value.copy(
+                    brandToAddMainImgPreview = System.currentTimeMillis()
+                )
+            }
+
+            AdminAddBrandEvent.DeleteCheckImg -> {
+                _state.value = _state.value.copy(
+                    brandToAddMainImgPreview = 0L,
+                    img = ""
+                )
+            }
+        }
     }
 }

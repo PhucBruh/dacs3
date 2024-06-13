@@ -287,7 +287,7 @@ fun EditProductScreen(
 
             item {
                 Column {
-                    Text(text = "Color", fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                    Text(text = "Image", fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(state.productDetail.imgs) {
                             ImagePreview(

@@ -26,7 +26,6 @@ interface ProductService {
     @GET("/api/products/{id}")
     suspend fun getProductById(@Path("id") id: Int): Response<DataResponse<ProductDetail>>
 
-
     @GET("/api/products/{id}/price")
     suspend fun getProductPriceById(@Path("id") id: Int): Response<DataResponse<ProductPrice>>
 }

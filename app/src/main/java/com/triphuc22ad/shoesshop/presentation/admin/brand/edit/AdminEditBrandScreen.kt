@@ -46,7 +46,6 @@ fun AdminEditBrandScreen(
             modifier = Modifier
                 .padding(top = 16.dp)
         ) {
-
             item {
                 TextField(
                     value = state.brandToEdit.id.toString(),
@@ -64,7 +63,7 @@ fun AdminEditBrandScreen(
                 TextField(
                     value = state.brandToEdit.name,
                     onValueChange = {
-
+                        adminEditBrandViewModel.onEvent(AdminEditBrandEvent.ChangeName(it))
                     },
                     singleLine = true,
                     label = { Text("Name") },
@@ -74,7 +73,6 @@ fun AdminEditBrandScreen(
                 )
             }
 
-
             item {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -83,7 +81,7 @@ fun AdminEditBrandScreen(
                     TextField(
                         value = state.brandToEdit.img_url,
                         onValueChange = {
-
+                            adminEditBrandViewModel.onEvent(AdminEditBrandEvent.ChangeImage(it))
                         },
                         label = { Text("Img") },
                         modifier = Modifier
@@ -91,7 +89,7 @@ fun AdminEditBrandScreen(
                             .weight(0.7f)
                             .padding(end = 8.dp)
                     )
-                    Button(onClick = {}) {
+                    Button(onClick = { adminEditBrandViewModel.onEvent(AdminEditBrandEvent.CheckImg) }) {
                         Text(text = "Check")
                     }
                 }
@@ -100,8 +98,8 @@ fun AdminEditBrandScreen(
             item {
                 ImagePreview(
                     model = state.brandToEdit.img_url,
-                    description = state.brandToAddMainImgPreview.toString(),
-                    onClick = {})
+                    description = state.productDetailMainImgPreview.toString(),
+                    onClick = { adminEditBrandViewModel.onEvent(AdminEditBrandEvent.DeleteCheckImg) })
             }
         }
     }

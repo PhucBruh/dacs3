@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,6 +29,7 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,12 +53,16 @@ import com.triphuc22ad.shoesshop.ui.theme.BgColor
 @Composable
 fun AdminInventoryScreen(
     appViewModel: AppViewModel = hiltViewModel(),
+    adminInventoryViewModel: AdminInventoryViewModel = hiltViewModel(),
     navigateToAddInventory: () -> Unit,
     navigateToEditInventory: (Int) -> Unit,
 ) {
     val appState by appViewModel.state.collectAsState()
     val state = appState.adminInventoryUiState
 
+    LaunchedEffect(Unit) {
+        adminInventoryViewModel.fetchData()
+    }
 
     Column(Modifier.fillMaxSize()) {
         Row(
@@ -177,20 +183,19 @@ fun AdminInventoryScreen(
                         verticalArrangement = Arrangement.spacedBy(4.dp),
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
-
                         Text(
-                            "ID: ${it.id}",
+                            "ID: ${it.productId}",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = it.productName,
+                            text = "ID: ${it.id} - Name: ${it.productName}",
                             fontSize = 14.sp,
                         )
 
                         Text(
-                            text = "${it.color.name} - ${it.size}",
+                            text = "${it.color.name} - ${it.size.size}",
                             fontSize = 14.sp,
                         )
 
@@ -218,21 +223,25 @@ fun AdminInventoryScreen(
             item {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(horizontal = 14.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {}, enabled = state.page > 0
+                        onClick = {},
+                        enabled = state.page > 0,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Previous")
+                        Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
                     }
-                    Text("Page ${state.page + 1} of ${state.totalPage} ")
+                    Text("Page ${state.page + 1} of ${state.totalPage + 1} ")
                     Button(
-                        onClick = {}, enabled = state.page + 1 < state.totalPage
+                        onClick = {},
+                        enabled = state.page + 1 < state.totalPage,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Next")
+                        Text("Next", fontSize = 12.sp)
                     }
                 }
             }

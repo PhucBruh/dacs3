@@ -6,11 +6,10 @@ import com.triphuc22ad.shoesshop.data.TokenManager
 import com.triphuc22ad.shoesshop.data.service.AuthService
 import com.triphuc22ad.shoesshop.data.service.BrandService
 import com.triphuc22ad.shoesshop.data.service.InventoryService
+import com.triphuc22ad.shoesshop.data.service.OrderService
 import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.data.service.SpecialOfferService
 import com.triphuc22ad.shoesshop.data.service.UserService
-import com.triphuc22ad.shoesshop.domain.model.Brand
-import com.triphuc22ad.shoesshop.domain.model.SpecialOffer
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -88,5 +87,11 @@ class NetworkModule {
     @Provides
     fun providesInventoryService(retrofit: Retrofit): InventoryService {
         return retrofit.create(InventoryService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun providesOrderService(retrofit: Retrofit): OrderService {
+        return retrofit.create(OrderService::class.java)
     }
 }

@@ -3,6 +3,9 @@ package com.triphuc22ad.shoesshop.presentation.cart
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triphuc22ad.shoesshop.data.service.InventoryService
+import com.triphuc22ad.shoesshop.data.service.OrderDetailRequest
+import com.triphuc22ad.shoesshop.data.service.OrderRequest
+import com.triphuc22ad.shoesshop.data.service.UserService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import com.triphuc22ad.shoesshop.presentation.cart.CartEvent.CheckOut
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +19,7 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val appStateRepository: AppStateRepository,
     private val inventoryService: InventoryService,
+    private val userService: UserService,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<CartUiState>(CartUiState())
@@ -44,16 +48,45 @@ class CartViewModel @Inject constructor(
                 }
             }
 
-            CartEvent.CreateOrder -> {
-                appStateRepository.clearCart()
-                _state.value = state.value.copy(
-                    isCreatedOrder = true
-                )
-            }
+            CartEvent.CreateOrder -> createOrder()
         }
     }
 
-    private fun checkOut() {
+    private fun createOrder() {
+        if (_state.value.shippingAddress.isEmpty()) {
+            appStateRepository.updateNotify("Please add shipping address")
+        } else {
+            val orderDetailsRequest = appStateRepository.appUiState.value.cartItems.map {
+                OrderDetailRequest(
+                    productId = it.productId,
+                    colorId = it.color.id,
+                    sizeId = it.size.id,
+                    quantity = it.quantity,
+                )
+            }
+            viewModelScope.launch {
+                val response = userService.createOrder(
+                    OrderRequest(
+                        shippingAddress = _state.value.shippingAddress,
+                        description = _state.value.description,
+                        detail = orderDetailsRequest
+                    )
+                )
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse!!.success) {
+                        appStateRepository.updateNotify("Create order success")
+                        _state.value = state.value.copy(
+                            isCreatedOrder = true
+                        )
+                    } else {
+                        apiResponse.message?.let { appStateRepository.updateNotify(it) }
+                    }
+                } else {
+                    appStateRepository.updateNotify("Create order failed")
+                }
+            }
+        }
     }
 
     fun validateCart() {

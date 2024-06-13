@@ -2,8 +2,6 @@ package com.triphuc22ad.shoesshop.presentation.product
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.animateContentSize
-import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +30,6 @@ import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -48,14 +45,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.triphuc22ad.shoesshop.presentation.admin.product.list.AdminProductEvent
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.components.FilterOption
-import com.triphuc22ad.shoesshop.presentation.components.ProductSearchBar
-import com.triphuc22ad.shoesshop.ui.theme.AppTheme
-import com.triphuc22ad.shoesshop.presentation.components.FilterOptionCanClose
 import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedBoxWithConstraintsScope")
 @Composable
@@ -165,7 +159,7 @@ fun ProductScreen(
                         ) {
                             Text(text = "Previous", fontSize = 12.sp)
                         }
-                        Text("Page ${state.page + 1} of ${state.totalPage} ")
+                        Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
                         Button(
                             onClick = {},
                             enabled = state.page + 1 < state.totalPage,

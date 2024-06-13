@@ -1,27 +1,26 @@
 package com.triphuc22ad.shoesshop.presentation.admin.inventory.edit
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
@@ -40,8 +39,8 @@ fun AdminEditInventoryScreen(
             .padding(bottom = 16.dp)
     ) {
         TopTitleBar(
-            name = "Add new brand", modifier = Modifier.padding(top = 16.dp),
-            onLeftAction = navigateBack
+            name = "Edit inventory", modifier = Modifier.padding(top = 16.dp),
+            onLeftAction = { navigateBack() }
         )
 
         LazyColumn(
@@ -51,24 +50,102 @@ fun AdminEditInventoryScreen(
         ) {
 
             item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    TextField(
-                        value = "${state.inventoryToEdit.productId}: ${state.inventoryToEdit.productName}",
-                        onValueChange = {
+                TextField(
+                    value = state.inventoryToEdit.id.toString(),
+                    onValueChange = {},
+                    enabled = false,
+                    singleLine = true,
+                    label = { Text("Id") },
+                    modifier = Modifier
+                        .fillMaxWidth() // Adjust padding if needed
+                )
+            }
 
-                        },
-                        label = { Text("Img") },
-                        modifier = Modifier
-                            //
-                            .weight(0.7f)
-                            .padding(end = 8.dp)
-                    )
-                    Button(onClick = {}) {
-                        Text(text = "Check")
-                    }
+            item {
+                TextField(
+                    value = state.inventoryToEdit.productId.toString(),
+                    onValueChange = {},
+                    enabled = false,
+                    singleLine = true,
+                    label = { Text("Product Id") },
+                    modifier = Modifier
+                        .fillMaxWidth() // Adjust padding if needed
+                )
+            }
+
+            item {
+                TextField(
+                    value = state.inventoryToEdit.productName,
+                    onValueChange = {},
+                    singleLine = true,
+                    enabled = false,
+                    label = { Text("Product name") },
+                    modifier = Modifier
+                        .fillMaxWidth() // Adjust padding if needed
+                )
+            }
+
+            item {
+                TextField(
+                    value = "${state.inventoryToEdit.color.name} - ${state.inventoryToEdit.color.value}",
+                    onValueChange = {},
+                    singleLine = true,
+                    enabled = false,
+                    label = { Text("Color") },
+                    modifier = Modifier
+                        .fillMaxWidth() // Adjust padding if needed
+                )
+            }
+
+            item {
+                TextField(
+                    value = "${state.inventoryToEdit.size.size}",
+                    onValueChange = {},
+                    singleLine = true,
+                    enabled = false,
+                    label = { Text("Size") },
+                    modifier = Modifier
+                        .fillMaxWidth() // Adjust padding if needed
+                )
+            }
+
+            item {
+                var stockToEdit by remember { mutableStateOf(state.inventoryToEdit.stock.toString()) }
+                LaunchedEffect(state.inventoryToEdit.stock) {
+                    stockToEdit = state.inventoryToEdit.stock.toString()
+                }
+                TextField(
+                    value = stockToEdit,
+                    onValueChange = { newValue ->
+                        if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                            stockToEdit = newValue
+                            adminEditInventoryViewModel.onEvent(
+                                AdminEditInventoryEvent.ChangeStock(
+                                    newValue.toIntOrNull() ?: 0
+                                )
+                            )
+                        }
+                    },
+                    label = { Text("Stock") },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        keyboardType = KeyboardType.Number
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+
+            item {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(text = "Update stock")
                 }
             }
         }

@@ -8,5 +8,5 @@ data class AdminEditBrandUiState(
         name = "",
         img_url = ""
     ),
-    val brandToAddMainImgPreview: Long = 0,
+    val productDetailMainImgPreview: Long = 0L,
 )

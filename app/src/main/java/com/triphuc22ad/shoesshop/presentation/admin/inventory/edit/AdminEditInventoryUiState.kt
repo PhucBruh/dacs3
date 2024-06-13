@@ -8,10 +8,10 @@ data class AdminEditInventoryUiState(
     val inventoryToEdit: Inventory =
         Inventory(
             id = 0,
-            size = Size(id = 0, size = 43),
-            color = Color(id = 0, name = "red", value = "#ff0000"),
+            size = Size(id = 0, size = 0),
+            color = Color(id = 0, name = "", value = ""),
             productId = 0,
-            productName = "kd 15",
-            stock = 10
+            productName = "",
+            stock = 0
         ),
 )
