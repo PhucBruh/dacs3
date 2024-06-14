@@ -55,6 +55,7 @@ import com.triphuc22ad.shoesshop.presentation.cart.screen.CartScreen
 import com.triphuc22ad.shoesshop.presentation.cart.screen.CheckOutScreen
 import com.triphuc22ad.shoesshop.presentation.home.HomeScreen
 import com.triphuc22ad.shoesshop.presentation.order.MyOrderScreen
+import com.triphuc22ad.shoesshop.presentation.order.components.OrderInfoScreen
 import com.triphuc22ad.shoesshop.presentation.product.ProductScreen
 import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailScreen
 import com.triphuc22ad.shoesshop.presentation.profile.ProfileScreen
@@ -172,7 +173,18 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     BackHandler(true) {
                         // Or do nothing
                     }
-                    MyOrderScreen()
+                    MyOrderScreen(
+                        navigateToOrderInfo = { navController.navigate(Screen.Order.route + "/$it") }
+                    )
+                }
+
+                composable(
+                    Screen.Order.route + "/{orderId}",
+                    arguments = listOf(navArgument("orderId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val orderId =
+                        backStackEntry.arguments?.getInt("orderId") ?: return@composable
+                    OrderInfoScreen(navigateBack = { navController.popBackStack() })
                 }
 
                 composable(Screen.Profile.route) {

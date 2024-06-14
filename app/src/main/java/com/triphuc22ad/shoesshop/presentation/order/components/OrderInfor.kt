@@ -1,4 +1,4 @@
-package com.triphuc22ad.shoesshop.presentation.order
+package com.triphuc22ad.shoesshop.presentation.order.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +36,6 @@ import com.triphuc22ad.shoesshop.domain.model.Detail
 import com.triphuc22ad.shoesshop.domain.model.OrderDetail
 import com.triphuc22ad.shoesshop.domain.model.OrderUserInfo
 import com.triphuc22ad.shoesshop.presentation.util.formatPrice
-
 
 @Composable
 fun OrderInfor(order: OrderDetail) {

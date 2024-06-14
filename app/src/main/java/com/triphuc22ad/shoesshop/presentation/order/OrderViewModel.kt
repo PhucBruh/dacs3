@@ -3,6 +3,7 @@ package com.triphuc22ad.shoesshop.presentation.order
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triphuc22ad.shoesshop.data.service.UserService
+import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,13 +13,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OrderViewModel @Inject constructor(
+    private val appStateRepository: AppStateRepository,
     private val userService: UserService,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(OrderUiState())
     val state: StateFlow<OrderUiState> = _state.asStateFlow()
 
-    init {
+    fun onEvent(event: OrderEvent) {
+    }
+
+    fun fetchData() {
         viewModelScope.launch {
             val inCompletedOrdersResponse = userService.getMyOrder(completed = false);
             if (inCompletedOrdersResponse.isSuccessful) {
@@ -36,10 +41,6 @@ class OrderViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    fun onEvent(event: OrderEvent) {
-
     }
 
 }

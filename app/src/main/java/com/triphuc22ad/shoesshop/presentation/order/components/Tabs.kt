@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 fun TabScreen(
     inCompletedOrders: List<OrderInfo>,
     completedOrders: List<OrderInfo>,
+    navigateToOrderInfo: (Int) -> Unit = {}
 ) {
     val scope = rememberCoroutineScope()
     val pagerState = rememberPagerState(pageCount = { 2 })
@@ -63,8 +64,15 @@ fun TabScreen(
                 modifier = Modifier.fillMaxSize()
             ) { page ->
                 when (page) {
-                    0 -> ActiveScreen(inCompletedOrders)
-                    1 -> CompletedScreen(completedOrders)
+                    0 -> ActiveScreen(
+                        inCompletedOrders,
+                        navigateToOrderInfo = navigateToOrderInfo
+                    )
+
+                    1 -> CompletedScreen(
+                        completedOrders,
+                        navigateToOrderInfo = navigateToOrderInfo
+                    )
                 }
             }
         }

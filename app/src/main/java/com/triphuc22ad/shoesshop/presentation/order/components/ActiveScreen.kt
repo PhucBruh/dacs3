@@ -16,8 +16,8 @@ import com.triphuc22ad.shoesshop.domain.model.OrderInfo
 @Composable
 fun ActiveScreen(
     unCompletedOrders: List<OrderInfo>,
+    navigateToOrderInfo: (Int) -> Unit = {}
 ) {
-
     Box(contentAlignment = Alignment.BottomCenter) {
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -28,7 +28,7 @@ fun ActiveScreen(
         ) {
             items(unCompletedOrders) {
                 Row(Modifier.padding(vertical = 8.dp)) {
-                    OrderItem(onClick = { /*TODO*/ }, order = it)
+                    OrderItem(onClick = { navigateToOrderInfo(it.id) }, order = it)
                 }
             }
         }

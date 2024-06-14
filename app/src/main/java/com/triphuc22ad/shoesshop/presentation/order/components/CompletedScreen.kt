@@ -17,6 +17,7 @@ import com.triphuc22ad.shoesshop.domain.model.OrderInfo
 @Composable
 fun CompletedScreen(
     completedOrders: List<OrderInfo>,
+    navigateToOrderInfo: (Int) -> Unit = {}
 ) {
 
     Box(contentAlignment = Alignment.BottomCenter) {
@@ -29,7 +30,7 @@ fun CompletedScreen(
         ) {
             items(completedOrders) {
                 Row(Modifier.padding(vertical = 8.dp)) {
-                    OrderItem(onClick = { /*TODO*/ }, order = it)
+                    OrderItem(onClick = { navigateToOrderInfo(it.id) }, order = it)
                 }
             }
         }
