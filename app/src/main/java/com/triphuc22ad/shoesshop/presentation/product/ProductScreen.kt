@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -49,6 +50,7 @@ import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.components.FilterOption
 import com.triphuc22ad.shoesshop.presentation.components.OptionSwipeableContainer
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "UnusedBoxWithConstraintsScope")
@@ -63,9 +65,16 @@ fun ProductScreen(
     val state = appState.productListUiState
 
     var isFilterVisible by remember { mutableStateOf(false) }
+    val filter = remember {
+        mutableStateOf(state.filter)
+    }
 
     LaunchedEffect(Unit) {
         productViewModel.fetchData()
+    }
+
+    LaunchedEffect(appState.productListUiState.filter) {
+        filter.value = appState.productListUiState.filter
     }
 
     Box(modifier = Modifier) {
@@ -83,7 +92,7 @@ fun ProductScreen(
                     .padding(horizontal = 16.dp)
             ) {
                 TextField(
-                    value = state.filter.query,
+                    value = state.query,
                     onValueChange = { productViewModel.onEvent(ProductEvent.ChangeQuery(it)) },
                     leadingIcon = {
                         IconButton(onClick = {}) {
@@ -95,7 +104,7 @@ fun ProductScreen(
                     },
                     trailingIcon = {
                         Row(horizontalArrangement = Arrangement.End) {
-                            if (state.filter.query.isNotEmpty()) {
+                            if (state.query.isNotEmpty()) {
                                 IconButton(onClick = {
                                     productViewModel.onEvent(
                                         ProductEvent.ChangeQuery(
@@ -171,10 +180,126 @@ fun ProductScreen(
                 }
             }
         }
-        FilterOptionList(
-            visible = isFilterVisible,
-            onSwipeDown = { isFilterVisible = false }
-        )
+
+        OptionSwipeableContainer(
+            name = "Sort & Filter",
+            active = isFilterVisible,
+            onSwipeDown = { isFilterVisible = false },
+            firstActionName = "Reset",
+            onFirstAction = {},
+            secondActionName = "Apply",
+            onSecondAction = {},
+//        paddingBottom = 100.dp
+        ) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .padding(horizontal = 16.dp)
+                    .height(400.dp)
+            ) {
+                item {
+                    FilterSection(sectionName = "Special offer") {
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            val saleStatusList = listOf(
+                                "NORMAL",
+                                "ACTIVE",
+                                "INACTIVE"
+                            )
+                            items(saleStatusList) { status ->
+                                FilterOption(
+                                    text = status,
+                                    onClick = {
+                                        filter.value = filter.value.copy(
+                                            saleStatus = status
+                                        )
+                                    },
+                                    active = filter.value.saleStatus == status
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    FilterSection(sectionName = "order by") {
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            val orderByList = listOf(
+                                "NAME",
+                                "SOLD",
+                                "RATING",
+                                "PRICE"
+                            )
+                            items(orderByList) { orderBy ->
+                                FilterOption(
+                                    text = orderBy,
+                                    onClick = {
+                                        filter.value = filter.value.copy(orderBy = orderBy)
+                                    },
+                                    active = filter.value.orderBy == orderBy
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    val sortByList = listOf(
+                        "ASCENDING",
+                        "DESCENDING"
+                    )
+                    FilterSection(sectionName = "Sort by") {
+                        LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            items(sortByList) { sortBy ->
+                                FilterOption(
+                                    text = sortBy,
+                                    onClick = {
+                                        filter.value = filter.value.copy(orderBy = sortBy)
+                                    },
+                                    active = filter.value.orderBy == sortBy
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    FilterSection(sectionName = "Price") {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            var sliderPosition by remember { mutableStateOf(filter.value.minPrice.toFloat()..filter.value.maxPrice.toFloat()) }
+                            RangeSlider(
+                                value = sliderPosition,
+                                steps = 0,
+                                onValueChange = { range ->
+                                    sliderPosition = range
+                                    println(range.start)
+                                },
+                                valueRange = filter.value.minPrice.toFloat()
+                                    .rangeTo(filter.value.maxPrice.toFloat()),
+                                onValueChangeFinished = {
+                                },
+                                colors = SliderDefaults.colors(
+                                    thumbColor = Color.Black,
+                                    activeTrackColor = Color.Black,
+                                    inactiveTrackColor = Color.Gray
+                                ),
+                            )
+
+                            Text(
+                                text = formatPrice(filter.value.minPrice) + " - " + formatPrice(
+                                    filter.value.maxPrice
+                                ),
+                                modifier = Modifier.padding(top = 16.dp),
+                                color = Color.Black
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }
 
@@ -204,11 +329,14 @@ fun FilterOptionList(
                 FilterSection(sectionName = "Categories") {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(4) {
-                            FilterOption(text = "Filter $it", onClick = {})
+                            FilterOption(text = "Filter $it", onClick = {
+
+                            })
                         }
                     }
                 }
             }
+
             item {
                 FilterSection(sectionName = "Gender") {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -218,8 +346,8 @@ fun FilterOptionList(
                     }
                 }
             }
-            item {
 
+            item {
                 FilterSection(sectionName = "Sort By") {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(4) {
@@ -239,7 +367,6 @@ fun FilterOptionList(
                 }
             }
             item {
-
                 FilterSection(sectionName = "Price") {
                     RangeSliderExample()
                 }
@@ -281,8 +408,6 @@ fun RangeSliderExample() {
             },
             valueRange = 0f.rangeTo(100f),
             onValueChangeFinished = {
-                // Khi hoàn tất sự thay đổi giá trị, bạn có thể thực hiện các logic kinh doanh ở đây
-                // viewModel.updateSelectedSliderValue(sliderPosition)
             },
             colors = SliderDefaults.colors(
                 thumbColor = Color.Black,

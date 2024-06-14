@@ -5,9 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,7 +21,7 @@ class ProductViewModel @Inject constructor(
                     appStateRepository.appUiState.value.productListUiState
                 appStateRepository.updateProductUiState(
                     state.copy(
-                        filter = state.filter.copy(query = event.query)
+                        query = event.query,
                     )
                 )
             }
@@ -34,6 +31,27 @@ class ProductViewModel @Inject constructor(
             ProductEvent.Search -> TODO()
             ProductEvent.ResetSearch -> TODO()
         }
+    }
+
+    fun applyFilter(filter: ProductListFilter) {
+        val state =
+            appStateRepository.appUiState.value.productListUiState
+        appStateRepository.updateProductUiState(
+            state.copy(
+                filter = filter,
+                applyFilter = true
+            )
+        )
+    }
+
+    fun resetFilter() {
+        val state =
+            appStateRepository.appUiState.value.productListUiState
+        appStateRepository.updateProductUiState(
+            state.copy(
+                applyFilter = false
+            )
+        )
     }
 
     fun fetchData() {
