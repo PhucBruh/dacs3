@@ -42,6 +42,7 @@ class ProductViewModel @Inject constructor(
                 applyFilter = true
             )
         )
+        appStateRepository.updateNotify("Apply filter")
     }
 
     fun resetFilter() {
@@ -52,6 +53,7 @@ class ProductViewModel @Inject constructor(
                 applyFilter = false
             )
         )
+        appStateRepository.updateNotify("Reset filter")
     }
 
     fun fetchData() {

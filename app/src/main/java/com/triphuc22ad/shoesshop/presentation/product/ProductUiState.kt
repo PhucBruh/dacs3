@@ -16,7 +16,7 @@ data class ProductUiState(
 
 data class ProductListFilter(
     val minPrice: Double = 0.0,
-    val maxPrice: Double = 1000000000.0,
+    val maxPrice: Double = 5000000.0,
     val saleStatus: String = "NORMAL",
     val orderBy: String = "NAME",
     val sortBy: String = "ASCENDING",

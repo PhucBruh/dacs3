@@ -21,7 +21,7 @@ class AdminProductViewModel @Inject constructor(
                     appStateRepository.appUiState.value.productListUiState
                 appStateRepository.updateProductUiState(
                     state.copy(
-                        filter = state.filter.copy(query = event.value)
+                        query = event.value,
                     )
                 )
             }

@@ -1,7 +1,14 @@
 package com.triphuc22ad.shoesshop.presentation.order
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
 import androidx.compose.material.icons.filled.ColorLens
@@ -9,7 +16,6 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FormatSize
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Money
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.ProductionQuantityLimits
@@ -17,45 +23,23 @@ import androidx.compose.material.icons.filled.Recommend
 import androidx.compose.material.icons.filled.ShoppingBasket
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
-import com.triphuc22ad.shoesshop.R
+import coil.compose.AsyncImage
+import com.triphuc22ad.shoesshop.domain.model.Detail
+import com.triphuc22ad.shoesshop.domain.model.OrderDetail
+import com.triphuc22ad.shoesshop.domain.model.OrderUserInfo
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 
-data class Order(
-    val id: Int,
-    val user: User,
-    val shippingAddress: String,
-    val description: String,
-    val details: List<OrderDetail>,
-    val price: Double,
-    val status: String
-)
-
-data class User(
-    val name: String,
-    val phone: String
-)
-
-data class OrderDetail(
-    val productName: String,
-    val productImg: Int,
-    val size: Int,
-    val color: String,
-    val quantity: Int,
-    val price: Double
-)
 
 @Composable
-fun OrderInfor(order: Order) {
-
+fun OrderInfor(order: OrderDetail) {
     Column(
         modifier = Modifier
             .padding(16.dp)
@@ -66,49 +50,43 @@ fun OrderInfor(order: Order) {
         Text("Order ID: ${order.id}", fontWeight = FontWeight.Bold)
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Icons.Default.Person, contentDescription = "")
-                Text("Customer: ${order.user.name}", fontSize = 15.sp)
-            }
+            Icon(imageVector = Icons.Default.Person, contentDescription = "")
+            Text("Customer: ${order.user.name}", fontSize = 16.sp)
+        }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Icon(imageVector = Icons.Default.Phone, contentDescription = "")
-                Text("Phone: ${order.user.phone}", fontSize = 15.sp)
-            }
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Default.Phone, contentDescription = "")
+            Text("Phone: ${order.user.phone}", fontSize = 16.sp)
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Default.Home, contentDescription = "")
-            Text("Shipping Address: ${order.shippingAddress}", fontSize = 15.sp)
+            Text("Shipping Address: ${order.shippingAddress}", fontSize = 16.sp)
         }
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Default.Description, contentDescription = "")
-            Text("Description: ${order.description}", fontSize = 15.sp)
+            Text("Description: ${order.description}", fontSize = 16.sp)
         }
 
 
         order.details.forEach { detail ->
             OrderDetailItem(detail)
-    }
+        }
 
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Default.ShoppingBasket, contentDescription = "")
-            Text("Total Price: ${order.price}", fontSize = 15.sp)
+            Text("Total Price: ${formatPrice(order.price)}", fontSize = 16.sp)
         }
 
 
@@ -116,13 +94,13 @@ fun OrderInfor(order: Order) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Default.Recommend, contentDescription = "")
-            Text("Status: ${order.status}", fontSize = 15.sp)
+            Text("Status: ${order.status}", fontSize = 16.sp)
         }
     }
 }
 
 @Composable
-fun OrderDetailItem(detail: OrderDetail) {
+fun OrderDetailItem(detail: Detail) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -130,12 +108,12 @@ fun OrderDetailItem(detail: OrderDetail) {
         horizontalArrangement = Arrangement.SpaceAround
     ) {
 
-            Image(
-                painter = painterResource(id = detail.productImg),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(150.dp),
-            )
+        AsyncImage(
+            model = detail.productImg,
+            contentDescription = null,
+            modifier = Modifier
+                .size(150.dp),
+        )
 
         Column(
             modifier = Modifier,
@@ -162,7 +140,15 @@ fun OrderDetailItem(detail: OrderDetail) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(imageVector = Icons.Default.ColorLens, contentDescription = "")
-                Text(text = "Color: ${detail.color}")
+                Text(text = "Color: ${detail.color}   ")
+                Box(
+                    modifier = Modifier
+                        .size(16.dp)
+                        .background(
+                            Color(android.graphics.Color.parseColor(detail.colorValue)),
+                            CircleShape
+                        )
+                )
             }
 
             Row(
@@ -177,7 +163,7 @@ fun OrderDetailItem(detail: OrderDetail) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(imageVector = Icons.Default.AttachMoney, contentDescription = "")
-                Text(text = "Price: ${detail.price}")
+                Text(text = "Price: ${formatPrice(detail.price)}")
             }
         }
     }
@@ -185,19 +171,20 @@ fun OrderDetailItem(detail: OrderDetail) {
 
 @Preview(showBackground = true)
 @Composable
-fun orderInforPreview() {
-
-    val order = Order(
+fun OrderInfoPreview() {
+    val order = OrderDetail(
         id = 1,
-        user = User(name = "phuc nguyen", phone = "0797826527"),
+        user = OrderUserInfo(name = "phuc nguyen", phone = "0797826527"),
         shippingAddress = "da nang",
         description = "giao vao buoi chieu",
         details = listOf(
-            OrderDetail(
+            Detail(
                 productName = "kd 5",
-                productImg = R.drawable.curry_6,
+                productId = 0,
+                productImg = "",
                 size = 41,
                 color = "red",
+                colorValue = "#03fcad",
                 quantity = 3,
                 price = 360000.0
             )

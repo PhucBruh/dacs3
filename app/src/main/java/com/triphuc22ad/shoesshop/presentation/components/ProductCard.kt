@@ -17,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material.icons.filled.Sailing
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -36,7 +35,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.domain.model.ProductInfo
 import com.triphuc22ad.shoesshop.presentation.util.formatPrice
@@ -167,7 +165,7 @@ fun ProductCard(
     ) {
         Box(contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(170.dp)
+                .size(140.dp)
                 .clip(RoundedCornerShape(32.dp))
                 .background(BgColor)
                 .clickable { onClick() }) {
@@ -176,14 +174,14 @@ fun ProductCard(
                 contentScale = ContentScale.Fit,
                 contentDescription = null,
                 modifier = Modifier
-                    .size(140.dp)
+                    .size(120.dp)
                     .background(BgColor)
             )
         }
 
         Text(
             text = product.name,
-            fontSize = 24.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(top = 12.dp)
         )
@@ -205,9 +203,44 @@ fun ProductCard(
                     .padding(vertical = 2.dp, horizontal = 6.dp)
             )
         }
-        Text(
-            text = "${product.price.toInt()} vnđ", fontWeight = FontWeight.Bold, fontSize = 16.sp
-        )
+
+        val originalPrice = formatPrice(product.price)
+        val promotionalPrice = formatPrice(product.promotionPrice)
+
+        // Hiển thị cả giá gốc và giá khuyến mãi (nếu có)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            if (product.promotionPrice != 0.0) {
+                Row {
+                    Icon(
+                        imageVector = Icons.Default.LocalFireDepartment,
+                        contentDescription = "",
+                        tint = Color.DarkGray
+                    )
+
+                    Text(
+                        text = promotionalPrice,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                    )
+                }
+            }
+
+            Text(
+                text = originalPrice,
+                fontWeight = FontWeight.Bold,
+                fontSize = if (product.promotionPrice != 0.0)
+                    10.sp else 16.sp,
+                style = TextStyle(
+                    textDecoration = if (product.promotionPrice != 0.0)
+                        TextDecoration.LineThrough else TextDecoration.None
+                ),
+                modifier = Modifier.padding(end = 8.dp)
+            )
+        }
     }
 }
 

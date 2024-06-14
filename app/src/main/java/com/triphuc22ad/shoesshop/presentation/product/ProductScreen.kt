@@ -73,10 +73,6 @@ fun ProductScreen(
         productViewModel.fetchData()
     }
 
-    LaunchedEffect(appState.productListUiState.filter) {
-        filter.value = appState.productListUiState.filter
-    }
-
     Box(modifier = Modifier) {
         Box(
             contentAlignment = Alignment.TopCenter,
@@ -184,11 +180,21 @@ fun ProductScreen(
         OptionSwipeableContainer(
             name = "Sort & Filter",
             active = isFilterVisible,
-            onSwipeDown = { isFilterVisible = false },
+            onSwipeDown = {
+                if (!state.applyFilter) {
+                    filter.value = ProductListFilter()
+                }
+                isFilterVisible = false
+            },
             firstActionName = "Reset",
-            onFirstAction = {},
+            onFirstAction = {
+                productViewModel.resetFilter()
+                filter.value = ProductListFilter()
+            },
             secondActionName = "Apply",
-            onSecondAction = {},
+            onSecondAction = {
+                productViewModel.applyFilter(filter = filter.value)
+            },
 //        paddingBottom = 100.dp
         ) {
             LazyColumn(
@@ -253,9 +259,9 @@ fun ProductScreen(
                                 FilterOption(
                                     text = sortBy,
                                     onClick = {
-                                        filter.value = filter.value.copy(orderBy = sortBy)
+                                        filter.value = filter.value.copy(sortBy = sortBy)
                                     },
-                                    active = filter.value.orderBy == sortBy
+                                    active = filter.value.sortBy == sortBy
                                 )
                             }
                         }
@@ -268,17 +274,25 @@ fun ProductScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
-                            var sliderPosition by remember { mutableStateOf(filter.value.minPrice.toFloat()..filter.value.maxPrice.toFloat()) }
+
+                            var sliderPosition by remember {
+                                mutableStateOf(0f..5000000f)
+                            }
+                            val step = 100000
                             RangeSlider(
-                                value = sliderPosition,
+                                value = filter.value.minPrice.toFloat()..filter.value.maxPrice.toFloat(),
                                 steps = 0,
                                 onValueChange = { range ->
-                                    sliderPosition = range
-                                    println(range.start)
+                                    val start = (range.start / step).toInt() * step
+                                    val end = (range.endInclusive / step).toInt() * step
+                                    sliderPosition = start.toFloat()..end.toFloat()
                                 },
-                                valueRange = filter.value.minPrice.toFloat()
-                                    .rangeTo(filter.value.maxPrice.toFloat()),
+                                valueRange = 0f.rangeTo(5000000f),
                                 onValueChangeFinished = {
+                                    filter.value = filter.value.copy(
+                                        minPrice = sliderPosition.start.toDouble(),
+                                        maxPrice = sliderPosition.endInclusive.toDouble()
+                                    )
                                 },
                                 colors = SliderDefaults.colors(
                                     thumbColor = Color.Black,
@@ -299,7 +313,6 @@ fun ProductScreen(
                 }
             }
         }
-
     }
 }
 
@@ -357,7 +370,6 @@ fun FilterOptionList(
                 }
             }
             item {
-
                 FilterSection(sectionName = "Rating") {
                     LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         items(4) {
