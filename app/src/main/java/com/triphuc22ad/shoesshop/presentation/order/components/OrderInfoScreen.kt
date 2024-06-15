@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -37,7 +38,7 @@ class OrderInfoViewModel @Inject constructor(
     private val orderId: Int =
         savedStateHandle["orderId"] ?: 0
 
-    init {
+    fun fetchData() {
         viewModelScope.launch {
             val response = userService.getMyOrderInfoById(orderId);
             if (response.isSuccessful) {
@@ -73,6 +74,9 @@ fun OrderInfoScreen(
     navigateBack: () -> Unit = {}
 ) {
     val state by orderInfoViewModel.state.collectAsState()
+    LaunchedEffect(Unit) {
+        orderInfoViewModel.fetchData()
+    }
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

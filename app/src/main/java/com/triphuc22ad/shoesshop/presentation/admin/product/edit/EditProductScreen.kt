@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -29,6 +30,7 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +47,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.presentation.components.FilterOptionCanClose
 import com.triphuc22ad.shoesshop.presentation.components.ImagePreview
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.util.parseColor
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -53,6 +56,10 @@ fun EditProductScreen(
     editProductViewModel: EditProductViewModel = hiltViewModel(),
 ) {
     val state by editProductViewModel.state.collectAsState()
+
+    LaunchedEffect(Unit) {
+        editProductViewModel.fetchData()
+    }
 
     Column(
         modifier = Modifier
@@ -143,7 +150,7 @@ fun EditProductScreen(
             }
 
             item {
-                var price by remember { mutableStateOf("${state.productDetail.price}") }
+                var price by remember { mutableStateOf("${state.productDetail.price.toInt()}") }
                 TextField(
                     value = price,
                     onValueChange = { newValue ->
@@ -183,8 +190,7 @@ fun EditProductScreen(
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = isExpandedStatusDropMenu) },
                             modifier = Modifier
                                 .menuAnchor()
-                                //
-                                .fillMaxWidth() // Adjust padding if needed
+                                .fillMaxWidth()
                         )
                         ExposedDropdownMenu(
                             expanded = isExpandedStatusDropMenu,
@@ -193,6 +199,7 @@ fun EditProductScreen(
                                 DropdownMenuItem(
                                     text = { Text(text = it) },
                                     onClick = {
+                                        editProductViewModel.editStatus(it)
                                         isExpandedStatusDropMenu = false
                                     })
                             }
@@ -220,7 +227,14 @@ fun EditProductScreen(
                             .weight(0.7f)
                             .padding(end = 8.dp)
                     )
-                    Button(onClick = { editProductViewModel.onEvent(EditProductEvent.CheckImg) }) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        onClick = { editProductViewModel.onEvent(EditProductEvent.CheckImg) },
+                        modifier = Modifier
+                    ) {
                         Text(text = "Check")
                     }
                 }
@@ -270,7 +284,7 @@ fun EditProductScreen(
                                     modifier = Modifier
                                         .size(16.dp)
                                         .background(
-                                            Color(android.graphics.Color.parseColor(it.value)),
+                                            parseColor(it.value),
                                             CircleShape
                                         )
                                 )
@@ -437,7 +451,7 @@ fun EditProductScreen(
                                     modifier = Modifier
                                         .size(16.dp)
                                         .background(
-                                            Color(android.graphics.Color.parseColor(it.value)),
+                                            parseColor(it.value),
                                             CircleShape
                                         )
                                 )
@@ -508,6 +522,20 @@ fun EditProductScreen(
                                 })
                         }
                     }
+                }
+            }
+
+            item {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    onClick = { editProductViewModel.onEvent(EditProductEvent.CheckImg) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(text = "Update")
                 }
             }
         }

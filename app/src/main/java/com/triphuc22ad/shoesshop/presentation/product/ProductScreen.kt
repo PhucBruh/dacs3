@@ -164,7 +164,7 @@ fun ProductScreen(
                         ) {
                             Text(text = "Previous", fontSize = 12.sp)
                         }
-                        Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
+                        Text("Page ${if (state.page != 0) state.page + 1 else 0} of ${state.totalPage}")
                         Button(
                             onClick = {},
                             enabled = state.page + 1 < state.totalPage,

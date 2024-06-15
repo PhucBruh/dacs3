@@ -1,6 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.admin.inventory.list
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,13 +39,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.triphuc22ad.shoesshop.R
+import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
@@ -71,19 +69,30 @@ fun AdminInventoryScreen(
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         ) {
-            var searchId by remember { mutableStateOf("") }
 
+            var searchId by remember { mutableStateOf("") }
             TextField(
-                value = "hello",
+                value = searchId,
                 onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() }) {
+                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
                         searchId = newValue
+                        adminInventoryViewModel.onEvent(
+                            AdminInventoryEvent.ChangeQueryProductId(
+                                newValue.toIntOrNull() ?: 0
+                            )
+                        )
                     }
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.End) {
                         if (searchId.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminInventoryViewModel.onEvent(
+                                    AdminInventoryEvent.ChangeQueryProductId(
+                                        0
+                                    )
+                                )
+                                searchId = ""
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -101,6 +110,7 @@ fun AdminInventoryScreen(
                         )
                     }
                 },
+
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number
                 ),
@@ -116,6 +126,7 @@ fun AdminInventoryScreen(
             TextField(
                 value = state.searchInfo,
                 onValueChange = {
+                    adminInventoryViewModel.onEvent(AdminInventoryEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
                     IconButton(onClick = {}, Modifier.size(14.dp)) {
@@ -129,6 +140,7 @@ fun AdminInventoryScreen(
                     Row(horizontalArrangement = Arrangement.End) {
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminInventoryViewModel.onEvent(AdminInventoryEvent.ChangeQuery(""))
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -170,8 +182,8 @@ fun AdminInventoryScreen(
                                 .size(80.dp)
                                 .background(Color.White, RoundedCornerShape(32.dp))
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.ic_launcher_background),
+                            AsyncImage(
+                                model = it.productImg,
                                 contentDescription = null,
                                 modifier = Modifier.size(60.dp)
                             )
@@ -180,7 +192,7 @@ fun AdminInventoryScreen(
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
                         Text(
@@ -233,9 +245,9 @@ fun AdminInventoryScreen(
                         enabled = state.page > 0,
                         modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
+                        Text("Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${state.totalPage + 1} ")
+                    Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
                         onClick = {},
                         enabled = state.page + 1 < state.totalPage,

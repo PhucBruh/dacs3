@@ -16,8 +16,25 @@ class AdminInventoryViewModel @Inject constructor(
 
     fun onEvent(event: AdminInventoryEvent) {
         when (event) {
-
+            is AdminInventoryEvent.ChangeQuery -> changeQuery(event.value)
+            is AdminInventoryEvent.ChangeQueryProductId -> changeQueryProductId(event.value)
+            is AdminInventoryEvent.Delete -> TODO()
+            AdminInventoryEvent.Search -> TODO()
         }
+    }
+
+    private fun changeQuery(value: String) {
+        val state = appStateRepository.appUiState.value.adminInventoryUiState
+        appStateRepository.updateAdminInventoryUiState(
+            state.copy(searchInfo = value)
+        )
+    }
+
+    private fun changeQueryProductId(value: Int) {
+        val state = appStateRepository.appUiState.value.adminInventoryUiState
+        appStateRepository.updateAdminInventoryUiState(
+            state.copy(searchId = value)
+        )
     }
 
     fun fetchData() {
@@ -28,9 +45,9 @@ class AdminInventoryViewModel @Inject constructor(
                 val pagedResponse = response.body()
                 if (pagedResponse != null) {
                     appStateRepository.updateAdminInventoryUiState(
-                        appStateRepository.appUiState.value.adminInventoryUiState.copy(
+                        state.copy(
                             inventoryList = pagedResponse.content,
-                            page = if (pagedResponse.page > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
+                            page = pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )

@@ -44,13 +44,13 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 @Composable
@@ -75,18 +75,28 @@ fun AdminProductScreen(
                 .padding(top = 8.dp)
         ) {
             var searchId by remember { mutableStateOf("") }
-
             TextField(
-                value = "hello",
+                value = searchId,
                 onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() }) {
+                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
                         searchId = newValue
+                        adminProductViewModel.onEvent(
+                            AdminProductEvent.ChangeQueryProductId(
+                                newValue.toIntOrNull() ?: 0
+                            )
+                        )
                     }
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.End) {
                         if (searchId.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminProductViewModel.onEvent(
+                                    AdminProductEvent.ChangeQueryProductId(
+                                        0
+                                    )
+                                )
+                                searchId = ""
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -133,6 +143,7 @@ fun AdminProductScreen(
                     Row(horizontalArrangement = Arrangement.End) {
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminProductViewModel.onEvent(AdminProductEvent.ChangeQuery(""))
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -150,29 +161,9 @@ fun AdminProductScreen(
                     .weight(0.6f)
                     .clip(RoundedCornerShape(20.dp))
             )
-
-//            IconButton(onClick = { adminProductViewModel.onEvent(AdminProductEvent.Search) }) {
-//                Icon(imageVector = Icons.Default.Search, contentDescription = "")
-//            }
         }
 
         LazyColumn {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text("Product image")
-                    Text("Info")
-                    Text(
-                        text = "Actions",
-                        textAlign = TextAlign.End,
-                    )
-                }
-            }
 
             items(state.productList) {
                 Row(
@@ -205,21 +196,22 @@ fun AdminProductScreen(
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
 
                         Text(
-                            "ID: ${it.id}", fontSize = 20.sp, fontWeight = FontWeight.Bold
+                            "ID: ${it.id}", fontSize = 16.sp, fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             it.name,
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                         )
+
                         Text(
-                            "${it.price.toInt()} vnđ",
-                            fontSize = 16.sp,
+                            text = formatPrice(it.price),
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal
                         )
                     }
@@ -254,7 +246,7 @@ fun AdminProductScreen(
                     ) {
                         Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
+                    Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
                         onClick = {},
                         enabled = state.page + 1 < state.totalPage,

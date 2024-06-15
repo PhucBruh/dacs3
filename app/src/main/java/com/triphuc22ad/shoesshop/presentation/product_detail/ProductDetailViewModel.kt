@@ -19,13 +19,14 @@ class ProductDetailViewModel @Inject constructor(
     private val inventoryService: InventoryService,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
     private val productId: Int =
         savedStateHandle["productId"] ?: 0
 
     private val _state = MutableStateFlow(ProductDetailUiState())
     val state: MutableStateFlow<ProductDetailUiState> = _state
 
-    init {
+    fun fetchData() {
         viewModelScope.launch {
             val response = productService.getProductById(productId);
             if (response.isSuccessful) {

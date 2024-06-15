@@ -1,7 +1,6 @@
 package com.triphuc22ad.shoesshop.presentation.app
 
 import com.triphuc22ad.shoesshop.data.model.UserInfoResponse
-import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.domain.model.User
 import com.triphuc22ad.shoesshop.presentation.admin.brand.list.AdminBrandUiState
@@ -13,13 +12,10 @@ import com.triphuc22ad.shoesshop.presentation.product.ProductUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AppStateRepository @Inject constructor(
-    private val productService: ProductService,
-) {
+class AppStateRepository {
     private val _appUiState = MutableStateFlow(AppUiState())
     val appUiState: StateFlow<AppUiState> = _appUiState.asStateFlow()
 
@@ -66,6 +62,7 @@ class AppStateRepository @Inject constructor(
     fun updateUserInfo(userInfo: UserInfoResponse) {
         val role = if (userInfo.roles.contains("ROLE_ADMIN")) "ADMIN" else "USER"
         _appUiState.value = _appUiState.value.copy(
+            isLoggedIn = true,
             user = User(
                 firstName = userInfo.firstName,
                 lastName = userInfo.lastName,

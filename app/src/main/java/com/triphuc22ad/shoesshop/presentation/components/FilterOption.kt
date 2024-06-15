@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.triphuc22ad.shoesshop.presentation.util.parseColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
@@ -120,7 +121,7 @@ fun OptionFilterList() {
                     modifier = Modifier
                         .size(16.dp)
                         .background(
-                            Color(android.graphics.Color.parseColor("#77eb34")),
+                            parseColor("#77eb34"),
                             CircleShape
                         )
                 )

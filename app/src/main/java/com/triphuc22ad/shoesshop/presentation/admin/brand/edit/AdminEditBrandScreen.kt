@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,6 +33,9 @@ fun AdminEditBrandScreen(
 ) {
     val state by adminEditBrandViewModel.state.collectAsState()
 
+    LaunchedEffect(Unit) {
+        adminEditBrandViewModel.fetchData()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -89,7 +95,15 @@ fun AdminEditBrandScreen(
                             .weight(0.7f)
                             .padding(end = 8.dp)
                     )
-                    Button(onClick = { adminEditBrandViewModel.onEvent(AdminEditBrandEvent.CheckImg) }) {
+
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        onClick = { adminEditBrandViewModel.onEvent(AdminEditBrandEvent.CheckImg) },
+                        modifier = Modifier
+                    ) {
                         Text(text = "Check")
                     }
                 }
@@ -100,6 +114,20 @@ fun AdminEditBrandScreen(
                     model = state.brandToEdit.img_url,
                     description = state.productDetailMainImgPreview.toString(),
                     onClick = { adminEditBrandViewModel.onEvent(AdminEditBrandEvent.DeleteCheckImg) })
+            }
+
+            item {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(text = "Update")
+                }
             }
         }
     }

@@ -56,7 +56,6 @@ fun AdminAddInventoryScreen(
                 .padding(top = 16.dp)
         ) {
             item {
-
                 var productIdToEdit by remember { mutableStateOf("") }
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -84,7 +83,16 @@ fun AdminAddInventoryScreen(
                             .weight(0.7f)
                             .padding(end = 8.dp)
                     )
-                    Button(onClick = { adminAddInventoryViewModel.onEvent(AdminAddInventoryEvent.CheckProduct) }) {
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        onClick = {
+                            adminAddInventoryViewModel.onEvent(AdminAddInventoryEvent.CheckProduct)
+                        },
+                        modifier = Modifier
+                    ) {
                         Text(text = "Check")
                     }
                 }

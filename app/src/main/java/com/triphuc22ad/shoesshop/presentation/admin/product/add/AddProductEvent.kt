@@ -15,4 +15,5 @@ sealed class AddProductEvent {
     data class DeleteImg(val value: String) : AddProductEvent()
     data object CheckImg : AddProductEvent()
     data object DeleteCheckImg : AddProductEvent()
+
 }

@@ -26,7 +26,7 @@ class AdminEditOrderViewModel @Inject constructor(
     private val productId: Int =
         savedStateHandle["orderId"] ?: 0
 
-    init {
+    fun fetchData() {
         viewModelScope.launch {
             val response = orderService.getOrderById(productId);
             if (response.isSuccessful) {
@@ -47,5 +47,13 @@ class AdminEditOrderViewModel @Inject constructor(
         when (event) {
             else -> {}
         }
+    }
+
+    fun changeStatus(value: String) {
+        _state.value = _state.value.copy(
+            orderToEdit = _state.value.orderToEdit.copy(
+                status = value
+            )
+        )
     }
 }

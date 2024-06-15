@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,7 +41,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -53,13 +53,14 @@ import com.triphuc22ad.shoesshop.ui.theme.BgColor
 fun AdminSpecialOfferScreen(
     appViewModel: AppViewModel = hiltViewModel(),
     adminSpecialOfferViewModel: AdminSpecialOfferViewModel = hiltViewModel(),
-    navigateToAddSpecialOffer: () -> Unit,
-    navigateToEditSpecialOffer: (Int) -> Unit,
+    navigateToAddSpecialOffer: () -> Unit = {},
+    navigateToEditSpecialOffer: (Int) -> Unit = {},
 ) {
     val appState by appViewModel.state.collectAsState()
     val state = appState.adminSpecialOfferUiState
 
     LaunchedEffect(Unit) {
+        adminSpecialOfferViewModel.fetchData()
     }
 
     Column(Modifier.fillMaxSize()) {
@@ -70,18 +71,28 @@ fun AdminSpecialOfferScreen(
                 .padding(top = 8.dp)
         ) {
             var searchId by remember { mutableStateOf("") }
-
             TextField(
-                value = "hello",
+                value = searchId,
                 onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() }) {
+                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
                         searchId = newValue
+                        adminSpecialOfferViewModel.onEvent(
+                            AdminSpecialOfferEvent.ChangeQueryProductId(
+                                newValue.toIntOrNull() ?: 0
+                            )
+                        )
                     }
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.End) {
                         if (searchId.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminSpecialOfferViewModel.onEvent(
+                                    AdminSpecialOfferEvent.ChangeQueryProductId(
+                                        0
+                                    )
+                                )
+                                searchId = ""
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -114,6 +125,7 @@ fun AdminSpecialOfferScreen(
             TextField(
                 value = state.searchInfo,
                 onValueChange = {
+                    adminSpecialOfferViewModel.onEvent(AdminSpecialOfferEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
                     IconButton(onClick = {}, Modifier.size(14.dp)) {
@@ -127,6 +139,11 @@ fun AdminSpecialOfferScreen(
                     Row(horizontalArrangement = Arrangement.End) {
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminSpecialOfferViewModel.onEvent(
+                                    AdminSpecialOfferEvent.ChangeQuery(
+                                        ""
+                                    )
+                                )
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -144,29 +161,9 @@ fun AdminSpecialOfferScreen(
                     .weight(0.6f)
                     .clip(RoundedCornerShape(20.dp))
             )
-
-//            IconButton(onClick = { adminProductViewModel.onEvent(AdminProductEvent.Search) }) {
-//                Icon(imageVector = Icons.Default.Search, contentDescription = "")
-//            }
         }
 
         LazyColumn {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text("Product image")
-                    Text("Info")
-                    Text(
-                        text = "Actions",
-                        textAlign = TextAlign.End,
-                    )
-                }
-            }
 
             items(state.specialOfferList) {
                 Row(
@@ -199,7 +196,7 @@ fun AdminSpecialOfferScreen(
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
 
@@ -208,17 +205,17 @@ fun AdminSpecialOfferScreen(
                         )
 
                         Text(
-                            "value: ${it.value}%",
+                            limitText(it.name, 16),
                             fontSize = 14.sp,
                         )
 
                         Text(
-                            text = limitText("value: ${it.name}%", 20),
+                            "Value - ${it.value}%",
                             fontSize = 14.sp,
                         )
 
                         Text(
-                            text = limitText("value: ${it.description}%", 20),
+                            limitText(it.description, 16),
                             fontSize = 14.sp,
                         )
                     }
@@ -241,21 +238,25 @@ fun AdminSpecialOfferScreen(
             item {
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
+                        .padding(horizontal = 12.dp)
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {}, enabled = state.page > 0
+                        onClick = {},
+                        enabled = state.page > 0,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Previous")
+                        Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${state.totalPage} ")
+                    Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
-                        onClick = {}, enabled = state.page + 1 < state.totalPage
+                        onClick = {},
+                        enabled = state.page + 1 < state.totalPage,
+                        modifier = Modifier.width(100.dp)
                     ) {
-                        Text("Next")
+                        Text("Next", fontSize = 12.sp)
                     }
                 }
             }

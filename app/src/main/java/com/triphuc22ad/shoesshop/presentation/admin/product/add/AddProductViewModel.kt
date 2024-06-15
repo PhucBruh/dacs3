@@ -59,10 +59,12 @@ class AddProductViewModel @Inject constructor(
                         _state.value = _state.value.copy(
                             productToAdd = _state.value.productToAdd.copy(sizes = sizes)
                         )
+                    } else {
+                        appStateRepository.updateNotify("Size is already added")
                     }
                 } else {
                     viewModelScope.launch {
-                        appStateRepository.updateNotify("size is null or already added")
+                        appStateRepository.updateNotify("Size is null")
                     }
                 }
             }
@@ -76,11 +78,21 @@ class AddProductViewModel @Inject constructor(
             }
 
             is AddProductEvent.AddColor -> {
-                val colors = _state.value.productToAdd.colors.toMutableList()
-                colors.add(ColorRequest(name = event.name, value = event.value))
-                _state.value = _state.value.copy(
-                    productToAdd = _state.value.productToAdd.copy(colors = colors)
-                )
+                if (event.name.isNotEmpty() || event.value.isNotEmpty()) {
+                    val colors = _state.value.productToAdd.colors.toMutableList()
+                    if (colors.find { it.name == event.name && it.value == event.value } != null) {
+                        colors.add(ColorRequest(name = event.name, value = event.value))
+                        _state.value = _state.value.copy(
+                            productToAdd = _state.value.productToAdd.copy(colors = colors)
+                        )
+                    } else {
+                        appStateRepository.updateNotify("Color is already added")
+                    }
+                } else {
+                    viewModelScope.launch {
+                        appStateRepository.updateNotify("Fill the color input")
+                    }
+                }
             }
 
             is AddProductEvent.DeleteColor -> {
@@ -100,9 +112,11 @@ class AddProductViewModel @Inject constructor(
                             productToAdd = _state.value.productToAdd.copy(imgs = imgs)
                         )
                     } else {
-                        viewModelScope.launch {
-                            appStateRepository.updateNotify("size is null or already added")
-                        }
+                        appStateRepository.updateNotify("Img already added")
+                    }
+                } else {
+                    viewModelScope.launch {
+                        appStateRepository.updateNotify("Fill the img input")
                     }
                 }
             }

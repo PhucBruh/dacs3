@@ -26,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +35,7 @@ import com.triphuc22ad.shoesshop.domain.model.Detail
 import com.triphuc22ad.shoesshop.domain.model.OrderDetail
 import com.triphuc22ad.shoesshop.domain.model.OrderUserInfo
 import com.triphuc22ad.shoesshop.presentation.util.formatPrice
+import com.triphuc22ad.shoesshop.presentation.util.parseColor
 
 @Composable
 fun OrderInfor(order: OrderDetail) {
@@ -144,7 +144,7 @@ fun OrderDetailItem(detail: Detail) {
                     modifier = Modifier
                         .size(16.dp)
                         .background(
-                            Color(android.graphics.Color.parseColor(detail.colorValue)),
+                            parseColor(detail.colorValue),
                             CircleShape
                         )
                 )

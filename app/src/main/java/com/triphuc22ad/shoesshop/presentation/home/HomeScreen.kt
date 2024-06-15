@@ -20,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import com.triphuc22ad.shoesshop.domain.model.SpecialOffer
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.components.ProductCard
 import com.triphuc22ad.shoesshop.presentation.components.SectionHeader
@@ -102,7 +100,8 @@ fun HomeScreen(
             }
 
             items(items = state.listPopularProduct, span = { GridItemSpan(6) }) {
-                ProductCard(product = it,
+                ProductCard(
+                    product = it,
                     onClick = { navigateToProductDetail(it.id) }
                 )
             }

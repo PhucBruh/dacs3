@@ -16,8 +16,25 @@ class AdminBrandViewModel @Inject constructor(
 
     fun onEvent(event: AdminBrandEvent) {
         when (event) {
-            else -> {}
+            is AdminBrandEvent.ChangeQuery -> changeQuery(event.value)
+            is AdminBrandEvent.ChangeQueryProductId -> changeQueryProductId(event.value)
+            is AdminBrandEvent.Delete -> TODO()
+            AdminBrandEvent.Search -> TODO()
         }
+    }
+
+    private fun changeQuery(value: String) {
+        val state = appStateRepository.appUiState.value.adminBrandUIState
+        appStateRepository.updateAdminBrandUiState(
+            state.copy(searchInfo = value)
+        )
+    }
+
+    private fun changeQueryProductId(value: Int) {
+        val state = appStateRepository.appUiState.value.adminBrandUIState
+        appStateRepository.updateAdminBrandUiState(
+            state.copy(searchId = value)
+        )
     }
 
     fun fetchData() {
@@ -30,7 +47,7 @@ class AdminBrandViewModel @Inject constructor(
                     appStateRepository.updateAdminBrandUiState(
                         appStateRepository.appUiState.value.adminBrandUIState.copy(
                             brandList = pagedResponse.content,
-                            page = if (pagedResponse.page > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
+                            page = pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )

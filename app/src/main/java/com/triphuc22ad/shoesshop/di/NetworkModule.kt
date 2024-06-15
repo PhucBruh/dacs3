@@ -10,6 +10,7 @@ import com.triphuc22ad.shoesshop.data.service.OrderService
 import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.data.service.SpecialOfferService
 import com.triphuc22ad.shoesshop.data.service.UserService
+import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,7 +26,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class NetworkModule {
 
-    private val BASE_URL = "http://192.168.95.160:8080/"
+    private val BASE_URL = "http://192.168.1.8:8080/"
 
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
@@ -33,13 +34,21 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(tokenManager: TokenManager): OkHttpClient {
+    fun provideOkHttpClient(
+        tokenManager: TokenManager,
+        appStateRepository: AppStateRepository
+    ): OkHttpClient {
         return OkHttpClient.Builder().addInterceptor { chain ->
             val token = runBlocking { tokenManager.token.first() }
             val request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer $token")
                 .build()
-            chain.proceed(request)
+            val response = chain.proceed(request)
+            if (response.code == 401) {
+                appStateRepository.resetAppState()
+                appStateRepository.updateNotify("Please login again")
+            }
+            response
         }.build()
     }
 

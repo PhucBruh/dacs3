@@ -1,6 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.cart.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,17 +22,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.app.CartItem
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
+import com.triphuc22ad.shoesshop.presentation.util.parseColor
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 
 @Composable
@@ -113,7 +109,7 @@ fun CartItem(
                     modifier = Modifier
                         .size(16.dp)
                         .background(
-                            Color(android.graphics.Color.parseColor(item.color.value)),
+                            parseColor(item.color.value),
                             CircleShape
                         )
                 )

@@ -1,7 +1,6 @@
 package com.triphuc22ad.shoesshop.presentation.app
 
 import com.triphuc22ad.shoesshop.domain.model.Color
-import com.triphuc22ad.shoesshop.domain.model.Product
 import com.triphuc22ad.shoesshop.domain.model.Size
 import com.triphuc22ad.shoesshop.domain.model.User
 import com.triphuc22ad.shoesshop.presentation.admin.brand.list.AdminBrandUiState

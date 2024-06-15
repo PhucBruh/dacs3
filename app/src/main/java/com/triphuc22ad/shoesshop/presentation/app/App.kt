@@ -37,7 +37,7 @@ import androidx.navigation.navArgument
 import com.triphuc22ad.shoesshop.presentation.admin.brand.add.AdminAddBrandScreen
 import com.triphuc22ad.shoesshop.presentation.admin.brand.edit.AdminEditBrandScreen
 import com.triphuc22ad.shoesshop.presentation.admin.brand.list.AdminBrandScreen
-import com.triphuc22ad.shoesshop.presentation.admin.components.AdminDashBoardScreen
+import com.triphuc22ad.shoesshop.presentation.admin.dashboard.AdminDashBoardScreen
 import com.triphuc22ad.shoesshop.presentation.admin.inventory.add.AdminAddInventoryScreen
 import com.triphuc22ad.shoesshop.presentation.admin.inventory.edit.AdminEditInventoryScreen
 import com.triphuc22ad.shoesshop.presentation.admin.inventory.list.AdminInventoryScreen
@@ -46,6 +46,9 @@ import com.triphuc22ad.shoesshop.presentation.admin.order.list.AdminOrderScreen
 import com.triphuc22ad.shoesshop.presentation.admin.product.add.AdminAddProductScreen
 import com.triphuc22ad.shoesshop.presentation.admin.product.edit.EditProductScreen
 import com.triphuc22ad.shoesshop.presentation.admin.product.list.AdminProductScreen
+import com.triphuc22ad.shoesshop.presentation.admin.special_offer.add.AdminAddSpecialOfferScreen
+import com.triphuc22ad.shoesshop.presentation.admin.special_offer.edit.AdminEditSpecialOfferScreen
+import com.triphuc22ad.shoesshop.presentation.admin.special_offer.list.AdminSpecialOfferScreen
 import com.triphuc22ad.shoesshop.presentation.app.navigation.BottomNavItem
 import com.triphuc22ad.shoesshop.presentation.app.navigation.BottomNavigationBar
 import com.triphuc22ad.shoesshop.presentation.app.navigation.Screen
@@ -79,6 +82,13 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
         }
     }
 
+    LaunchedEffect(state.isLoggedIn) {
+        if (!state.isLoggedIn) {
+            navController.navigate(Screen.Login.route) {
+                popUpTo(Screen.Login.route) { inclusive = true }
+            }
+        }
+    }
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -121,6 +131,10 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     )
             ) {
                 composable(Screen.Login.route) {
+                    BackHandler {
+                        Log.i("LOG_TAG", "Clicked back")
+                    }
+
                     LoginScreen(navigateToHome = { navController.navigate(Screen.Home.route) },
                         navigateToRegister = { navController.navigate(Screen.SignUp.route) })
                 }
@@ -242,7 +256,6 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                 }
 
                 composable(Screen.Admin.Brand.route) {
-
                     BackHandler(true) {
                         // Or do nothing
                     }
@@ -286,17 +299,23 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     BackHandler(true) {
                         // Or do nothing
                     }
+                    AdminSpecialOfferScreen(
+                        navigateToAddSpecialOffer = { navController.navigate(Screen.Admin.AddSpecialOffer.route) },
+                        navigateToEditSpecialOffer = { navController.navigate(Screen.Admin.SpecialOffer.route + "/$it") }
+                    )
                 }
 
                 composable(Screen.Admin.AddSpecialOffer.route) {
+                    AdminAddSpecialOfferScreen(navigateBack = { navController.popBackStack() })
                 }
 
                 composable(
                     Screen.Admin.SpecialOffer.route + "/{specialOfferId}",
                     arguments = listOf(navArgument("specialOfferId") { type = NavType.IntType })
                 ) { backStackEntry ->
-                    val productId =
+                    val specialOfferId =
                         backStackEntry.arguments?.getInt("specialOfferId") ?: return@composable
+                    AdminEditSpecialOfferScreen(navigateBack = { navController.popBackStack() })
                 }
 
                 composable(Screen.Admin.Inventory.route) {

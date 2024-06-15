@@ -26,7 +26,7 @@ class AdminEditInventoryViewModel @Inject constructor(
     private val inventoryId: Int =
         savedStateHandle["inventoryId"] ?: 0
 
-    init {
+    fun fetchData() {
         viewModelScope.launch {
             val response = inventoryService.getInventoryInfo(inventoryId);
             if (response.isSuccessful) {
@@ -36,7 +36,6 @@ class AdminEditInventoryViewModel @Inject constructor(
                     _state.value = _state.value.copy(
                         inventoryToEdit = inventory
                     )
-                    appStateRepository.updateNotify("inventory info loaded")
                 }
             } else {
                 appStateRepository.updateNotify("inventory not found")

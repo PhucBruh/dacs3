@@ -16,10 +16,24 @@ class AdminOrderViewModel @Inject constructor(
 
     fun onEvent(event: AdminOrderEvent) {
         when (event) {
-            is AdminOrderEvent.ChangeQuery -> TODO()
-            is AdminOrderEvent.ChangeQueryProductId -> TODO()
+            is AdminOrderEvent.ChangeQuery -> changeQuery(event.value)
+            is AdminOrderEvent.ChangeQueryProductId -> changeQueryProductId(event.value)
             AdminOrderEvent.Search -> TODO()
         }
+    }
+
+    private fun changeQuery(value: String) {
+        val state = appStateRepository.appUiState.value.adminOrderUiState
+        appStateRepository.updateAdminOrderUiState(
+            state.copy(searchInfo = value)
+        )
+    }
+
+    private fun changeQueryProductId(value: Int) {
+        val state = appStateRepository.appUiState.value.adminOrderUiState
+        appStateRepository.updateAdminOrderUiState(
+            state.copy(searchId = value)
+        )
     }
 
     fun fetchData() {
@@ -32,7 +46,7 @@ class AdminOrderViewModel @Inject constructor(
                     appStateRepository.updateAdminOrderUiState(
                         appStateRepository.appUiState.value.adminOrderUiState.copy(
                             orderList = pagedResponse.content,
-                            page = if (pagedResponse.page > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
+                            page = pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )

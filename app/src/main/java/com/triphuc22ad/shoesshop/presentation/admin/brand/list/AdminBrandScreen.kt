@@ -42,7 +42,6 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -72,19 +71,25 @@ fun AdminBrandScreen(
                 .fillMaxWidth()
                 .padding(top = 8.dp)
         ) {
-
             var searchId by remember { mutableStateOf("") }
             TextField(
-                value = "hello",
+                value = searchId,
                 onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() }) {
+                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
                         searchId = newValue
+                        adminBrandViewModel.onEvent(
+                            AdminBrandEvent.ChangeQueryProductId(
+                                newValue.toIntOrNull() ?: 0
+                            )
+                        )
                     }
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.End) {
                         if (searchId.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminBrandViewModel.onEvent(AdminBrandEvent.ChangeQueryProductId(0))
+                                searchId = ""
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -115,8 +120,9 @@ fun AdminBrandScreen(
             )
 
             TextField(
-                value = "",
+                value = state.searchInfo,
                 onValueChange = {
+                    adminBrandViewModel.onEvent(AdminBrandEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
                     IconButton(onClick = {}, Modifier.size(14.dp)) {
@@ -128,15 +134,16 @@ fun AdminBrandScreen(
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.End) {
-//                        if (state.searchInfo.isNotEmpty()) {
-//                            IconButton(onClick = {
-//                            }, modifier = Modifier.size(14.dp)) {
-//                                Icon(
-//                                    imageVector = Icons.Default.Close,
-//                                    contentDescription = ""
-//                                )
-//                            }
-//                        }
+                        if (state.searchInfo.isNotEmpty()) {
+                            IconButton(onClick = {
+                                adminBrandViewModel.onEvent(AdminBrandEvent.ChangeQuery(""))
+                            }, modifier = Modifier.size(14.dp)) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = ""
+                                )
+                            }
+                        }
                     }
                 },
                 label = { Text("Search") },
@@ -154,22 +161,6 @@ fun AdminBrandScreen(
         }
 
         LazyColumn {
-            item {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text("Product image")
-                    Text("Info")
-                    Text(
-                        text = "Actions",
-                        textAlign = TextAlign.End,
-                    )
-                }
-            }
 
             items(state.brandList) {
                 Row(
@@ -202,23 +193,18 @@ fun AdminBrandScreen(
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
 
                         Text(
-                            "ID: ${it.id}", fontSize = 20.sp, fontWeight = FontWeight.Bold
+                            "ID: ${it.id}", fontSize = 16.sp, fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             it.name,
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                         )
-//                        Text(
-//                            "",
-//                            fontSize = 16.sp,
-//                            fontWeight = FontWeight.Normal
-//                        )
                     }
 
                     Row(
@@ -251,7 +237,7 @@ fun AdminBrandScreen(
                     ) {
                         Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
+                    Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
                         onClick = {},
                         enabled = state.page + 1 < state.totalPage,

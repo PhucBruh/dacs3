@@ -48,6 +48,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.OrderInfo
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.presentation.util.limitText
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
@@ -72,18 +73,24 @@ fun AdminOrderScreen(
                 .padding(top = 8.dp)
         ) {
             var searchId by remember { mutableStateOf("") }
-
             TextField(
-                value = "hello",
+                value = searchId,
                 onValueChange = { newValue ->
-                    if (newValue.all { it.isDigit() }) {
+                    if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
                         searchId = newValue
+                        adminOrderViewModel.onEvent(
+                            AdminOrderEvent.ChangeQueryProductId(
+                                newValue.toIntOrNull() ?: 0
+                            )
+                        )
                     }
                 },
                 trailingIcon = {
                     Row(horizontalArrangement = Arrangement.End) {
                         if (searchId.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminOrderViewModel.onEvent(AdminOrderEvent.ChangeQueryProductId(0))
+                                searchId = ""
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -116,6 +123,7 @@ fun AdminOrderScreen(
             TextField(
                 value = state.searchInfo,
                 onValueChange = {
+                    adminOrderViewModel.onEvent(AdminOrderEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
                     IconButton(onClick = {}, Modifier.size(14.dp)) {
@@ -129,6 +137,7 @@ fun AdminOrderScreen(
                     Row(horizontalArrangement = Arrangement.End) {
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
+                                adminOrderViewModel.onEvent(AdminOrderEvent.ChangeQuery(""))
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -183,29 +192,29 @@ fun AdminOrderScreen(
 
                     Column(
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(2.dp),
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
 
                         Text(
                             "ID: ${it.id}",
-                            fontSize = 20.sp,
+                            fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
                             text = limitText(it.shippingAddress, 16),
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                         )
 
                         Text(
                             text = limitText(it.description, 16),
-                            fontSize = 16.sp,
+                            fontSize = 14.sp,
                         )
 
                         Text(
-                            "${it.price.toInt()} vnđ",
-                            fontSize = 16.sp,
+                            text = formatPrice(it.price),
+                            fontSize = 14.sp,
                             fontWeight = FontWeight.Normal
                         )
                     }
@@ -236,7 +245,7 @@ fun AdminOrderScreen(
                     ) {
                         Text(text = "Previous", fontSize = 12.sp)
                     }
-                    Text("Page ${state.page + 1} of ${if (state.totalPage != 0) state.totalPage else 1} ")
+                    Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
                         onClick = {},
                         enabled = state.page + 1 < state.totalPage,

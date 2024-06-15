@@ -1,6 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.product_detail
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,13 +26,13 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,14 +41,15 @@ import androidx.compose.ui.util.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
-import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
-import com.triphuc22ad.shoesshop.presentation.product_detail.components.TextCircleButton
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
-import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.components.PagerIndicator
 import com.triphuc22ad.shoesshop.presentation.components.PriceBar
 import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
+import com.triphuc22ad.shoesshop.presentation.product_detail.components.ColorCircleButton
+import com.triphuc22ad.shoesshop.presentation.product_detail.components.ExpandedText
+import com.triphuc22ad.shoesshop.presentation.product_detail.components.TextCircleButton
+import com.triphuc22ad.shoesshop.presentation.util.parseColor
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import kotlin.math.absoluteValue
 
 val listImgs = listOf(
@@ -69,6 +69,9 @@ fun ProductDetailScreen(
 ) {
 
     val state by productDetailViewModel.state.collectAsState()
+    LaunchedEffect(Unit) {
+        productDetailViewModel.fetchData()
+    }
 
     Box(
         contentAlignment = Alignment.BottomEnd,
@@ -190,7 +193,7 @@ fun ProductDetailScreen(
                         ) {
                             items(state.product.colors) { color ->
                                 ColorCircleButton(
-                                    color = Color(android.graphics.Color.parseColor(color.value)),
+                                    color = parseColor(color.value),
                                     onClick = {
                                         productDetailViewModel.onEvent(
                                             ProductDetailEvent.ChangeColor(color)

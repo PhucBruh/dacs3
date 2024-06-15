@@ -16,21 +16,27 @@ class AdminProductViewModel @Inject constructor(
 
     fun onEvent(event: AdminProductEvent) {
         when (event) {
-            is AdminProductEvent.ChangeQuery -> {
-                val state =
-                    appStateRepository.appUiState.value.productListUiState
-                appStateRepository.updateProductUiState(
-                    state.copy(
-                        query = event.value,
-                    )
-                )
-            }
-
-            is AdminProductEvent.ChangeQueryProductId -> TODO()
+            is AdminProductEvent.ChangeQuery -> changeQuery(event.value)
+            is AdminProductEvent.ChangeQueryProductId -> changeQueryProductId(event.value)
+            is AdminProductEvent.Delete -> TODO()
             AdminProductEvent.NextPage -> TODO()
             AdminProductEvent.PreviousPage -> TODO()
             AdminProductEvent.Search -> TODO()
         }
+    }
+
+    private fun changeQuery(value: String) {
+        val state = appStateRepository.appUiState.value.adminProductUiState
+        appStateRepository.updateAdminProductUiState(
+            state.copy(searchInfo = value)
+        )
+    }
+
+    private fun changeQueryProductId(value: Int) {
+        val state = appStateRepository.appUiState.value.adminProductUiState
+        appStateRepository.updateAdminProductUiState(
+            state.copy(searchId = value)
+        )
     }
 
     fun fetchData() {
@@ -43,7 +49,7 @@ class AdminProductViewModel @Inject constructor(
                     appStateRepository.updateAdminProductUiState(
                         appStateRepository.appUiState.value.adminProductUiState.copy(
                             productList = pagedResponse.content,
-                            page = if (pagedResponse.page > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
+                            page = pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )

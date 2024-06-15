@@ -9,18 +9,17 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -36,7 +35,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,6 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.presentation.components.FilterOptionCanClose
 import com.triphuc22ad.shoesshop.presentation.components.ImagePreview
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.util.parseColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
@@ -172,7 +171,15 @@ fun AdminAddProductScreen(
                             .weight(0.7f)
                             .padding(end = 8.dp)
                     )
-                    Button(onClick = { manageProductViewModel.onEvent(AddProductEvent.CheckImg) }) {
+
+                    Button(
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Black,
+                            contentColor = Color.White
+                        ),
+                        onClick = { manageProductViewModel.onEvent(AddProductEvent.CheckImg) },
+                        modifier = Modifier
+                    ) {
                         Text(text = "Check")
                     }
                 }
@@ -318,7 +325,7 @@ fun AdminAddProductScreen(
                                     modifier = Modifier
                                         .size(16.dp)
                                         .background(
-                                            Color(android.graphics.Color.parseColor(it.value)),
+                                            parseColor(it.value),
                                             CircleShape
                                         )
                                 )
@@ -388,6 +395,19 @@ fun AdminAddProductScreen(
                                 })
                         }
                     }
+                }
+            }
+            item {
+                Button(
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Black,
+                        contentColor = Color.White
+                    ),
+                    onClick = {},
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    Text(text = "Add")
                 }
             }
         }

@@ -32,6 +32,10 @@ fun AdminEditInventoryScreen(
 ) {
     val state by adminEditInventoryViewModel.state.collectAsState()
 
+    LaunchedEffect(Unit) {
+        adminEditInventoryViewModel.fetchData()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -111,7 +115,7 @@ fun AdminEditInventoryScreen(
 
             item {
                 var stockToEdit by remember { mutableStateOf(state.inventoryToEdit.stock.toString()) }
-                LaunchedEffect(state.inventoryToEdit.stock) {
+                LaunchedEffect(state.inventoryToEdit) {
                     stockToEdit = state.inventoryToEdit.stock.toString()
                 }
                 TextField(

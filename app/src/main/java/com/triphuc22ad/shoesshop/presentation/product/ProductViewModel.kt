@@ -66,7 +66,7 @@ class ProductViewModel @Inject constructor(
                     appStateRepository.updateProductUiState(
                         appStateRepository.appUiState.value.productListUiState.copy(
                             productList = pagedResponse.content,
-                            page = if (pagedResponse.page > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
+                            page = pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )

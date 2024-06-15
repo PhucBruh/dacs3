@@ -1,7 +1,6 @@
 package com.triphuc22ad.shoesshop.di
 
 import android.content.Context
-import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.Module
 import dagger.Provides
@@ -21,7 +20,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideAppStateRepository(productService: ProductService): AppStateRepository {
-        return AppStateRepository(productService)
+    fun provideAppStateRepository(): AppStateRepository {
+        return AppStateRepository()
     }
 }

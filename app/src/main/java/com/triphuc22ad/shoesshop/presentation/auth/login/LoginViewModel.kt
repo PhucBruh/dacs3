@@ -3,20 +3,16 @@ package com.triphuc22ad.shoesshop.presentation.auth.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triphuc22ad.shoesshop.data.TokenManager
-import com.triphuc22ad.shoesshop.data.model.ApiResponse
-import com.triphuc22ad.shoesshop.data.model.JwtResponse
 import com.triphuc22ad.shoesshop.data.model.LoginRequest
 import com.triphuc22ad.shoesshop.data.model.UserInfoResponse
 import com.triphuc22ad.shoesshop.data.service.AuthService
 import com.triphuc22ad.shoesshop.data.service.UserService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
-import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.auth.login.components.LoginUiSate
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -75,6 +71,12 @@ class LoginViewModel @Inject constructor(
             }
 
             LoginEvent.RememberMeToggle -> TODO()
+        }
+    }
+
+    fun clearToken() {
+        viewModelScope.launch {
+            tokenManager.clearToken()
         }
     }
 

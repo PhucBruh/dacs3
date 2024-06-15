@@ -4,6 +4,7 @@ data class Inventory(
     val id: Int,
     val productId: Int,
     val productName: String,
+    val productImg: String,
     val size: Size,
     val color: Color,
     val stock: Int,

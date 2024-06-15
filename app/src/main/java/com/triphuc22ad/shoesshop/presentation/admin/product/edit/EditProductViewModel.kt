@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.triphuc22ad.shoesshop.data.model.ColorRequest
 import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
-import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -24,7 +23,7 @@ class EditProductViewModel @Inject constructor(
     private val productId: Int =
         savedStateHandle["productId"] ?: 0
 
-    init {
+    fun fetchData() {
         viewModelScope.launch {
             val response = productService.getProductById(productId);
             if (response.isSuccessful) {
@@ -87,10 +86,12 @@ class EditProductViewModel @Inject constructor(
                         _state.value = _state.value.copy(
                             editSizes = sizes
                         )
+                    } else {
+                        appStateRepository.updateNotify("Size is already added")
                     }
                 } else {
                     viewModelScope.launch {
-                        appStateRepository.updateNotify("size is null or already added")
+                        appStateRepository.updateNotify("Size is null")
                     }
                 }
             }
@@ -104,11 +105,21 @@ class EditProductViewModel @Inject constructor(
             }
 
             is EditProductEvent.AddEditColor -> {
-                val colors = _state.value.editColors.toMutableList()
-                colors.add(ColorRequest(name = event.name, value = event.value))
-                _state.value = _state.value.copy(
-                    editColors = colors
-                )
+                if (event.name.isNotEmpty() || event.value.isNotEmpty()) {
+                    val colors = _state.value.editColors.toMutableList()
+                    if (colors.find { it.name == event.name && it.value == event.value } != null) {
+                        colors.add(ColorRequest(name = event.name, value = event.value))
+                        _state.value = _state.value.copy(
+                            editColors = colors
+                        )
+                    } else {
+                        appStateRepository.updateNotify("Color is already added")
+                    }
+                } else {
+                    viewModelScope.launch {
+                        appStateRepository.updateNotify("Fill the color input")
+                    }
+                }
             }
 
             is EditProductEvent.DeleteEditColor -> {
@@ -128,9 +139,11 @@ class EditProductViewModel @Inject constructor(
                             editImgs = imgs
                         )
                     } else {
-                        viewModelScope.launch {
-                            appStateRepository.updateNotify("size is null or already added")
-                        }
+                        appStateRepository.updateNotify("Img already added")
+                    }
+                } else {
+                    viewModelScope.launch {
+                        appStateRepository.updateNotify("Fill the img input")
                     }
                 }
             }
@@ -159,5 +172,11 @@ class EditProductViewModel @Inject constructor(
             is EditProductEvent.DeleteColor -> TODO()
             is EditProductEvent.DeleteSize -> TODO()
         }
+    }
+
+    fun editStatus(value: String) {
+        _state.value = _state.value.copy(
+            productDetail = _state.value.productDetail.copy(status = value)
+        )
     }
 }

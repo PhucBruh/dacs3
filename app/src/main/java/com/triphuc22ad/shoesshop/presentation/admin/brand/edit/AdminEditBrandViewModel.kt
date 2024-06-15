@@ -24,7 +24,7 @@ class AdminEditBrandViewModel @Inject constructor(
     private val brandId: Int =
         savedStateHandle["brandId"] ?: 0
 
-    init {
+    fun fetchData() {
         viewModelScope.launch {
             val response = brandService.getBrandById(brandId);
             if (response.isSuccessful) {
