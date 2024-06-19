@@ -68,6 +68,7 @@ fun LoginScreen(
                 onValueChange = { viewModel.onEvent(LoginEvent.ChangePassword(it)) },
                 icon = Icons.Default.Lock,
                 description = "Password",
+                password = true,
                 modifier = Modifier
                     .padding(top = 30.dp, bottom = 20.dp)
                     .fillMaxWidth()

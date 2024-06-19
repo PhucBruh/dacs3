@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AttachMoney
@@ -38,62 +41,76 @@ import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.presentation.util.parseColor
 
 @Composable
-fun OrderInfor(order: OrderDetail) {
-    Column(
+fun OrderInfo(order: OrderDetail) {
+    LazyColumn(
         modifier = Modifier
             .padding(16.dp)
+            .fillMaxSize()
             .fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(20.dp),
         horizontalAlignment = Alignment.Start
     ) {
-        Text("Order ID: ${order.id}", fontWeight = FontWeight.Bold)
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Default.Person, contentDescription = "")
-            Text("Customer: ${order.user.name}", fontSize = 16.sp)
+        item {
+            Text("Order ID: ${order.id}", fontWeight = FontWeight.Bold)
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Default.Phone, contentDescription = "")
-            Text("Phone: ${order.user.phone}", fontSize = 16.sp)
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.Person, contentDescription = "")
+                Text("Customer: ${order.user.name}", fontSize = 16.sp)
+            }
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Default.Home, contentDescription = "")
-            Text("Shipping Address: ${order.shippingAddress}", fontSize = 16.sp)
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.Phone, contentDescription = "")
+                Text("Phone: ${order.user.phone}", fontSize = 16.sp)
+            }
         }
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Default.Description, contentDescription = "")
-            Text("Description: ${order.description}", fontSize = 16.sp)
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.Home, contentDescription = "")
+                Text("Shipping Address: ${order.shippingAddress}", fontSize = 16.sp)
+            }
+        }
+
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.Description, contentDescription = "")
+                Text("Description: ${order.description}", fontSize = 16.sp)
+            }
+        }
+
+        items(order.details) {
+            OrderDetailItem(it)
+        }
+
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.ShoppingBasket, contentDescription = "")
+                Text("Total Price: ${formatPrice(order.price)}", fontSize = 16.sp)
+            }
         }
 
 
-        order.details.forEach { detail ->
-            OrderDetailItem(detail)
-        }
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Default.ShoppingBasket, contentDescription = "")
-            Text("Total Price: ${formatPrice(order.price)}", fontSize = 16.sp)
-        }
-
-
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Icon(imageVector = Icons.Default.Recommend, contentDescription = "")
-            Text("Status: ${order.status}", fontSize = 16.sp)
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(imageVector = Icons.Default.Recommend, contentDescription = "")
+                Text("Status: ${order.status}", fontSize = 16.sp)
+            }
         }
     }
 }
@@ -176,7 +193,7 @@ fun OrderInfoPreview() {
         user = OrderUserInfo(name = "phuc nguyen", phone = "0797826527"),
         shippingAddress = "da nang",
         description = "giao vao buoi chieu",
-        details = listOf(
+        details = List(4) {
             Detail(
                 productName = "kd 5",
                 productId = 0,
@@ -187,10 +204,10 @@ fun OrderInfoPreview() {
                 quantity = 3,
                 price = 360000.0
             )
-        ),
+        },
         price = 360000.0,
         status = "COMPLETED"
     )
-    OrderInfor(order = order)
+    OrderInfo(order = order)
 
 }

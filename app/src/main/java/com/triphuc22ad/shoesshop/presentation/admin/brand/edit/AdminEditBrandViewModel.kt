@@ -3,6 +3,7 @@ package com.triphuc22ad.shoesshop.presentation.admin.brand.edit
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.triphuc22ad.shoesshop.data.service.BrandRequest
 import com.triphuc22ad.shoesshop.data.service.BrandService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -70,6 +71,30 @@ class AdminEditBrandViewModel @Inject constructor(
                     productDetailMainImgPreview = 0L,
                     brandToEdit = _state.value.brandToEdit.copy(img_url = ""),
                 )
+            }
+        }
+    }
+
+    fun update() {
+        viewModelScope.launch {
+            val response = _state.value.brandToEdit.id?.let {
+                brandService.update(
+                    id = it,
+                    brand = BrandRequest(
+                        name = _state.value.brandToEdit.name,
+                        imgUrl = _state.value.brandToEdit.img_url,
+                    )
+                )
+            }
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null) {
+                        result.message?.let { appStateRepository.updateNotify(it) }
+                    }
+                } else if (response.code() == 400) {
+                    appStateRepository.updateNotify("Pls fill the input")
+                }
             }
         }
     }

@@ -42,19 +42,88 @@ class AdminProductViewModel @Inject constructor(
     fun fetchData() {
         viewModelScope.launch {
             val state = appStateRepository.appUiState.value.adminProductUiState
-            val response = productService.getAllProductsForAdmin(state.page, state.size)
+            val response = if (state.searchInfo.isNotEmpty())
+                productService.getAllProductsByQuery(state.searchInfo, state.page, state.size)
+            else
+                productService.getAllProductsForAdmin(state.page, state.size)
             if (response.isSuccessful) {
                 val pagedResponse = response.body()
                 if (pagedResponse != null) {
+
                     appStateRepository.updateAdminProductUiState(
                         appStateRepository.appUiState.value.adminProductUiState.copy(
                             productList = pagedResponse.content,
-                            page = pagedResponse.page,
+                            page = if (pagedResponse.page + 1 > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )
                 }
             }
+        }
+    }
+
+    fun deleteProduct(id: Int) {
+        viewModelScope.launch {
+            val response = productService.deleteProduct(id)
+            if (response.isSuccessful) {
+                val apiResponse = response.body()
+                if (apiResponse != null) {
+                    if (apiResponse.success) {
+                        val state = appStateRepository.appUiState.value.adminProductUiState
+                        if (state.productList.size == 1) {
+                            appStateRepository.updateAdminProductUiState(
+                                appStateRepository.appUiState.value.adminProductUiState.copy(
+                                    page = if (state.page - 1 < 0) 0 else state.page - 1,
+                                )
+                            )
+                        }
+                        fetchData()
+                    }
+                    apiResponse.message?.let { appStateRepository.updateNotify(it) }
+                }
+            } else {
+                appStateRepository.updateNotify("Error")
+            }
+        }
+    }
+
+    fun findById(navigate: (Int) -> Unit) {
+        viewModelScope.launch {
+            val state = appStateRepository.appUiState.value.adminProductUiState
+            if (state.searchId != 0) {
+                val response = productService.check(state.searchId)
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null) {
+                        if (result.success)
+                            navigate(state.searchId)
+                    }
+                } else {
+                    appStateRepository.updateNotify("Inventory not found")
+                }
+            } else {
+                appStateRepository.updateNotify("Error")
+            }
+        }
+    }
+
+    fun nextPage() {
+        val state = appStateRepository.appUiState.value.adminProductUiState
+        if (state.page + 1 < state.totalPage) {
+            appStateRepository.updateAdminProductUiState(
+                state.copy(page = state.page + 1)
+            )
+            fetchData()
+        }
+    }
+
+    fun previousPage() {
+        val state = appStateRepository.appUiState.value.adminProductUiState
+        if (state.page > 0) {
+            appStateRepository.updateAdminProductUiState(
+                state.copy(page = state.page - 1)
+            )
+            fetchData()
         }
     }
 }

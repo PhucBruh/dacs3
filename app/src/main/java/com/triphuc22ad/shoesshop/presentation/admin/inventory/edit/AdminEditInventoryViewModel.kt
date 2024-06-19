@@ -56,4 +56,18 @@ class AdminEditInventoryViewModel @Inject constructor(
             AdminEditInventoryEvent.Update -> TODO()
         }
     }
+
+    fun update() {
+        viewModelScope.launch {
+            val response = inventoryService.updateStock(
+                id = _state.value.inventoryToEdit.id,
+                stock = _state.value.inventoryToEdit.stock
+            )
+            if (response.isSuccessful) {
+                response.body()!!.message?.let { appStateRepository.updateNotify(it) }
+            } else {
+                appStateRepository.updateNotify("Edit inventory failed")
+            }
+        }
+    }
 }

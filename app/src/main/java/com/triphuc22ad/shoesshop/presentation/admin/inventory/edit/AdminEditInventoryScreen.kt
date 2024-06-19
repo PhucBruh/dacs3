@@ -145,7 +145,7 @@ fun AdminEditInventoryScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = { adminEditInventoryViewModel.update() },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

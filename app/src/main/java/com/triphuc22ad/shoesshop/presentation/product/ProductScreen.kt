@@ -83,7 +83,6 @@ fun ProductScreen(
             Row(
                 modifier = Modifier
                     .clip(RoundedCornerShape(16.dp))
-//                    .background(Color(0XFF101921))
                     .padding(top = 60.dp)
                     .padding(horizontal = 16.dp)
             ) {
@@ -91,7 +90,9 @@ fun ProductScreen(
                     value = state.query,
                     onValueChange = { productViewModel.onEvent(ProductEvent.ChangeQuery(it)) },
                     leadingIcon = {
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = {
+                            productViewModel.fetchData()
+                        }) {
                             Icon(
                                 imageVector = Icons.Default.Search,
                                 contentDescription = ""
@@ -107,6 +108,7 @@ fun ProductScreen(
                                             ""
                                         )
                                     )
+                                    productViewModel.fetchData()
                                 }) {
                                     Icon(
                                         imageVector = Icons.Default.Close,
@@ -137,7 +139,6 @@ fun ProductScreen(
                 .padding(horizontal = 16.dp)
                 .padding(top = 140.dp)
         ) {
-
             LazyVerticalGrid(
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -153,20 +154,21 @@ fun ProductScreen(
                 item(span = { GridItemSpan(2) }) {
                     Row(
                         modifier = Modifier
+                            .padding(horizontal = 12.dp)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Button(
-                            onClick = {},
+                            onClick = { productViewModel.previousPage() },
                             enabled = state.page > 0,
                             modifier = Modifier.width(100.dp)
                         ) {
                             Text(text = "Previous", fontSize = 12.sp)
                         }
-                        Text("Page ${if (state.page != 0) state.page + 1 else 0} of ${state.totalPage}")
+                        Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                         Button(
-                            onClick = {},
+                            onClick = { productViewModel.nextPage() },
                             enabled = state.page + 1 < state.totalPage,
                             modifier = Modifier.width(100.dp)
                         ) {

@@ -56,4 +56,18 @@ class AdminEditOrderViewModel @Inject constructor(
             )
         )
     }
+
+    fun update() {
+        viewModelScope.launch {
+            val response = orderService.updateStatus(
+                id = _state.value.orderToEdit.id,
+                status = _state.value.orderToEdit.status
+            )
+            if (response.isSuccessful) {
+                response.body()!!.message?.let { appStateRepository.updateNotify(it) }
+            } else {
+                appStateRepository.updateNotify("Edit order failed")
+            }
+        }
+    }
 }

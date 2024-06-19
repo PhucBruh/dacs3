@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
+import com.triphuc22ad.shoesshop.presentation.util.limitText
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 @Composable
@@ -103,7 +104,9 @@ fun AdminInventoryScreen(
                     }
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(onClick = {
+                        adminInventoryViewModel.findById(navigateToEditInventory)
+                    }, Modifier.size(14.dp)) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -196,13 +199,13 @@ fun AdminInventoryScreen(
                         modifier = Modifier.padding(start = 12.dp)
                     ) {
                         Text(
-                            "ID: ${it.productId}",
+                            "ID: ${it.id}",
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold
                         )
 
                         Text(
-                            text = "ID: ${it.id} - Name: ${it.productName}",
+                            text = limitText("ID: ${it.productId} - Name: ${it.productName}", 16),
                             fontSize = 14.sp,
                         )
 
@@ -225,7 +228,7 @@ fun AdminInventoryScreen(
                         IconButton(onClick = { navigateToEditInventory(it.id) }) {
                             Icon(Icons.Filled.Edit, contentDescription = "Edit")
                         }
-                        IconButton(onClick = {}) {
+                        IconButton(onClick = { adminInventoryViewModel.delete(it.id) }) {
                             Icon(Icons.Filled.Delete, contentDescription = "Delete")
                         }
                     }
@@ -241,7 +244,7 @@ fun AdminInventoryScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = { adminInventoryViewModel.previousPage() },
                         enabled = state.page > 0,
                         modifier = Modifier.width(100.dp)
                     ) {
@@ -249,7 +252,7 @@ fun AdminInventoryScreen(
                     }
                     Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
-                        onClick = {},
+                        onClick = { adminInventoryViewModel.nextPage() },
                         enabled = state.page + 1 < state.totalPage,
                         modifier = Modifier.width(100.dp)
                     ) {

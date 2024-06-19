@@ -122,7 +122,7 @@ fun AdminEditBrandScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = {adminEditBrandViewModel.update()},
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

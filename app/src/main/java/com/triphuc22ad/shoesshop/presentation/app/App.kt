@@ -59,6 +59,7 @@ import com.triphuc22ad.shoesshop.presentation.cart.screen.CheckOutScreen
 import com.triphuc22ad.shoesshop.presentation.home.HomeScreen
 import com.triphuc22ad.shoesshop.presentation.order.MyOrderScreen
 import com.triphuc22ad.shoesshop.presentation.order.components.OrderInfoScreen
+import com.triphuc22ad.shoesshop.presentation.product.ProductByBrandScreen
 import com.triphuc22ad.shoesshop.presentation.product.ProductScreen
 import com.triphuc22ad.shoesshop.presentation.product_detail.ProductDetailScreen
 import com.triphuc22ad.shoesshop.presentation.profile.ProfileScreen
@@ -148,12 +149,9 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     }
                     HomeScreen(
                         navigateToSpecialOffer = { navController.navigate(Screen.SpecialOffer.route) },
-                        navigateToProduct = {
-                            navController.navigate(Screen.Product.route) {
-                                popUpTo(Screen.Product.route) { inclusive = true }
-                            }
-                        },
-                        navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") })
+                        navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") },
+                        navigateToProductByBrand = { navController.navigate(Screen.Product.route + "/brand/$it") }
+                    )
                 }
                 composable(Screen.Product.route) {
                     BackHandler(true) {
@@ -161,6 +159,18 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
                     }
 
                     ProductScreen(
+                        navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") }
+                    )
+                }
+
+                composable(
+                    Screen.Product.route + "/brand/{brandId}",
+                    arguments = listOf(navArgument("brandId") { type = NavType.IntType })
+                ) { backStackEntry ->
+                    val bradId =
+                        backStackEntry.arguments?.getInt("brandId") ?: return@composable
+                    ProductByBrandScreen(
+                        navigateBack = { navController.popBackStack() },
                         navigateToProductDetail = { navController.navigate(Screen.Product.route + "/$it") }
                     )
                 }
@@ -234,7 +244,7 @@ fun App(appViewModel: AppViewModel = hiltViewModel()) {
 
                 composable(Screen.Admin.Product.route) {
                     BackHandler(true) {
-                        // Or do nothing
+                        Log.i("LOG_TAG", "Clicked back")
                     }
                     AdminProductScreen(
                         navigateToAddProduct = { navController.navigate(Screen.Admin.AddProduct.route) },

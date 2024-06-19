@@ -3,6 +3,7 @@ package com.triphuc22ad.shoesshop.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.triphuc22ad.shoesshop.data.TokenManager
+import com.triphuc22ad.shoesshop.data.service.AnalysisService
 import com.triphuc22ad.shoesshop.data.service.AuthService
 import com.triphuc22ad.shoesshop.data.service.BrandService
 import com.triphuc22ad.shoesshop.data.service.InventoryService
@@ -102,5 +103,11 @@ class NetworkModule {
     @Provides
     fun providesOrderService(retrofit: Retrofit): OrderService {
         return retrofit.create(OrderService::class.java)
+    }
+
+    @Singleton
+    @Provides
+    fun analysisService(retrofit: Retrofit): AnalysisService {
+        return retrofit.create(AnalysisService::class.java)
     }
 }

@@ -72,19 +72,21 @@ class AdminAddInventoryViewModel @Inject constructor(
         viewModelScope.launch {
             val response = inventoryService.createInventory(
                 InventoryRequest(
-                    productId = _state.value.productId,
                     colorId = _state.value.selectedColorId,
+                    productId = _state.value.productId,
                     sizeId = _state.value.selectedSizeId,
                 )
             )
             if (response.isSuccessful) {
-                val apiResponse = response.body()!!
-                if (apiResponse.success) {
-                    appStateRepository.updateNotify("added")
-                    _state.value = AdminAddInventoryUiState()
-                } else {
-                    apiResponse.message?.let { appStateRepository.updateNotify(it) }
+                val result = response.body()
+                if (result != null) {
+                    if (result.success) {
+                        _state.value = AdminAddInventoryUiState()
+                    }
+                    result.message?.let { appStateRepository.updateNotify(it) }
                 }
+            } else if (response.code() == 400) {
+                appStateRepository.updateNotify("Pls fill the input")
             }
         }
     }

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -17,6 +19,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,17 +34,91 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.triphuc22ad.shoesshop.data.service.Analysis
+import com.triphuc22ad.shoesshop.data.service.AnalysisService
+import com.triphuc22ad.shoesshop.data.service.WeeklyReport
+import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AdminDashBoardViewModel @Inject constructor() : ViewModel() {
+class AdminDashBoardViewModel @Inject constructor(
+    private val appStateRepository: AppStateRepository,
+    private val analysisService: AnalysisService
+) : ViewModel() {
+    private val _state = MutableStateFlow(DashboardState())
+    val state: StateFlow<DashboardState> = _state.asStateFlow()
 
+    fun fetchAnalysis() {
+        viewModelScope.launch {
+            val response = analysisService.getAnalysis()
+            if (response.isSuccessful) {
+                val result = response.body()
+                if (result != null) {
+                    if (result.success) {
+                        val data = result.data
+                        _state.value = DashboardState(
+                            analysis = data!!
+                        )
+                    }
+                }
+            } else {
+                appStateRepository.updateNotify("Failed to fetch analysis")
+            }
+        }
+    }
+
+    fun fetchMonthlyReport(month: Int, year: Int) {
+        if (month in 1..12 && year > 0) {
+            viewModelScope.launch {
+                val response = analysisService.getMonthlyReport(
+                    month = month,
+                    year = year
+                )
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    _state.value = _state.value.copy(
+                        monthly = result ?: emptyList(),
+                        month = month,
+                        year = year
+                    )
+                } else {
+                    appStateRepository.updateNotify("Failed to fetch monthly report")
+                }
+            }
+        } else {
+            appStateRepository.updateNotify("Invalid month or year");
+        }
+    }
 }
 
+data class DashboardState(
+    val analysis: Analysis = Analysis(),
+    val monthly: List<WeeklyReport> = emptyList(),
+    val month: Int = 0,
+    val year: Int = 0
+)
+
 @Composable
-fun AdminDashBoardScreen() {
+fun AdminDashBoardScreen(
+    adminDashBoardViewModel: AdminDashBoardViewModel = hiltViewModel()
+) {
+    val state by adminDashBoardViewModel.state.collectAsState()
+    var month by remember { mutableStateOf("") }
+    var year by remember { mutableStateOf("") }
+
+    LaunchedEffect(Unit) {
+        adminDashBoardViewModel.fetchAnalysis()
+    }
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -63,14 +141,14 @@ fun AdminDashBoardScreen() {
                 ) {
                     HeaderItem(
                         category = "EARNING (MONTHLY)",
-                        value = "200$",
+                        value = formatPrice(state.analysis.monthly),
                         color = Color.Blue,
                         modifier = Modifier.weight(0.48f)
                     )
                     Spacer(modifier = Modifier.weight(0.04f))
                     HeaderItem(
                         category = "EARNING (ANNUAL)",
-                        value = "200$",
+                        value = formatPrice(state.analysis.yearly),
                         color = Color.Red,
                         modifier = Modifier.weight(0.48f)
                     )
@@ -85,14 +163,14 @@ fun AdminDashBoardScreen() {
 
                     HeaderItem(
                         category = "INCOMPLETE ORDER",
-                        value = "200",
+                        value = state.analysis.incompleteOrder.toString(),
                         color = Color.Blue,
                         modifier = Modifier.weight(0.48f)
                     )
                     Spacer(modifier = Modifier.weight(0.04f))
                     HeaderItem(
                         category = "COMPLETED ORDER",
-                        value = "200",
+                        value = state.analysis.completedOrder.toString(),
                         color = Color.Red,
                         modifier = Modifier.weight(0.48f)
                     )
@@ -119,7 +197,6 @@ fun AdminDashBoardScreen() {
             Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                var month by remember { mutableStateOf("") }
                 TextField(
                     value = month,
                     onValueChange = { newValue ->
@@ -138,7 +215,6 @@ fun AdminDashBoardScreen() {
 
                 Spacer(modifier = Modifier.weight(0.05f))
 
-                var year by remember { mutableStateOf("") }
                 TextField(
                     value = year,
                     onValueChange = { newValue ->
@@ -163,7 +239,12 @@ fun AdminDashBoardScreen() {
                     containerColor = Color.Black,
                     contentColor = Color.White
                 ),
-                onClick = {},
+                onClick = {
+                    adminDashBoardViewModel.fetchMonthlyReport(
+                        month = month.toIntOrNull() ?: 0,
+                        year = year.toIntOrNull() ?: 0
+                    )
+                },
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
@@ -171,7 +252,7 @@ fun AdminDashBoardScreen() {
             }
         }
 
-        if (true) {
+        if (state.monthly.isNotEmpty()) {
             item {
                 Row(
                     modifier = Modifier
@@ -179,7 +260,7 @@ fun AdminDashBoardScreen() {
                         .padding(top = 16.dp)
                 ) {
                     Text(
-                        text = "Result for 4-2024",
+                        text = "Result for ${state.month}-${state.year}",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium,
                     )
@@ -191,9 +272,9 @@ fun AdminDashBoardScreen() {
                     modifier = Modifier,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    val dataList = listOf(30, 8, 12, 23)
+                    val dataList = state.monthly.map { it.completedOrder }
                     val floatValue = dataList.map { it.toFloat() / dataList.max().toFloat() }
-                    val datesList = listOf(1, 2, 3, 4)
+                    val datesList = List(state.monthly.size) { it }
 
                     Box(contentAlignment = Alignment.BottomStart) {
                         BarGraph(
@@ -208,7 +289,21 @@ fun AdminDashBoardScreen() {
                         )
                         Text(text = "Week", modifier = Modifier.padding(bottom = 18.dp))
                     }
-                    Text(text = "Total earn: ")
+                    Text(text = "Total earn: " + formatPrice(state.monthly.sumOf { it.earn }))
+                }
+            }
+
+            items(state.monthly) {
+                LazyRow() {
+                    item {
+                        Text(
+                            text = "Start: ${it.weekStart} -> End: ${it.weekEnd} -> Earn: ${
+                                formatPrice(
+                                    it.earn
+                                )
+                            }"
+                        )
+                    }
                 }
             }
         }

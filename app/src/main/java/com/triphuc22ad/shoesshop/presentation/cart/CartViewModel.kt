@@ -123,4 +123,46 @@ class CartViewModel @Inject constructor(
         }
 
     }
+
+    fun createOrder(
+        shippingAddress: String,
+        description: String
+    ) {
+        viewModelScope.launch {
+            if (shippingAddress.isNotEmpty()) {
+                val orderDetailsRequest = appStateRepository.appUiState.value.cartItems.map {
+                    OrderDetailRequest(
+                        productId = it.productId,
+                        colorId = it.color.id,
+                        sizeId = it.size.id,
+                        quantity = it.quantity
+                    )
+                }
+                val response = userService.createOrder(
+                    OrderRequest(
+                        shippingAddress = shippingAddress,
+                        description = description,
+                        detail = orderDetailsRequest
+                    )
+                )
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null) {
+                        if (result.success) {
+                            appStateRepository.updateNotify("Create order success")
+                            _state.value = state.value.copy(
+                                isCreatedOrder = true
+                            )
+                            appStateRepository.deleteCart()
+                        }
+                        result.message?.let { appStateRepository.updateNotify(it) }
+                    } else {
+                        appStateRepository.updateNotify("Create order failed")
+                    }
+                }
+            } else {
+                appStateRepository.updateNotify("Please add shipping address")
+            }
+        }
+    }
 }

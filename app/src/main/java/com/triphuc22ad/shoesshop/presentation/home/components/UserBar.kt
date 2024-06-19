@@ -1,35 +1,19 @@
 package com.triphuc22ad.shoesshop.presentation.home.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.triphuc22ad.shoesshop.R
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 
@@ -46,19 +30,6 @@ fun UserBar(
         modifier = modifier.fillMaxWidth()
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = Modifier
-                    .background(BgColor, CircleShape)
-                    .clip(CircleShape)
-                    .size(50.dp)
-                    .clickable { onUserClick() }
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.pepe_pro),
-                    contentDescription = null,
-                )
-            }
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 modifier = Modifier
@@ -66,7 +37,7 @@ fun UserBar(
                     .padding(start = 8.dp)
             ) {
                 Text(
-                    text = "Good Morning \uD83D\uDC4B",
+                    text = "${getGreeting()} \uD83D\uDC4B",
                     fontWeight = FontWeight.Light
                 )
                 Text(
@@ -76,6 +47,17 @@ fun UserBar(
                 )
             }
         }
+    }
+}
+
+private fun getGreeting(): String {
+    val currentHour = System.currentTimeMillis() % (1000 * 60 * 60 * 24) / (1000 * 60 * 60)
+
+    return when (currentHour) {
+        in 5..11 -> "Good morning"
+        in 12..13 -> "Good noon"
+        in 14..17 -> "Good afternoon"
+        else -> "Good evening"
     }
 }
 

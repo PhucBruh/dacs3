@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
@@ -29,8 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.OrderInfo
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 
 @Composable
@@ -165,7 +165,7 @@ fun OrderItem(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(80.dp)
                     .background(BgColor, RoundedCornerShape(32.dp))
             ) {
                 Image(
@@ -175,14 +175,14 @@ fun OrderItem(
                     ),
                     contentDescription = null,
                     modifier = Modifier
-                        .size(100.dp)
+                        .size(60.dp)
                 )
             }
         }
         Column(
-            verticalArrangement = Arrangement.SpaceBetween,
+            verticalArrangement = Arrangement.Center,
             modifier = Modifier
-                .height(150.dp)
+                .height(120.dp)
                 .padding(end = 20.dp)
                 .padding(vertical = 10.dp)
         ) {
@@ -195,7 +195,7 @@ fun OrderItem(
                 Text(
                     text = order.shippingAddress,
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
+                    fontSize = 16.sp,
                 )
             }
             Row(
@@ -213,9 +213,9 @@ fun OrderItem(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .background(BgColor, RoundedCornerShape(10.dp))
-                        .padding(horizontal = 5.dp, vertical = 2.dp)
+                        .padding(horizontal = 4.dp, vertical = 1.dp)
                 ) {
-                    Text(text = order.status)
+                    Text(text = order.status, fontSize = 12.sp)
                 }
             }
 
@@ -225,7 +225,7 @@ fun OrderItem(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "${order.price} vnđ")
+                Text(text = formatPrice(order.price), fontSize = 16.sp)
             }
         }
     }

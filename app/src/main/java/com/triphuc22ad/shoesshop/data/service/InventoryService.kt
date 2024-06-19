@@ -8,6 +8,7 @@ import com.triphuc22ad.shoesshop.domain.model.Inventory
 import com.triphuc22ad.shoesshop.domain.model.Product
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -30,10 +31,20 @@ interface InventoryService {
         @Query("size") size: Int = 10,
     ): Response<PagedResponse<Inventory>>
 
+    @GET("/api/inventory/q")
+    suspend fun getAllInventory(
+        @Query("query") query: String = "",
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 10,
+    ): Response<PagedResponse<Inventory>>
+
     @GET("/api/inventory/{id}")
     suspend fun getInventoryInfo(
         @Path("id") id: Int = 0,
     ): Response<DataResponse<Inventory>>
+
+    @GET("/api/inventory/check/{id}")
+    suspend fun check(@Path("id") id: Int): Response<ApiResponse>
 
     @PUT("/api/inventory/{id}")
     suspend fun updateStock(
@@ -41,6 +52,18 @@ interface InventoryService {
         @Query("stock") stock: Int = 0,
     ): Response<ApiResponse>
 
+
+    @DELETE("/api/inventory/{id}")
+    suspend fun delete(
+        @Path("id") id: Int,
+    ): Response<ApiResponse>
+
     @POST("/api/inventory")
     suspend fun createInventory(@Body inventoryRequest: InventoryRequest): Response<ApiResponse>
+
+    @PUT("/api/inventory/{id}")
+    suspend fun createInventory(
+        @Path("id") id: Int,
+        @Query("stock") stock: Int
+    ): Response<ApiResponse>
 }

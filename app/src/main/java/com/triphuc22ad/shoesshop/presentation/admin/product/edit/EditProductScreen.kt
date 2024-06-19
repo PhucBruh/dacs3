@@ -176,7 +176,7 @@ fun EditProductScreen(
 
             item {
                 var isExpandedStatusDropMenu by remember { mutableStateOf(false) }
-                val statusList = listOf("ACTIVE", "INACTIVE", "OUT_OF_STOCK")
+                val statusList = listOf("ACTIVE", "IN_ACTIVE", "OUT_OF_STOCK")
                 Box {
                     ExposedDropdownMenuBox(
                         expanded = isExpandedStatusDropMenu,
@@ -256,9 +256,7 @@ fun EditProductScreen(
                     ) {
                         state.productDetail.sizes.forEach {
                             FilterOptionCanClose(onClick = {
-                                editProductViewModel.onEvent(
-                                    EditProductEvent.DeleteEditSize(it.size)
-                                )
+                                editProductViewModel.deleteSize(it.id)
                             }) {
                                 Text("${it.size}")
                             }
@@ -273,12 +271,8 @@ fun EditProductScreen(
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         state.productDetail.colors.forEach {
                             FilterOptionCanClose(onClick = {
-                                editProductViewModel.onEvent(
-                                    EditProductEvent.DeleteEditColor(
-                                        name = it.name,
-                                        value = it.value
-                                    )
-                                )
+                                editProductViewModel.deleteColor(it.id)
+
                             }) {
                                 Box(
                                     modifier = Modifier
@@ -308,11 +302,7 @@ fun EditProductScreen(
                                 model = it.url,
                                 description = "",
                                 onClick = {
-                                    editProductViewModel.onEvent(
-                                        EditProductEvent.DeleteEditImg(
-                                            it.url
-                                        )
-                                    )
+                                    editProductViewModel.deleteImg(it.id)
                                 })
                         }
                     }
@@ -531,7 +521,7 @@ fun EditProductScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = { editProductViewModel.onEvent(EditProductEvent.CheckImg) },
+                    onClick = { editProductViewModel.update() },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

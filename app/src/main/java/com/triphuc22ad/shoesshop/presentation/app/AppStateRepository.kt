@@ -143,6 +143,10 @@ class AppStateRepository {
         _appUiState.value = _appUiState.value.copy(cartItems = updatedCart.toList())
     }
 
+    fun deleteCart() {
+        _appUiState.value = _appUiState.value.copy(cartItems = emptyList())
+    }
+
     fun checkInCart(productId: Int): Boolean {
         return _appUiState.value.cartItems.any { it.productId == productId }
     }

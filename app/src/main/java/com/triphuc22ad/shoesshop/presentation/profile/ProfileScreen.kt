@@ -18,20 +18,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
-import androidx.compose.material.icons.automirrored.outlined.HelpOutline
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.outlined.CreditCard
-import androidx.compose.material.icons.outlined.Dashboard
-import androidx.compose.material.icons.outlined.Language
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.RemoveRedEye
-import androidx.compose.material.icons.outlined.Security
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -49,11 +39,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
+import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
 import com.triphuc22ad.shoesshop.presentation.profile.components.ProfileOption
 import com.triphuc22ad.shoesshop.presentation.profile.components.ProfileOptionContainer
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
-import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 @Composable
 fun ProfileScreen(
@@ -126,25 +116,19 @@ fun ProfileScreen(
 
 //        val listOption = emptyList()
         val listOption = listOf(
-            ProfileOption(
-                name = "Edit Profile",
-                icon = Icons.Outlined.Person,
-            ),
-            ProfileOption(
-                name = "Language",
-                icon = Icons.Outlined.Language,
-                description = "English(US)"
-            ),
-            ProfileOption(
-                name = "Dark Mode",
-                icon = Icons.Outlined.RemoveRedEye,
-                content = { Switch(checked = false, onCheckedChange = {}) }
-            ),
+//            ProfileOption(
+//                name = "Edit Profile",
+//                icon = Icons.Outlined.Person,
+//            ),
+
             ProfileOption(
                 name = "Logout",
                 icon = Icons.AutoMirrored.Filled.Logout,
                 content = {},
-                onClick = navigateToLogin,
+                onClick = {
+                    appViewModel.resetState()
+                    appViewModel.updateNotify("Logout!")
+                },
                 color = Color.Red.copy(0.6f)
             ),
         )

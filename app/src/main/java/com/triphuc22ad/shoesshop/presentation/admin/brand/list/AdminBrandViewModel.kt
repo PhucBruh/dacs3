@@ -40,19 +40,87 @@ class AdminBrandViewModel @Inject constructor(
     fun fetchData() {
         viewModelScope.launch {
             val state = appStateRepository.appUiState.value.adminBrandUIState
-            val response = brandService.getAllBrand(state.page, state.size)
+            val response = if (state.searchInfo.isNotEmpty())
+                brandService.getAllBrandByQuery(state.searchInfo, state.page, state.size)
+            else
+                brandService.getAllBrand(state.page, state.size)
             if (response.isSuccessful) {
                 val pagedResponse = response.body()
                 if (pagedResponse != null) {
                     appStateRepository.updateAdminBrandUiState(
                         appStateRepository.appUiState.value.adminBrandUIState.copy(
                             brandList = pagedResponse.content,
-                            page = pagedResponse.page,
+                            page = if (pagedResponse.page + 1 > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )
                 }
             }
+        }
+    }
+
+    fun delete(id: Int) {
+        viewModelScope.launch {
+            val response = brandService.delete(id)
+            if (response.isSuccessful) {
+                val result = response.body()
+                if (result != null) {
+                    if (result.success) {
+                        val state = appStateRepository.appUiState.value.adminBrandUIState
+                        if (state.brandList.size == 1) {
+                            appStateRepository.updateAdminBrandUiState(
+                                appStateRepository.appUiState.value.adminBrandUIState.copy(
+                                    page = if (state.page - 1 < 0) 0 else state.page - 1,
+                                )
+                            )
+                        }
+                    }
+                    result.message?.let { appStateRepository.updateNotify(it) }
+                    fetchData()
+                } else {
+                    appStateRepository.updateNotify("Error")
+                }
+            }
+        }
+    }
+
+    fun findById(navigate: (Int) -> Unit) {
+        viewModelScope.launch {
+            val state = appStateRepository.appUiState.value.adminBrandUIState
+            if (state.searchId != 0) {
+                val response = brandService.check(state.searchId)
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null) {
+                        if (result.success)
+                            navigate(state.searchId)
+                    }
+                } else {
+                    appStateRepository.updateNotify("Inventory not found")
+                }
+            } else {
+                appStateRepository.updateNotify("Error")
+            }
+        }
+    }
+
+    fun nextPage() {
+        val state = appStateRepository.appUiState.value.adminBrandUIState
+        if (state.page + 1 < state.totalPage) {
+            appStateRepository.updateAdminBrandUiState(
+                state.copy(page = state.page + 1)
+            )
+            fetchData()
+        }
+    }
+
+    fun previousPage() {
+        val state = appStateRepository.appUiState.value.adminBrandUIState
+        if (state.page > 0) {
+            appStateRepository.updateAdminBrandUiState(
+                state.copy(page = state.page - 1)
+            )
+            fetchData()
         }
     }
 }

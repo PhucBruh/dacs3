@@ -38,20 +38,62 @@ class AdminOrderViewModel @Inject constructor(
 
     fun fetchData() {
         viewModelScope.launch {
-            val state = appStateRepository.appUiState.value.adminProductUiState
-            val response = orderService.getAllOrders(state.page, state.size)
+            val state = appStateRepository.appUiState.value.adminOrderUiState
+            val response = if (state.searchInfo.isNotEmpty())
+                orderService.getAllOrdersByQuery(state.searchInfo, state.page, state.size)
+            else orderService.getAllOrders(state.page, state.size)
             if (response.isSuccessful) {
                 val pagedResponse = response.body()
                 if (pagedResponse != null) {
                     appStateRepository.updateAdminOrderUiState(
                         appStateRepository.appUiState.value.adminOrderUiState.copy(
                             orderList = pagedResponse.content,
-                            page = pagedResponse.page,
+                            page = if (pagedResponse.page > pagedResponse.totalPages) pagedResponse.totalPages else pagedResponse.page,
                             totalPage = pagedResponse.totalPages,
                         )
                     )
                 }
             }
+        }
+    }
+
+    fun findById(navigate: (Int) -> Unit) {
+        viewModelScope.launch {
+            val state = appStateRepository.appUiState.value.adminOrderUiState
+            if (state.searchId != 0) {
+                val response = orderService.check(state.searchId)
+                if (response.isSuccessful) {
+                    val result = response.body()
+                    if (result != null) {
+                        if (result.success)
+                            navigate(state.searchId)
+                    }
+                } else {
+                    appStateRepository.updateNotify("Inventory not found")
+                }
+            } else {
+                appStateRepository.updateNotify("Error")
+            }
+        }
+    }
+
+    fun nextPage() {
+        val state = appStateRepository.appUiState.value.adminOrderUiState
+        if (state.page + 1 < state.totalPage) {
+            appStateRepository.updateAdminOrderUiState(
+                state.copy(page = state.page + 1)
+            )
+            fetchData()
+        }
+    }
+
+    fun previousPage() {
+        val state = appStateRepository.appUiState.value.adminOrderUiState
+        if (state.page > 0) {
+            appStateRepository.updateAdminOrderUiState(
+                state.copy(page = state.page - 1)
+            )
+            fetchData()
         }
     }
 }

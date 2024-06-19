@@ -136,7 +136,7 @@ fun AdminAddSpecialOfferScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = {adminAddSpecialOfferViewModel.add()},
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

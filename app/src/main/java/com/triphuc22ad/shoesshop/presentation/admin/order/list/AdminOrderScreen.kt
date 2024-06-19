@@ -101,7 +101,9 @@ fun AdminOrderScreen(
                     }
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(onClick = {
+                        adminOrderViewModel.findById(navigateToEditOrder)
+                    }, Modifier.size(14.dp)) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -126,7 +128,7 @@ fun AdminOrderScreen(
                     adminOrderViewModel.onEvent(AdminOrderEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(onClick = {adminOrderViewModel.fetchData()}, Modifier.size(14.dp)) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -138,6 +140,7 @@ fun AdminOrderScreen(
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
                                 adminOrderViewModel.onEvent(AdminOrderEvent.ChangeQuery(""))
+                                adminOrderViewModel.fetchData()
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -239,7 +242,7 @@ fun AdminOrderScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = {adminOrderViewModel.previousPage()},
                         enabled = state.page > 0,
                         modifier = Modifier.width(100.dp)
                     ) {
@@ -247,7 +250,7 @@ fun AdminOrderScreen(
                     }
                     Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
-                        onClick = {},
+                        onClick = {adminOrderViewModel.nextPage()},
                         enabled = state.page + 1 < state.totalPage,
                         modifier = Modifier.width(100.dp)
                     ) {

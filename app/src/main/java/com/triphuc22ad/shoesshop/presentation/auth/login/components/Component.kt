@@ -1,7 +1,6 @@
 package com.triphuc22ad.shoesshop.presentation.auth.login.components
 
 import android.util.Log
-import android.view.textclassifier.TextSelection
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,8 +28,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +41,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -94,6 +93,7 @@ fun CustomTextField(
     onValueChange: (String) -> Unit,
     description: String,
     icon: ImageVector,
+    password: Boolean = false,
     modifier: Modifier = Modifier
         .background(color = Color.White),
 ) {
@@ -108,6 +108,7 @@ fun CustomTextField(
             }
         },
         shape = RoundedCornerShape(16.dp),
+        visualTransformation = if (password) PasswordVisualTransformation() else VisualTransformation.None,
         colors = TextFieldDefaults.colors(
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,

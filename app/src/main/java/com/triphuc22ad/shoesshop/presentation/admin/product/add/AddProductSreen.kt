@@ -280,7 +280,6 @@ fun AdminAddProductScreen(
                         onValueChange = { colorValueToEdit = it },
                         label = { Text("Color value") },
                         modifier = Modifier
-                            //
                             .weight(0.4f)
                             .padding(end = 8.dp)
                     )
@@ -403,7 +402,7 @@ fun AdminAddProductScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = { manageProductViewModel.add() },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

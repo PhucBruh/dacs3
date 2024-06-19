@@ -33,7 +33,7 @@ import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     appViewModel: AppViewModel = hiltViewModel(),
-    navigateToProduct: () -> Unit = {},
+    navigateToProductByBrand: (Int) -> Unit = {},
     navigateToProductDetail: (Int) -> Unit = {},
     navigateToSpecialOffer: () -> Unit = {},
 ) {
@@ -92,7 +92,9 @@ fun HomeScreen(
             }
 
             items(items = state.listBrand, span = { GridItemSpan(3) }) {
-                BrandItem(brand = it, onClick = { navigateToProduct() })
+                BrandItem(
+                    brand = it,
+                    onClick = { it.id?.let { it1 -> navigateToProductByBrand(it1) } })
             }
 
             item(span = { GridItemSpan(12) }) {

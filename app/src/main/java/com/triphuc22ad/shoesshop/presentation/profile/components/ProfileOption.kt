@@ -51,14 +51,14 @@ fun ProfileOption(
                 if (description.isNotEmpty()) {
                     Text(
                         text = description,
-                        fontSize = 20.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Medium,
                         color = color
                     )
                 }
             }
 
-            Box(contentAlignment = Alignment.CenterEnd, modifier = Modifier.size(40.dp)) {
+            Box(contentAlignment = Alignment.CenterEnd, modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Rounded.ArrowForwardIos,
                     tint = color,
@@ -90,7 +90,7 @@ fun ProfileOptionContainer(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(modifier = Modifier.size(40.dp)) {
+            Box(modifier = Modifier.size(32.dp)) {
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
@@ -100,7 +100,7 @@ fun ProfileOptionContainer(
             }
             Text(
                 text = name,
-                fontSize = 20.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 color = color
             )

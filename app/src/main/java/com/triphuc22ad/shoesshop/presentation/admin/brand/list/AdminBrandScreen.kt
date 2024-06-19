@@ -100,7 +100,9 @@ fun AdminBrandScreen(
                     }
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(onClick = {
+                        adminBrandViewModel.findById(navigateToEditBrand)
+                    }, Modifier.size(14.dp)) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -125,7 +127,10 @@ fun AdminBrandScreen(
                     adminBrandViewModel.onEvent(AdminBrandEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(
+                        onClick = { adminBrandViewModel.fetchData() },
+                        Modifier.size(14.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -137,6 +142,7 @@ fun AdminBrandScreen(
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
                                 adminBrandViewModel.onEvent(AdminBrandEvent.ChangeQuery(""))
+                                adminBrandViewModel.fetchData()
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -215,7 +221,7 @@ fun AdminBrandScreen(
                             Icon(Icons.Filled.Edit, contentDescription = "Edit")
                         }
 
-                        IconButton(onClick = { /* Handle delete action */ }) {
+                        IconButton(onClick = { it.id?.let { it1 -> adminBrandViewModel.delete(it1) } }) {
                             Icon(Icons.Filled.Delete, contentDescription = "Delete")
                         }
                     }
@@ -231,7 +237,7 @@ fun AdminBrandScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = { adminBrandViewModel.previousPage() },
                         enabled = state.page > 0,
                         modifier = Modifier.width(100.dp)
                     ) {
@@ -239,7 +245,7 @@ fun AdminBrandScreen(
                     }
                     Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
-                        onClick = {},
+                        onClick = { adminBrandViewModel.nextPage() },
                         enabled = state.page + 1 < state.totalPage,
                         modifier = Modifier.width(100.dp)
                     ) {

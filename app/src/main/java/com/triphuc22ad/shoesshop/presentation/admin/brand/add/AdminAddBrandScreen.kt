@@ -106,7 +106,7 @@ fun AdminAddBrandScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = {adminAddBraViewModel.add()},
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

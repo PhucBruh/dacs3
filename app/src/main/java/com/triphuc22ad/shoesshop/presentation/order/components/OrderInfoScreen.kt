@@ -90,6 +90,6 @@ fun OrderInfoScreen(
             onLeftAction = navigateBack
         )
 
-        OrderInfor(order = state)
+        OrderInfo(order = state)
     }
 }

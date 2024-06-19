@@ -16,13 +16,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowRightAlt
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowForwardIos
-import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -30,10 +26,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -44,12 +43,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
-import com.triphuc22ad.shoesshop.presentation.cart.CartEvent
 import com.triphuc22ad.shoesshop.presentation.cart.CartViewModel
-import com.triphuc22ad.shoesshop.presentation.cart.components.CardAddress
-import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.presentation.cart.components.CardOrder
 import com.triphuc22ad.shoesshop.presentation.components.TopTitleBar
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 
 @Composable
 fun CheckOutScreen(
@@ -59,6 +57,13 @@ fun CheckOutScreen(
 ) {
     val state = cartViewModel.state.collectAsState()
     val appState = appViewModel.state.collectAsState()
+    var shippingAddress by remember {
+        mutableStateOf("")
+    }
+
+    var description by remember {
+        mutableStateOf("")
+    }
 
     LaunchedEffect(Unit) {
         cartViewModel.validateCart()
@@ -77,7 +82,9 @@ fun CheckOutScreen(
                 name = "Checkout", modifier = Modifier.padding(top = 16.dp),
                 onLeftAction = navigateBack
             )
-            Text(text = "Create success")
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                Text(text = "Order created")
+            }
         }
     } else if (appState.value.cartItems.isEmpty() && !state.value.isCreatedOrder) {
         Column(
@@ -92,7 +99,9 @@ fun CheckOutScreen(
                 name = "Checkout", modifier = Modifier.padding(top = 16.dp),
                 onLeftAction = navigateBack
             )
-            Text(text = "The cart is empty now")
+            Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                Text(text = "The cart is empty now")
+            }
         }
     } else {
         Box(contentAlignment = Alignment.BottomCenter) {
@@ -108,6 +117,36 @@ fun CheckOutScreen(
                     TopTitleBar(
                         name = "Checkout", modifier = Modifier.padding(top = 16.dp),
                         onLeftAction = navigateBack
+                    )
+                }
+
+                item {
+                    SectionHeader(name = "Shipping address")
+                }
+
+                item {
+                    TextField(
+                        value = shippingAddress,
+                        onValueChange = { shippingAddress = it },
+                        singleLine = true,
+                        label = { Text("Shipping address") },
+                        modifier = Modifier
+                            .fillMaxWidth() // Adjust padding if needed
+                    )
+                }
+
+                item {
+                    SectionHeader(name = "Description")
+                }
+
+                item {
+                    TextField(
+                        value = description,
+                        onValueChange = { description = it },
+                        singleLine = true,
+                        label = { Text("Description") },
+                        modifier = Modifier
+                            .fillMaxWidth() // Adjust padding if needed
                     )
                 }
 
@@ -144,7 +183,7 @@ fun CheckOutScreen(
                         }
 
                         Text(
-                            text = "${totalPrice.toInt()} vnđ",
+                            text = formatPrice(totalPrice),
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
                         )
@@ -173,7 +212,7 @@ fun CheckOutScreen(
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color.Black
                         ),
-                        onClick = { cartViewModel.onEvent(CartEvent.CreateOrder) },
+                        onClick = { cartViewModel.createOrder(shippingAddress, description) },
                         modifier = Modifier
                             .size(height = 52.dp, width = 450.dp),
                     ) {

@@ -1,6 +1,5 @@
 package com.triphuc22ad.shoesshop.presentation.cart.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,24 +11,28 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.triphuc22ad.shoesshop.R
 import com.triphuc22ad.shoesshop.domain.model.Detail
 import com.triphuc22ad.shoesshop.domain.model.Size
 import com.triphuc22ad.shoesshop.presentation.app.CartItem
-import com.triphuc22ad.shoesshop.ui.theme.BgColor
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.ui.theme.AppTheme
+import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 @Composable
 fun CardOrder(
@@ -73,7 +76,7 @@ fun CardOrder(
             Text(
                 text = cartItem.productName,
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
+                fontSize = 16.sp,
             )
 
             Row(
@@ -104,7 +107,36 @@ fun CardOrder(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "${cartItem.price.toInt()} vnđ")
+                Column {
+                    if (cartItem.promotionPrice != 0.0) {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Default.LocalFireDepartment,
+                                contentDescription = "",
+                                tint = Color.DarkGray
+                            )
+
+                            Text(
+                                text = formatPrice(cartItem.promotionPrice),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 16.sp,
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = formatPrice(cartItem.price),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = if (cartItem.promotionPrice != 0.0)
+                            12.sp else 16.sp,
+                        style = TextStyle(
+                            textDecoration = if (cartItem.promotionPrice != 0.0)
+                                TextDecoration.LineThrough else TextDecoration.None
+                        ),
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                }
+//                Text(text = formatPrice(cartItem.price))
 
                 Box(
                     modifier = Modifier
@@ -216,7 +248,7 @@ fun CardOrderPreview() {
             cartItem = CartItem(
                 productId = 10,
                 price = 150000.0,
-                promotionPrice = 0.0,
+                promotionPrice = 120000.0,
                 size = Size(10, 42),
                 color = com.triphuc22ad.shoesshop.domain.model.Color(
                     10,

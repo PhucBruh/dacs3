@@ -106,8 +106,8 @@ fun AdminEditSpecialOfferScreen(
                 TextField(
                     value = state.name,
                     onValueChange = {
-                        adminEditSpecialOfferViewModel.changeName(it)
                     },
+                    enabled = false,
                     singleLine = true,
                     label = { Text("Name") },
                     modifier = Modifier
@@ -120,8 +120,9 @@ fun AdminEditSpecialOfferScreen(
                 TextField(
                     value = state.name,
                     onValueChange = {
-                        adminEditSpecialOfferViewModel.changeDescription(it)
+
                     },
+                    enabled = false,
                     singleLine = true,
                     label = { Text("Description") },
                     modifier = Modifier
@@ -141,13 +142,8 @@ fun AdminEditSpecialOfferScreen(
                 ) {
                     TextField(
                         value = state.value.toInt().toString(),
-                        onValueChange = { newValue ->
-                            if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
-                                adminEditSpecialOfferViewModel.changeValue(
-                                    newValue.toDoubleOrNull() ?: 0.0
-                                )
-                            }
-                        },
+                        onValueChange = {},
+                        enabled = false,
                         singleLine = true,
                         keyboardOptions = KeyboardOptions.Default.copy(
                             keyboardType = KeyboardType.Number
@@ -200,7 +196,7 @@ fun AdminEditSpecialOfferScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = { adminEditSpecialOfferViewModel.update() },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

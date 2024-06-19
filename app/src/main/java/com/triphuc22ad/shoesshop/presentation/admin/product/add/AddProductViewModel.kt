@@ -3,6 +3,8 @@ package com.triphuc22ad.shoesshop.presentation.admin.product.add
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.triphuc22ad.shoesshop.data.model.ColorRequest
+import com.triphuc22ad.shoesshop.data.model.ProductRequest
+import com.triphuc22ad.shoesshop.data.service.ProductService
 import com.triphuc22ad.shoesshop.presentation.app.AppStateRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddProductViewModel @Inject constructor(
     private val appStateRepository: AppStateRepository,
+    private val productService: ProductService,
 ) : ViewModel() {
     private val _state = MutableStateFlow(AddProductUiState())
     val state: StateFlow<AddProductUiState> = _state.asStateFlow()
@@ -78,9 +81,9 @@ class AddProductViewModel @Inject constructor(
             }
 
             is AddProductEvent.AddColor -> {
-                if (event.name.isNotEmpty() || event.value.isNotEmpty()) {
+                if (event.name.isNotEmpty() && event.value.isNotEmpty()) {
                     val colors = _state.value.productToAdd.colors.toMutableList()
-                    if (colors.find { it.name == event.name && it.value == event.value } != null) {
+                    if (colors.find { it.name == event.name && it.value == event.value } == null) {
                         colors.add(ColorRequest(name = event.name, value = event.value))
                         _state.value = _state.value.copy(
                             productToAdd = _state.value.productToAdd.copy(colors = colors)
@@ -143,4 +146,24 @@ class AddProductViewModel @Inject constructor(
             }
         }
     }
+
+    fun add() {
+        viewModelScope.launch {
+            val response = productService.addProduct(_state.value.productToAdd)
+            if (response.isSuccessful) {
+                val result = response.body()
+                if (result != null) {
+                    if (result.success) {
+                        _state.value = _state.value.copy(
+                            productToAdd = ProductRequest()
+                        )
+                    }
+                    result.message?.let { appStateRepository.updateNotify(it) }
+                }
+            } else if (response.code() == 400) {
+                appStateRepository.updateNotify("Pls fill the input")
+            }
+        }
+    }
+
 }

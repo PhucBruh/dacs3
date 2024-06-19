@@ -136,7 +136,7 @@ fun AdminEditOrderScreen(
 
             item {
                 var isExpandedStatusDropMenu by remember { mutableStateOf(false) }
-                val statusList = listOf("PENDING", "PROCESS", "COMPELTED")
+                val statusList = listOf("PENDING", "PROCESSING", "SHIPPED", "COMPLETED")
                 Box {
                     ExposedDropdownMenuBox(
                         expanded = isExpandedStatusDropMenu,
@@ -174,7 +174,7 @@ fun AdminEditOrderScreen(
                         containerColor = Color.Black,
                         contentColor = Color.White
                     ),
-                    onClick = {},
+                    onClick = { adminEditOrderViewModel.update() },
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {

@@ -103,7 +103,9 @@ fun AdminSpecialOfferScreen(
                     }
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(onClick = {
+                        adminSpecialOfferViewModel.findById(navigateToEditSpecialOffer)
+                    }, Modifier.size(14.dp)) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -128,7 +130,10 @@ fun AdminSpecialOfferScreen(
                     adminSpecialOfferViewModel.onEvent(AdminSpecialOfferEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(
+                        onClick = { adminSpecialOfferViewModel.fetchData() },
+                        Modifier.size(14.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -144,6 +149,7 @@ fun AdminSpecialOfferScreen(
                                         ""
                                     )
                                 )
+                                adminSpecialOfferViewModel.fetchData()
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -228,7 +234,13 @@ fun AdminSpecialOfferScreen(
                             Icon(Icons.Filled.Edit, contentDescription = "Edit")
                         }
 
-                        IconButton(onClick = { /* Handle delete action */ }) {
+                        IconButton(onClick = {
+                            it.id?.let { it1 ->
+                                adminSpecialOfferViewModel.delete(
+                                    it1
+                                )
+                            }
+                        }) {
                             Icon(Icons.Filled.Delete, contentDescription = "Delete")
                         }
                     }
@@ -244,7 +256,7 @@ fun AdminSpecialOfferScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = { adminSpecialOfferViewModel.previousPage() },
                         enabled = state.page > 0,
                         modifier = Modifier.width(100.dp)
                     ) {
@@ -252,7 +264,7 @@ fun AdminSpecialOfferScreen(
                     }
                     Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
-                        onClick = {},
+                        onClick = { adminSpecialOfferViewModel.nextPage() },
                         enabled = state.page + 1 < state.totalPage,
                         modifier = Modifier.width(100.dp)
                     ) {

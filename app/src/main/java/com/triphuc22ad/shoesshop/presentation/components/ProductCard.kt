@@ -124,7 +124,6 @@ fun ProductCard(
 
             if (productDetail.promotionPrice != 0.0) {
                 Row {
-
                     Icon(
                         imageVector = Icons.Default.LocalFireDepartment,
                         contentDescription = "",

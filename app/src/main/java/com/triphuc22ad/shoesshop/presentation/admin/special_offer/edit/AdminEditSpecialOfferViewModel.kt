@@ -52,27 +52,28 @@ class AdminEditSpecialOfferViewModel @Inject constructor(
         }
     }
 
-    fun changeName(value: String) {
-        _state.value = _state.value.copy(
-            name = value
-        )
-    }
-
-    fun changeDescription(value: String) {
-        _state.value = _state.value.copy(
-            description = value
-        )
-    }
-
-    fun changeValue(value: Double) {
-        _state.value = _state.value.copy(
-            value = value
-        )
-    }
-
     fun changeActive(value: Boolean) {
         _state.value = _state.value.copy(
             active = value
         )
+    }
+
+    fun update() {
+        viewModelScope.launch {
+            val response = _state.value.id?.let {
+                specialOfferService.changeActive(
+                    id = it,
+                    active = _state.value.active
+                )
+            }
+            if (response != null) {
+                if (response.isSuccessful) {
+                    val result = response.body()!!
+                    result.message?.let { appStateRepository.updateNotify(it) }
+                } else {
+                    appStateRepository.updateNotify("Something error")
+                }
+            }
+        }
     }
 }

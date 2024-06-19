@@ -51,6 +51,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.presentation.app.AppViewModel
 import com.triphuc22ad.shoesshop.presentation.util.formatPrice
+import com.triphuc22ad.shoesshop.presentation.util.limitText
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 @Composable
@@ -107,7 +108,9 @@ fun AdminProductScreen(
                     }
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(onClick = {
+                        adminProductViewModel.findById(navigateToEditProduct)
+                    }, Modifier.size(14.dp)) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -132,7 +135,10 @@ fun AdminProductScreen(
                     adminProductViewModel.onEvent(AdminProductEvent.ChangeQuery(it))
                 },
                 leadingIcon = {
-                    IconButton(onClick = {}, Modifier.size(14.dp)) {
+                    IconButton(
+                        onClick = { adminProductViewModel.fetchData() },
+                        Modifier.size(14.dp)
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = ""
@@ -144,6 +150,7 @@ fun AdminProductScreen(
                         if (state.searchInfo.isNotEmpty()) {
                             IconButton(onClick = {
                                 adminProductViewModel.onEvent(AdminProductEvent.ChangeQuery(""))
+                                adminProductViewModel.fetchData()
                             }, modifier = Modifier.size(14.dp)) {
                                 Icon(
                                     imageVector = Icons.Default.Close,
@@ -205,7 +212,7 @@ fun AdminProductScreen(
                         )
 
                         Text(
-                            it.name,
+                            limitText(it.name, 16),
                             fontSize = 14.sp,
                         )
 
@@ -224,7 +231,7 @@ fun AdminProductScreen(
                             Icon(Icons.Filled.Edit, contentDescription = "Edit")
                         }
 
-                        IconButton(onClick = { /* Handle delete action */ }) {
+                        IconButton(onClick = { adminProductViewModel.deleteProduct(it.id) }) {
                             Icon(Icons.Filled.Delete, contentDescription = "Delete")
                         }
                     }
@@ -240,7 +247,7 @@ fun AdminProductScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = {},
+                        onClick = { adminProductViewModel.previousPage() },
                         enabled = state.page > 0,
                         modifier = Modifier.width(100.dp)
                     ) {
@@ -248,7 +255,7 @@ fun AdminProductScreen(
                     }
                     Text("Page ${if (state.totalPage != 0) state.page + 1 else 0} of ${state.totalPage}")
                     Button(
-                        onClick = {},
+                        onClick = { adminProductViewModel.nextPage() },
                         enabled = state.page + 1 < state.totalPage,
                         modifier = Modifier.width(100.dp)
                     ) {

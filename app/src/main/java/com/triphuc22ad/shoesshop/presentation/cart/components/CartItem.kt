@@ -13,22 +13,29 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material.icons.rounded.DeleteOutline
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.triphuc22ad.shoesshop.presentation.app.CartItem
 import com.triphuc22ad.shoesshop.presentation.components.QuantityButton
+import com.triphuc22ad.shoesshop.presentation.util.formatPrice
 import com.triphuc22ad.shoesshop.presentation.util.parseColor
+import com.triphuc22ad.shoesshop.ui.theme.AppTheme
 import com.triphuc22ad.shoesshop.ui.theme.BgColor
 
 
@@ -71,7 +78,6 @@ fun CartItem(
         Column(
             verticalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .height(120.dp)
                 .padding(end = 20.dp)
                 .padding(vertical = 6.dp)
         ) {
@@ -130,13 +136,51 @@ fun CartItem(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                Text(text = "${item.price.toInt()} vnđ", fontSize = 12.sp)
-                QuantityButton(
-                    quantity = item.quantity,
-                    onIncrease = { onIncrease() },
-                    onDecrease = { onDecrease() },
-                )
+                Column() {
+                    if (item.promotionPrice != 0.0) {
+                        Row {
+                            Icon(
+                                imageVector = Icons.Default.LocalFireDepartment,
+                                contentDescription = "",
+                                tint = Color.DarkGray
+                            )
+
+                            Text(
+                                text = formatPrice(item.promotionPrice),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = formatPrice(item.price),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = if (item.promotionPrice != 0.0)
+                            12.sp else 14.sp,
+                        style = TextStyle(
+                            textDecoration = if (item.promotionPrice != 0.0)
+                                TextDecoration.LineThrough else TextDecoration.None
+                        ),
+                        modifier = Modifier.padding(end = 8.dp)
+                    )
+                }
             }
+
+            QuantityButton(
+                quantity = item.quantity,
+                onIncrease = { onIncrease() },
+                onDecrease = { onDecrease() },
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+fun Preview() {
+    AppTheme {
+        Surface {
         }
     }
 }
